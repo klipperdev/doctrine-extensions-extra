@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://klipper.dev/schemas/orm/doctrine-extensions-mapping"
+           xmlns:klipper="http://klipper.dev/schemas/orm/doctrine-extensions-mapping"
+           elementFormDefault="qualified">
+
+  <xs:annotation>
+    <xs:documentation><![CDATA[
+       This is the XML Schema for the object/relational mapping file
+       used by the Doctrine Extensions by Klipper extensions
+     ]]></xs:documentation>
+  </xs:annotation>
+
+  <!--
+  It would be nice if we could force the klipper with only necessary elements into each of doctrine elements.
+  Patches that do that are more than welcome.
+  Please note, that marking e.g filed element in xml document with xsi:type is not an option as we need to allow other
+  people to push their own additional attributes/elements into the same field element and they should not extend our schema
+  -->
+
+  <!-- Default Value -->
+  <xs:element name="default-value" type="klipper:default-value"/>
+
+  <xs:complexType name="default-value">
+    <xs:attribute name="field" type="xs:string" use="optional" />
+    <xs:attribute name="expression" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <!-- Auto Numberable -->
+  <xs:element name="auto-numberable" type="klipper:auto-numberable"/>
+
+  <xs:complexType name="auto-numberable">
+    <xs:attribute name="field" type="xs:string" use="optional" />
+    <xs:attribute name="pattern" type="xs:string" use="optional" />
+    <xs:attribute name="utc" type="xs:boolean" use="optional" />
+    <xs:attribute name="condition" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <!-- Htmlable -->
+  <xs:element name="htmlable" type="klipper:htmlable"/>
+
+  <xs:complexType name="htmlable">
+    <xs:attribute name="field" type="xs:string" use="optional" />
+    <xs:attribute name="tags" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <!-- Metadata Object -->
+  <xs:element name="metadata-object" type="klipper:metadata-object"/>
+
+  <xs:complexType name="metadata-object">
+    <xs:attribute name="name" type="xs:string" use="optional" />
+    <xs:attribute name="plural-name" type="xs:string" use="optional" />
+    <xs:attribute name="type" type="xs:string" use="optional" />
+    <xs:attribute name="field-identifier" type="xs:string" use="optional" />
+    <xs:attribute name="field-label" type="xs:string" use="optional" />
+    <xs:attribute name="label" type="xs:string" use="optional" />
+    <xs:attribute name="description" type="xs:string" use="optional" />
+    <xs:attribute name="translation-domain" type="xs:string" use="optional" />
+    <xs:attribute name="public" type="xs:boolean" use="optional" />
+    <xs:attribute name="multi-sortable" type="xs:boolean" use="optional" />
+    <xs:attribute name="default-sortable" type="xs:string" use="optional" />
+    <xs:attribute name="available-contexts" type="xs:string" use="optional" />
+    <xs:attribute name="form-type" type="xs:string" use="optional" />
+    <xs:attribute name="form-options" type="xs:complexType" use="optional" />
+    <xs:attribute name="groups" type="xs:complexType" use="optional" />
+    <xs:attribute name="build-default-actions" type="xs:boolean" use="optional" />
+    <xs:attribute name="default-action" type="klipper:metadata-action" use="optional" />
+  </xs:complexType>
+
+  <!-- Metadata Field -->
+  <xs:element name="metadata-field" type="klipper:metadata-field"/>
+
+  <xs:complexType name="metadata-field">
+    <xs:attribute name="field" type="xs:string" use="optional" />
+    <xs:attribute name="name" type="xs:string" use="optional" />
+    <xs:attribute name="type" type="xs:string" use="optional" />
+    <xs:attribute name="label" type="xs:string" use="optional" />
+    <xs:attribute name="description" type="xs:string" use="optional" />
+    <xs:attribute name="translation-domain" type="xs:string" use="optional" />
+    <xs:attribute name="public" type="xs:boolean" use="optional" />
+    <xs:attribute name="sortable" type="xs:boolean" use="optional" />
+    <xs:attribute name="filterable" type="xs:boolean" use="optional" />
+    <xs:attribute name="searchable" type="xs:boolean" use="optional" />
+    <xs:attribute name="translatable" type="xs:boolean" use="optional" />
+    <xs:attribute name="read-only" type="xs:boolean" use="optional" />
+    <xs:attribute name="required" type="xs:boolean" use="optional" />
+    <xs:attribute name="input" type="xs:string" use="optional" />
+    <xs:attribute name="input-config" type="xs:complexType" use="optional" />
+    <xs:attribute name="form-type" type="xs:string" use="optional" />
+    <xs:attribute name="form-options" type="xs:complexType" use="optional" />
+    <xs:attribute name="groups" type="xs:complexType" use="optional" />
+  </xs:complexType>
+
+  <!-- Metadata Association -->
+  <xs:element name="metadata-association" type="klipper:metadata-association"/>
+
+  <xs:complexType name="metadata-association">
+    <xs:attribute name="association" type="xs:string" use="optional" />
+    <xs:attribute name="name" type="xs:string" use="optional" />
+    <xs:attribute name="type" type="xs:string" use="optional" />
+    <xs:attribute name="target" type="xs:string" use="optional" />
+    <xs:attribute name="label" type="xs:string" use="optional" />
+    <xs:attribute name="description" type="xs:string" use="optional" />
+    <xs:attribute name="translation-domain" type="xs:string" use="optional" />
+    <xs:attribute name="public" type="xs:boolean" use="optional" />
+    <xs:attribute name="read-only" type="xs:boolean" use="optional" />
+    <xs:attribute name="required" type="xs:boolean" use="optional" />
+    <xs:attribute name="input" type="xs:string" use="optional" />
+    <xs:attribute name="input-config" type="xs:complexType" use="optional" />
+    <xs:attribute name="form-type" type="xs:string" use="optional" />
+    <xs:attribute name="form-options" type="xs:complexType" use="optional" />
+    <xs:attribute name="groups" type="xs:complexType" use="optional" />
+  </xs:complexType>
+
+  <!-- Metadata Action -->
+  <xs:element name="metadata-action" type="klipper:metadata-action"/>
+
+  <xs:complexType name="metadata-action">
+    <xs:attribute name="name" type="xs:string" use="optional" />
+    <xs:attribute name="methods" type="xs:complexType" use="optional" />
+    <xs:attribute name="schemes" type="xs:complexType" use="optional" />
+    <xs:attribute name="host" type="xs:string" use="optional" />
+    <xs:attribute name="path" type="xs:string" use="optional" />
+    <xs:attribute name="fragment" type="xs:string" use="optional" />
+    <xs:attribute name="defaults" type="xs:complexType" use="optional" />
+    <xs:attribute name="requirements" type="xs:complexType" use="optional" />
+    <xs:attribute name="options" type="xs:complexType" use="optional" />
+    <xs:attribute name="condition" type="xs:string" use="optional" />
+    <xs:attribute name="configurations" type="xs:complexType" use="optional" />
+  </xs:complexType>
+
+</xs:schema>
