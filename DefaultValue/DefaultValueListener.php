@@ -11,10 +11,10 @@
 
 namespace Klipper\Component\DoctrineExtensionsExtra\DefaultValue;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadataInfo as OrmClassMetadata;
+use Doctrine\Persistence\ManagerRegistry;
 use Gedmo\Mapping\MappedEventSubscriber;
 use Klipper\Component\DoctrineExtensionsExtra\DefaultValue\Loader\LoaderInterface;
 use Klipper\Component\DoctrineExtensionsExtra\DefaultValue\Metadata\ClassMetadata;

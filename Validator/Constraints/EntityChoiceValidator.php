@@ -11,8 +11,8 @@
 
 namespace Klipper\Component\DoctrineExtensionsExtra\Validator\Constraints;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
 use Klipper\Component\DoctrineExtensions\Util\SqlFilterUtil;
 use Klipper\Component\DoctrineExtensionsExtra\Entity\Repository\Traits\TranslatableRepositoryInterface;
 use Klipper\Component\DoctrineExtensionsExtra\Util\IdReader;
