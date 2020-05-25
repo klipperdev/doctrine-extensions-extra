@@ -29,6 +29,8 @@ abstract class ListenerUtil
 {
     /**
      * Create a constraint violation.
+     *
+     * @param null|mixed $root
      */
     public static function createViolation(string $message, $root = null, ?string $propertyPath = null): ConstraintViolation
     {
@@ -37,6 +39,8 @@ abstract class ListenerUtil
 
     /**
      * Thrown a constraint violation exception.
+     *
+     * @param null|mixed $root
      */
     public static function thrownError(string $message, $root = null, ?string $propertyPath = null): void
     {
