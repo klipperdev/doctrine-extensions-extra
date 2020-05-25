@@ -30,7 +30,7 @@ abstract class ListenerUtil
     /**
      * Create a constraint violation.
      */
-    public static function createViolation(string $message, ?string $root = null, ?string $propertyPath = null): ConstraintViolation
+    public static function createViolation(string $message, $root = null, ?string $propertyPath = null): ConstraintViolation
     {
         return new ConstraintViolation($message, $message, [], $root, $propertyPath, null);
     }
@@ -38,7 +38,7 @@ abstract class ListenerUtil
     /**
      * Thrown a constraint violation exception.
      */
-    public static function thrownError(string $message, ?string $root = null, ?string $propertyPath = null): void
+    public static function thrownError(string $message, $root = null, ?string $propertyPath = null): void
     {
         $error = static::createViolation($message, $root, $propertyPath);
 
