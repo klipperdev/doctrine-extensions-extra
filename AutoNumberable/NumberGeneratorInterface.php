@@ -27,14 +27,14 @@ interface NumberGeneratorInterface
     /**
      * Generate a new number defined by the pattern.
      *
-     * @param string         $pattern  The pattern of number
-     * @param int            $value    The value
-     * @param null|\DateTime $datetime The datetime
-     * @param bool           $utc      Check if the datetime must be converted in UTC
+     * @param string                  $pattern  The pattern of number
+     * @param int                     $value    The value
+     * @param null|\DateTimeInterface $datetime The datetime
+     * @param bool                    $utc      Check if the datetime must be converted in UTC
      *
      * @throws InvalidAutoNumberPatternException When the pattern is invalid
      */
-    public function generate(string $pattern, int $value, ?\DateTime $datetime = null, bool $utc = false): string;
+    public function generate(string $pattern, int $value, ?\DateTimeInterface $datetime = null, bool $utc = false): string;
 
     /**
      * Validate the pattern.

@@ -24,21 +24,14 @@ use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation as Ba
  */
 trait TranslatableTrait
 {
-    /**
-     * @var Collection
-     */
-    protected $translations;
+    protected ?Collection $translations = null;
 
     /**
-     * @var string
      * @Gedmo\Locale
      */
-    protected $locale;
+    protected ?string $locale = null;
 
-    /**
-     * @var array
-     */
-    protected $availableLocales;
+    protected ?array $availableLocales = null;
 
     /**
      * {@inheritdoc}

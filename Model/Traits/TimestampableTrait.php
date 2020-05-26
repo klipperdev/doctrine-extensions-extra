@@ -18,22 +18,16 @@ namespace Klipper\Component\DoctrineExtensionsExtra\Model\Traits;
  */
 trait TimestampableTrait
 {
-    /**
-     * @var null|\DateTime
-     */
-    protected $createdAt;
+    protected ?\DateTimeInterface $createdAt = null;
 
-    /**
-     * @var null|\DateTime
-     */
-    protected $updatedAt;
+    protected ?\DateTimeInterface $updatedAt = null;
 
     /**
      * {@inheritdoc}
      *
      * @see TimestampableInterface::setCreatedAt()
      */
-    public function setCreatedAt(?\DateTime $createdAt)
+    public function setCreatedAt(?\DateTimeInterface $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -45,7 +39,7 @@ trait TimestampableTrait
      *
      * @see TimestampableInterface::getCreatedAt()
      */
-    public function getCreatedAt(): ?\DateTime
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
@@ -55,7 +49,7 @@ trait TimestampableTrait
      *
      * @see TimestampableInterface::setUpdatedAt()
      */
-    public function setUpdatedAt(?\DateTime $updatedAt)
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt)
     {
         $this->updatedAt = $updatedAt;
 
@@ -67,7 +61,7 @@ trait TimestampableTrait
      *
      * @see TimestampableInterface::getUpdatedAt()
      */
-    public function getUpdatedAt(): ?\DateTime
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
     }

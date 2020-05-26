@@ -24,7 +24,7 @@ class NumberGenerator implements NumberGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(string $pattern, int $value, ?\DateTime $datetime = null, bool $utc = false): string
+    public function generate(string $pattern, int $value, ?\DateTimeInterface $datetime = null, bool $utc = false): string
     {
         $matches = $this->validateMatch($pattern);
         $datetime = null !== $datetime ? clone $datetime : new \DateTime();
@@ -75,10 +75,10 @@ class NumberGenerator implements NumberGeneratorInterface
     /**
      * Build the datetime value for pattern.
      *
-     * @param string    $match    The regex match
-     * @param \DateTime $dateTime The datetime
+     * @param string             $match    The regex match
+     * @param \DateTimeInterface $dateTime The datetime
      */
-    private function buildDateTime(string $match, \DateTime $dateTime): string
+    private function buildDateTime(string $match, \DateTimeInterface $dateTime): string
     {
         switch ($match) {
             case 'YYYY':
