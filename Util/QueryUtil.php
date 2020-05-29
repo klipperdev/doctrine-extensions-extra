@@ -97,7 +97,7 @@ abstract class QueryUtil
         ?AuthorizationCheckerInterface $authChecker = null
     ): bool {
         return $fieldMeta->isPublic()
-            && (!$authChecker || $authChecker->isGranted('perm_read', new FieldVote($metadata->getClass(), $fieldMeta->getField())));
+            && (!$authChecker || $authChecker->isGranted('perm:read', new FieldVote($metadata->getClass(), $fieldMeta->getField())));
     }
 
     /**
@@ -113,7 +113,7 @@ abstract class QueryUtil
         ?AuthorizationCheckerInterface $authChecker = null
     ): bool {
         return $assoMeta->isPublic()
-            && (!$authChecker || $authChecker->isGranted('perm_read', new FieldVote($metadata->getClass(), $assoMeta->getAssociation())));
+            && (!$authChecker || $authChecker->isGranted('perm:read', new FieldVote($metadata->getClass(), $assoMeta->getAssociation())));
     }
 
     /**

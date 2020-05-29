@@ -293,7 +293,7 @@ class FilterManager implements FilterManagerInterface
     {
         return $metadata->isPublic()
             && $metadata->isFilterable()
-            && $this->authChecker->isGranted('perm_view', $metadata->getClass());
+            && $this->authChecker->isGranted('perm:view', $metadata->getClass());
     }
 
     /**
@@ -306,7 +306,7 @@ class FilterManager implements FilterManagerInterface
         return $fieldMetadata->isPublic()
             && $fieldMetadata->isFilterable()
             && !\in_array($fieldMetadata->getType(), self::SKIP_INPUTS, true)
-            && $this->authChecker->isGranted('perm_read', new FieldVote($fieldMetadata->getParent()->getClass(), $fieldMetadata->getField()));
+            && $this->authChecker->isGranted('perm:read', new FieldVote($fieldMetadata->getParent()->getClass(), $fieldMetadata->getField()));
     }
 
     /**
@@ -319,7 +319,7 @@ class FilterManager implements FilterManagerInterface
     {
         return $associationMetadata->isPublic()
             && $this->isValidAssociation($associationMetadata, $builder)
-            && $this->authChecker->isGranted('perm_read', new FieldVote($associationMetadata->getParent()->getClass(), $associationMetadata->getAssociation()));
+            && $this->authChecker->isGranted('perm:read', new FieldVote($associationMetadata->getParent()->getClass(), $associationMetadata->getAssociation()));
     }
 
     /**
