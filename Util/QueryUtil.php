@@ -21,6 +21,7 @@ use Klipper\Component\Metadata\MetadataInterface;
 use Klipper\Component\Metadata\MetadataManagerInterface;
 use Klipper\Component\Metadata\ObjectMetadataInterface;
 use Klipper\Component\Security\Permission\FieldVote;
+use Klipper\Component\Security\Permission\PermVote;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -97,7 +98,7 @@ abstract class QueryUtil
         ?AuthorizationCheckerInterface $authChecker = null
     ): bool {
         return $fieldMeta->isPublic()
-            && (!$authChecker || $authChecker->isGranted('perm:read', new FieldVote($metadata->getClass(), $fieldMeta->getField())));
+            && (!$authChecker || $authChecker->isGranted(new PermVote('read'), new FieldVote($metadata->getClass(), $fieldMeta->getField())));
     }
 
     /**
@@ -113,7 +114,7 @@ abstract class QueryUtil
         ?AuthorizationCheckerInterface $authChecker = null
     ): bool {
         return $assoMeta->isPublic()
-            && (!$authChecker || $authChecker->isGranted('perm:read', new FieldVote($metadata->getClass(), $assoMeta->getAssociation())));
+            && (!$authChecker || $authChecker->isGranted(new PermVote('read'), new FieldVote($metadata->getClass(), $assoMeta->getAssociation())));
     }
 
     /**

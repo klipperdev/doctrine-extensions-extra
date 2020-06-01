@@ -19,6 +19,7 @@ use Klipper\Component\Metadata\ObjectMetadataInterface;
 use Klipper\Component\Metadata\Util\ChoiceUtil;
 use Klipper\Component\Metadata\Util\MetadataUtil;
 use Klipper\Component\Security\Permission\FieldVote;
+use Klipper\Component\Security\Permission\PermVote;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -293,7 +294,7 @@ class FilterManager implements FilterManagerInterface
     {
         return $metadata->isPublic()
             && $metadata->isFilterable()
-            && $this->authChecker->isGranted('perm:view', $metadata->getClass());
+            && $this->authChecker->isGranted(new PermVote('view'), $metadata->getClass());
     }
 
     /**
@@ -306,7 +307,7 @@ class FilterManager implements FilterManagerInterface
         return $fieldMetadata->isPublic()
             && $fieldMetadata->isFilterable()
             && !\in_array($fieldMetadata->getType(), self::SKIP_INPUTS, true)
-            && $this->authChecker->isGranted('perm:read', new FieldVote($fieldMetadata->getParent()->getClass(), $fieldMetadata->getField()));
+            && $this->authChecker->isGranted(new PermVote('read'), new FieldVote($fieldMetadata->getParent()->getClass(), $fieldMetadata->getField()));
     }
 
     /**
@@ -319,7 +320,7 @@ class FilterManager implements FilterManagerInterface
     {
         return $associationMetadata->isPublic()
             && $this->isValidAssociation($associationMetadata, $builder)
-            && $this->authChecker->isGranted('perm:read', new FieldVote($associationMetadata->getParent()->getClass(), $associationMetadata->getAssociation()));
+            && $this->authChecker->isGranted(new PermVote('read'), new FieldVote($associationMetadata->getParent()->getClass(), $associationMetadata->getAssociation()));
     }
 
     /**
