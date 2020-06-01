@@ -23,7 +23,7 @@ class TranslatableExtension extends AbstractTranslatableExtension
     /**
      * {@inheritdoc}
      */
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): iterable
     {
         return [TranslatableType::class];
     }

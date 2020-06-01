@@ -23,7 +23,7 @@ class KlipperTranslatableEntityExtension extends AbstractTranslatableEntityExten
     /**
      * {@inheritdoc}
      */
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): iterable
     {
         return [EntityType::class];
     }
