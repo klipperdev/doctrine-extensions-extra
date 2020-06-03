@@ -45,7 +45,7 @@ final class MetadataObject extends Annotation
 
     public ?string $defaultSortable = null;
 
-    public ?string $availableContexts = null;
+    public ?array $availableContexts = null;
 
     public ?string $formType = null;
 
