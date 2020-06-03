@@ -18,19 +18,11 @@ namespace Klipper\Component\DoctrineExtensionsExtra\DefaultValue\Metadata;
  */
 class FieldMetadata implements FieldMetadataInterface
 {
-    /**
-     * @var string
-     */
-    protected $field;
+    protected string $field;
+
+    protected ?string $expression;
 
     /**
-     * @var null|string
-     */
-    protected $expression;
-
-    /**
-     * Constructor.
-     *
      * @param string      $field      The field name
      * @param null|string $expression The expression
      */
@@ -40,25 +32,16 @@ class FieldMetadata implements FieldMetadataInterface
         $this->expression = $expression;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getField(): string
     {
         return $this->field;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExpression(): ?string
     {
         return $this->expression;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function merge(FieldMetadataInterface $meta): void
     {
         if ($this->field !== $meta->getField()) {

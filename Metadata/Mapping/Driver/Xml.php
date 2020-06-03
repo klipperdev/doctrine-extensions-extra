@@ -25,8 +25,6 @@ use Klipper\Component\Metadata\Util\MetadataUtil;
 class Xml extends BaseXml
 {
     /**
-     * {@inheritdoc}
-     *
      * @param ClassMetadata $meta
      */
     public function readExtendedMetadata($meta, array &$config): void

@@ -22,10 +22,7 @@ use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\RuleNode;
  */
 class JsonGetTransformer implements NodeFieldNameTransformerInterface, NodeValueTransformerInterface
 {
-    /**
-     * @var string
-     */
-    private $key;
+    private string $key;
 
     /**
      * @var mixed
@@ -33,8 +30,6 @@ class JsonGetTransformer implements NodeFieldNameTransformerInterface, NodeValue
     private $value;
 
     /**
-     * Constructor.
-     *
      * @param string $key   The key
      * @param mixed  $value The value
      */
@@ -44,9 +39,6 @@ class JsonGetTransformer implements NodeFieldNameTransformerInterface, NodeValue
         $this->value = $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function compileFieldName(CompileArgs $arguments, RuleNode $node, string $fieldName): string
     {
         $key = $this->getKey($arguments, 'path', $node->getField(), $this->key);
@@ -54,9 +46,6 @@ class JsonGetTransformer implements NodeFieldNameTransformerInterface, NodeValue
         return sprintf('JSON_GET(%s, :%s)', $fieldName, $key);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function compileValue(CompileArgs $arguments, string $field): string
     {
         return ':'.$this->getKey($arguments, 'value', $field, $this->value);

@@ -29,22 +29,15 @@ final class AutoNumberable extends Annotation
     public $field;
 
     /**
-     * @var null|string
-     *
      * @Annotation\Required
      */
-    public $pattern;
+    public ?string $pattern = null;
 
-    /**
-     * @var bool
-     */
-    public $utc = false;
+    public bool $utc = false;
 
     /**
      * The condition defined by the expression language to generate the number.
      * The expression must return a boolean value.
-     *
-     * @var null|string
      */
-    public $condition;
+    public ?string $condition = null;
 }

@@ -24,9 +24,6 @@ use Klipper\Component\DoctrineExtra\Util\ClassUtils;
  */
 final class ORM extends BaseAdapterORM implements AutoNumberableAdapterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function get(string $type, string $pattern): AutoNumberConfigInterface
     {
         $em = $this->getObjectManager();
@@ -47,8 +44,6 @@ final class ORM extends BaseAdapterORM implements AutoNumberableAdapterInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws
      */
     public function put(AutoNumberConfigInterface $config): void

@@ -35,19 +35,11 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  */
 class MetadataListener extends MappedEventSubscriber implements MetadataDynamicLoaderInterface
 {
-    /**
-     * @var ManagerRegistry
-     */
-    protected $registry;
+    protected ManagerRegistry $registry;
+
+    protected PropertyAccessorInterface $accessor;
 
     /**
-     * @var PropertyAccessorInterface
-     */
-    protected $accessor;
-
-    /**
-     * Constructor.
-     *
      * @param ManagerRegistry                $registry The doctrine registry
      * @param null|PropertyAccessorInterface $accessor The property accessor
      */
@@ -56,12 +48,9 @@ class MetadataListener extends MappedEventSubscriber implements MetadataDynamicL
         parent::__construct();
 
         $this->registry = $registry;
-        $this->accessor = $accessor ?: PropertyAccess::createPropertyAccessor();
+        $this->accessor = $accessor ?? PropertyAccess::createPropertyAccessor();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSubscribedEvents(): array
     {
         return [
@@ -69,9 +58,6 @@ class MetadataListener extends MappedEventSubscriber implements MetadataDynamicL
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function loadNames(): ObjectMetadataNameCollection
     {
         $managers = $this->registry->getManagers();
@@ -100,9 +86,6 @@ class MetadataListener extends MappedEventSubscriber implements MetadataDynamicL
         return $names;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function loadBuilder(string $class): ?ObjectMetadataBuilderInterface
     {
         $manager = ManagerUtils::getManager($this->registry, $class);
@@ -129,9 +112,6 @@ class MetadataListener extends MappedEventSubscriber implements MetadataDynamicL
         $this->loadMetadataForObjectClass($ea->getObjectManager(), $metadata);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getNamespace(): string
     {
         return __NAMESPACE__;

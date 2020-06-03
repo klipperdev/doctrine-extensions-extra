@@ -22,9 +22,6 @@ use Symfony\Component\Form\FormEvents;
  */
 class CollectibleSubscriber implements EventSubscriberInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [

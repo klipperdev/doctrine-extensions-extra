@@ -100,9 +100,6 @@ class MergeConditionalExpressionWalker extends TreeWalkerAdapter
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function walkSelectStatement(SelectStatement $AST): void
     {
         /** @var mixed|SelectStatement|SelectStatement[] $newASTs */

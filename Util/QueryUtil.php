@@ -29,10 +29,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 abstract class QueryUtil
 {
-    /**
-     * @var null|bool
-     */
-    private static $translatable;
+    private static ?bool $translatable = null;
 
     /**
      * Inject the translation walker in the Doctrine query instance.

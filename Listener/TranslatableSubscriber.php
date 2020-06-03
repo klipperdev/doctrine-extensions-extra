@@ -25,24 +25,16 @@ class TranslatableSubscriber implements EventSubscriber
 {
     use CacheMetadatasTrait;
 
-    /**
-     * @var string
-     */
-    protected $fallback;
+    protected string $fallback;
 
     /**
-     * Constructor.
-     *
      * @param string $fallback The locale fallback
      */
-    public function __construct($fallback)
+    public function __construct(string $fallback)
     {
         $this->fallback = $fallback;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSubscribedEvents(): array
     {
         return [
@@ -75,7 +67,7 @@ class TranslatableSubscriber implements EventSubscriber
      * @param UnitOfWork $uow    The unit of work
      * @param object     $object The object
      */
-    private function buildAvailableLocales(UnitOfWork $uow, $object): void
+    private function buildAvailableLocales(UnitOfWork $uow, object $object): void
     {
         if (!$object instanceof TranslatableInterface) {
             return;

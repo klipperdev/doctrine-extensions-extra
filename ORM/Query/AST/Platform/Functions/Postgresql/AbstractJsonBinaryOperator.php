@@ -24,8 +24,6 @@ use Klipper\Component\DoctrineExtensionsExtra\ORM\Query\AST\Platform\Functions\P
 abstract class AbstractJsonBinaryOperator extends PlatformFunctionNode
 {
     /**
-     * {@inheritdoc}
-     *
      * @throws
      */
     public function getSql(SqlWalker $sqlWalker): string

@@ -40,8 +40,6 @@ class Annotation extends BaseAnnotation
     public const METADATA_ASSOCIATION = MetadataAssociation::class;
 
     /**
-     * {@inheritdoc}
-     *
      * @param ClassMetadata $meta
      */
     public function readExtendedMetadata($meta, array &$config): void

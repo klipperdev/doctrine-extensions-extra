@@ -18,34 +18,20 @@ namespace Klipper\Component\DoctrineExtensionsExtra\Representation;
  */
 class Pagination implements PaginationInterface
 {
-    /**
-     * @var int
-     */
-    protected $page;
+    protected int $page;
 
-    /**
-     * @var int
-     */
-    protected $limit;
+    protected int $limit;
 
-    /**
-     * @var int
-     */
-    protected $pages;
+    protected int $pages;
 
-    /**
-     * @var int
-     */
-    protected $total;
+    protected int $total;
 
     /**
      * @var object[]
      */
-    protected $results;
+    protected array $results;
 
     /**
-     * Constructor.
-     *
      * @param object[] $results The results
      * @param null|int $page    The page number
      * @param null|int $limit   The limit of pagination
@@ -66,41 +52,26 @@ class Pagination implements PaginationInterface
         $this->results = $results;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPage(): int
     {
         return $this->page;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLimit(): int
     {
         return $this->limit;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPages(): int
     {
         return $this->pages;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTotal(): int
     {
         return $this->total;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResults(): array
     {
         return $this->results;

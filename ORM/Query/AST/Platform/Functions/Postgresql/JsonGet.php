@@ -18,9 +18,6 @@ namespace Klipper\Component\DoctrineExtensionsExtra\ORM\Query\AST\Platform\Funct
  */
 class JsonGet extends AbstractJsonBinaryOperator
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function getOperator(): string
     {
         return '->>';

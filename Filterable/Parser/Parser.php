@@ -29,29 +29,15 @@ use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\RuleNode;
  */
 class Parser
 {
-    /**
-     * @var array
-     */
-    private $nodeConditions = [];
+    private array $nodeConditions = [];
+
+    private array $nodeRules = [];
+
+    private array $mapRules = [];
+
+    private array $mapForms = [];
 
     /**
-     * @var array
-     */
-    private $nodeRules = [];
-
-    /**
-     * @var array
-     */
-    private $mapRules = [];
-
-    /**
-     * @var array
-     */
-    private $mapForms = [];
-
-    /**
-     * Constructor.
-     *
      * @param null|array $nodeConditions The config of node conditions
      * @param null|array $nodeRules      The config of node rules
      * @param null|array $mapRules       The config of map rules
@@ -292,10 +278,10 @@ class Parser
      */
     public function parse(string $json, bool $forceFirstCondition = true): NodeInterface
     {
-        $value = json_decode($json, true);
-
-        if (json_last_error()) {
-            throw new InvalidJsonException(json_last_error_msg());
+        try {
+            $value = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
+            throw new InvalidJsonException($e->getMessage());
         }
 
         $node = $this->parseNode($value);

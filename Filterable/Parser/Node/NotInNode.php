@@ -21,25 +21,16 @@ use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\ParserUtil;
  */
 class NotInNode extends RuleNode
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getOperator(): string
     {
         return 'not_in';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCollectible(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function compile(CompileArgs $arguments): string
     {
         return ParserUtil::getFieldName($arguments, $this)

@@ -11,6 +11,7 @@
 
 namespace Klipper\Component\DoctrineExtensionsExtra\DefaultValue\Mapping\Driver;
 
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use Gedmo\Mapping\Driver\AbstractAnnotationDriver;
 use Klipper\Component\DoctrineExtensionsExtra\Exception\InvalidMappingException;
 use Klipper\Component\DoctrineExtensionsExtra\Mapping\Annotation\DefaultValue;
@@ -30,7 +31,7 @@ class Annotation extends AbstractAnnotationDriver
     public const DEFAULT_VALUE = DefaultValue::class;
 
     /**
-     * {@inheritdoc}
+     * @param ClassMetadata $meta
      */
     public function readExtendedMetadata($meta, array &$config): void
     {

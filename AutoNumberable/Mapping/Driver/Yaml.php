@@ -11,6 +11,7 @@
 
 namespace Klipper\Component\DoctrineExtensionsExtra\AutoNumberable\Mapping\Driver;
 
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use Klipper\Component\DoctrineExtensionsExtra\Exception\InvalidMappingException;
 use Klipper\Component\DoctrineExtensionsExtra\Mapping\Driver\Yaml as BaseYaml;
 
@@ -28,13 +29,13 @@ class Yaml extends BaseYaml
      *
      * @var string[]
      */
-    private $validTypes = [
+    private array $validTypes = [
         'string',
         'text',
     ];
 
     /**
-     * {@inheritdoc}
+     * @param ClassMetadata $meta
      */
     public function readExtendedMetadata($meta, array &$config): void
     {
@@ -63,10 +64,10 @@ class Yaml extends BaseYaml
     /**
      * Checks if field type is valid.
      *
-     * @param object $meta  The class metadata
-     * @param string $field The field name
+     * @param ClassMetadata $meta  The class metadata
+     * @param string        $field The field name
      */
-    protected function isValidField(object $meta, string $field): bool
+    protected function isValidField(ClassMetadata $meta, string $field): bool
     {
         $mapping = $meta->getFieldMapping($field);
 

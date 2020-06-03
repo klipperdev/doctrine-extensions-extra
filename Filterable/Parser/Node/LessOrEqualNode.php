@@ -21,17 +21,11 @@ use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\ParserUtil;
  */
 class LessOrEqualNode extends RuleNode
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getOperator(): string
     {
         return 'less_or_equal';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function compile(CompileArgs $arguments): string
     {
         return ParserUtil::getFieldName($arguments, $this)

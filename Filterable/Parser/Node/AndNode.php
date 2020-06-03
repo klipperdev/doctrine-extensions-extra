@@ -18,9 +18,6 @@ namespace Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node;
  */
 class AndNode extends ConditionNode
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getCondition(): string
     {
         return 'AND';

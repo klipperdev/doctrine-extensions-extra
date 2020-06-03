@@ -21,9 +21,9 @@ use Klipper\Component\DoctrineExtra\Util\ClassUtils;
 trait CacheMetadatasTrait
 {
     /**
-     * @var array|ClassMetadataInfo[]
+     * @var ClassMetadataInfo[]
      */
-    protected $cacheMetas = [];
+    protected array $cacheMetas = [];
 
     /**
      * Get the doctrine class metadata of entity.

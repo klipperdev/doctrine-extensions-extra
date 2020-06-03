@@ -18,14 +18,9 @@ namespace Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Exception;
  */
 class InvalidNodeTypeException extends InvalidArgumentException
 {
-    /**
-     * @var null|string
-     */
-    protected $path;
+    protected ?string $path;
 
     /**
-     * Constructor.
-     *
      * @param null|string $path The path of node
      */
     public function __construct(?string $path = null)

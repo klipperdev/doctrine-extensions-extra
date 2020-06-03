@@ -21,33 +21,21 @@ use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\ParserUtil;
  */
 class BetweenNode extends RuleNode
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getOperator(): string
     {
         return 'between';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCollectible(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSizeCollection(): int
     {
         return 2;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function compile(CompileArgs $arguments): string
     {
         $value = $this->getQueryValue();

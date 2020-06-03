@@ -33,19 +33,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 abstract class AbstractTranslatableExtension extends AbstractTypeExtension
 {
-    /**
-     * @var null|Request
-     */
-    protected $request;
+    protected ?Request $request;
+
+    protected string $fallback = 'en';
 
     /**
-     * @var string
-     */
-    protected $fallback = 'en';
-
-    /**
-     * Constructor.
-     *
      * @param RequestStack $requestStack The request stack
      */
     public function __construct(RequestStack $requestStack)
@@ -53,9 +45,6 @@ abstract class AbstractTranslatableExtension extends AbstractTypeExtension
         $this->request = $requestStack->getCurrentRequest();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
@@ -143,7 +132,7 @@ abstract class AbstractTranslatableExtension extends AbstractTypeExtension
      * @param FormInterface $proto The form of prototype
      * @param string        $addon The name of addon option
      */
-    private function disableAddonForm(FormInterface $proto, $addon): void
+    private function disableAddonForm(FormInterface $proto, string $addon): void
     {
         if ($proto->getConfig()->hasOption($addon)) {
             $addonForm = $proto->getConfig()->getOption($addon);

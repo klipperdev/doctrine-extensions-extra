@@ -40,7 +40,8 @@ class Annotation extends AbstractAnnotationDriver
     ];
 
     /**
-     * {@inheritdoc}
+     * @param mixed ClassMetadata
+     * @param mixed $meta
      */
     public function readExtendedMetadata($meta, array &$config): void
     {

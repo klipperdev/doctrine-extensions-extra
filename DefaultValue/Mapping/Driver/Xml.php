@@ -11,7 +11,7 @@
 
 namespace Klipper\Component\DoctrineExtensionsExtra\DefaultValue\Mapping\Driver;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use Klipper\Component\DoctrineExtensionsExtra\Mapping\Driver\Xml as BaseXml;
 
 /**
@@ -24,8 +24,6 @@ use Klipper\Component\DoctrineExtensionsExtra\Mapping\Driver\Xml as BaseXml;
 class Xml extends BaseXml
 {
     /**
-     * {@inheritdoc}
-     *
      * @param ClassMetadata $meta
      */
     public function readExtendedMetadata($meta, array &$config): void

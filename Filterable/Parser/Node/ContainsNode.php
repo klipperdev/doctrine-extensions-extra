@@ -21,17 +21,11 @@ use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\ParserUtil;
  */
 class ContainsNode extends RuleNode
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getOperator(): string
     {
         return 'contains';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function compile(CompileArgs $arguments): string
     {
         return 'UNACCENT(LOWER('.ParserUtil::getFieldName($arguments, $this).'))'

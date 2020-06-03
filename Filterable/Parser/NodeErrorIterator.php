@@ -38,15 +38,12 @@ class NodeErrorIterator implements \RecursiveIterator, \SeekableIterator, \Array
      */
     public const INDENTATION = '    ';
 
-    /**
-     * @var NodeInterface
-     */
-    private $node;
+    private NodeInterface $node;
 
     /**
      * @var NodeError[]|NodeErrorIterator[]
      */
-    private $errors;
+    private array $errors;
 
     /**
      * Creates a new iterator.
@@ -189,7 +186,8 @@ class NodeErrorIterator implements \RecursiveIterator, \SeekableIterator, \Array
     /**
      * Unsupported method.
      *
-     * {@inheritdoc}
+     * @param mixed $position
+     * @param mixed $value
      *
      * @throws BadMethodCallException
      */
@@ -201,7 +199,7 @@ class NodeErrorIterator implements \RecursiveIterator, \SeekableIterator, \Array
     /**
      * Unsupported method.
      *
-     * {@inheritdoc}
+     * @param mixed $position
      *
      * @throws BadMethodCallException
      */

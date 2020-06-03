@@ -22,9 +22,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class TranslatableChildExtension extends AbstractTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -34,9 +31,6 @@ class TranslatableChildExtension extends AbstractTypeExtension
         $resolver->addAllowedTypes('translatable', ['null', 'bool']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getExtendedTypes(): iterable
     {
         return [FormType::class];

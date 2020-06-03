@@ -19,44 +19,24 @@ use Klipper\Component\Metadata\ObjectMetadataInterface;
  */
 class FilterConfigBuilder extends FilterConfig
 {
-    /**
-     * @var ObjectMetadataInterface
-     */
-    protected $initialMeta;
+    protected ObjectMetadataInterface $initialMeta;
 
-    /**
-     * @var ObjectMetadataInterface
-     */
-    protected $currentMeta;
+    protected ObjectMetadataInterface $currentMeta;
 
     /**
      * @var string[]
      */
-    protected $initialTargets;
+    protected array $initialTargets;
+
+    protected string $filterPrefix = '';
+
+    protected string $groupPrefix = '';
+
+    protected string $groupLabel = '';
+
+    protected ?AssociationMetadataInterface $previousAssociation = null;
 
     /**
-     * @var string
-     */
-    protected $filterPrefix = '';
-
-    /**
-     * @var string
-     */
-    protected $groupPrefix = '';
-
-    /**
-     * @var string
-     */
-    protected $groupLabel = '';
-
-    /**
-     * @var null|AssociationMetadataInterface
-     */
-    protected $previousAssociation;
-
-    /**
-     * Constructor.
-     *
      * @param ObjectMetadataInterface $initialMeta The initial object metadata
      */
     public function __construct(ObjectMetadataInterface $initialMeta)

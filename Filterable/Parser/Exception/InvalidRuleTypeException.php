@@ -18,9 +18,6 @@ namespace Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Exception;
  */
 class InvalidRuleTypeException extends AbstractInvalidValueException
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function buildMessage(array $expectedValues, string $givenValue, ?string $path = null): string
     {
         return sprintf('The operator of filter rule "%s" can only be "%s". Given "%s"', $path, implode('", "', array_keys($expectedValues)), $givenValue);

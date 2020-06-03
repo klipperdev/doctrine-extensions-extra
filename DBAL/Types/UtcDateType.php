@@ -22,7 +22,7 @@ use Doctrine\DBAL\Types\DateType;
 class UtcDateType extends DateType
 {
     /**
-     * {@inheritdoc}
+     * @param mixed $value
      *
      * @throws
      */
@@ -36,7 +36,7 @@ class UtcDateType extends DateType
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $value
      *
      * @throws
      */
@@ -51,9 +51,6 @@ class UtcDateType extends DateType
         return $converted;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;

@@ -23,103 +23,55 @@ use Doctrine\Common\Annotations\Annotation;
  */
 final class MetadataObject extends Annotation
 {
-    /**
-     * @var null|string
-     */
-    public $name;
+    public ?string $name = null;
 
-    /**
-     * @var null|string
-     */
-    public $pluralName;
+    public ?string $pluralName = null;
 
-    /**
-     * @var null|string
-     */
-    public $type;
+    public ?string $type = null;
 
-    /**
-     * @var null|string
-     */
-    public $fieldIdentifier;
+    public ?string $fieldIdentifier = null;
 
-    /**
-     * @var null|string
-     */
-    public $fieldLabel;
+    public ?string $fieldLabel = null;
 
-    /**
-     * @var null|string
-     */
-    public $label;
+    public ?string $label = null;
 
-    /**
-     * @var null|string
-     */
-    public $description;
+    public ?string $description = null;
 
-    /**
-     * @var null|string
-     */
-    public $translationDomain;
+    public ?string $translationDomain = null;
 
-    /**
-     * @var null|bool
-     */
-    public $public = true;
+    public bool $public = true;
 
-    /**
-     * @var null|bool
-     */
-    public $multiSortable;
+    public ?bool $multiSortable = null;
 
-    /**
-     * @var null|string
-     */
-    public $defaultSortable;
+    public ?string $defaultSortable = null;
 
-    /**
-     * @var null|string
-     */
-    public $availableContexts;
+    public ?string $availableContexts = null;
 
-    /**
-     * @var null|string
-     */
-    public $formType;
+    public ?string $formType = null;
 
-    /**
-     * @var array
-     */
-    public $formOptions = [];
+    public array $formOptions = [];
 
     /**
      * @var string[]
      */
-    public $groups = [];
+    public array $groups = [];
 
-    /**
-     * @var null|bool
-     */
-    public $buildDefaultActions;
+    public ?bool $buildDefaultActions = null;
 
-    /**
-     * @var null|MetadataAction
-     */
-    public $defaultAction;
+    public ?MetadataAction $defaultAction = null;
 
     /**
      * @var MetadataAction[]
      */
-    public $actions = [];
+    public array $actions = [];
 
     /**
      * @var MetadataField[]
      */
-    public $fields = [];
+    public array $fields = [];
 
     /**
      * @var MetadataAssociation[]
      */
-    public $associations = [];
+    public array $associations = [];
 }

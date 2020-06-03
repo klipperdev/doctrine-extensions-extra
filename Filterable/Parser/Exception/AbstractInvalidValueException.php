@@ -21,21 +21,13 @@ abstract class AbstractInvalidValueException extends InvalidArgumentException
     /**
      * @var string[]
      */
-    protected $expectedValues;
+    protected array $expectedValues;
+
+    protected string $givenValue;
+
+    protected ?string $path;
 
     /**
-     * @var string
-     */
-    protected $givenValue;
-
-    /**
-     * @var null|string
-     */
-    protected $path;
-
-    /**
-     * Constructor.
-     *
      * @param string[]    $expectedValues The expected rule types
      * @param string      $givenValue     The given type
      * @param null|string $path           The path of node

@@ -21,9 +21,6 @@ use Klipper\Component\DoctrineExtensionsExtra\Util\DateTimeZoneUtil;
  */
 class NumberGenerator implements NumberGeneratorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function generate(string $pattern, int $value, ?\DateTimeInterface $datetime = null, bool $utc = false): string
     {
         $matches = $this->validateMatch($pattern);
@@ -48,9 +45,6 @@ class NumberGenerator implements NumberGeneratorInterface
         return $pattern;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate(string $pattern): void
     {
         $this->validateMatch($pattern);

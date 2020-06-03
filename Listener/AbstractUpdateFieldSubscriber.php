@@ -27,9 +27,6 @@ use Gedmo\Mapping\MappedEventSubscriber;
  */
 abstract class AbstractUpdateFieldSubscriber extends MappedEventSubscriber
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getSubscribedEvents(): array
     {
         return [

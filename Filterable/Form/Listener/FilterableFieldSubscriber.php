@@ -24,24 +24,16 @@ use Symfony\Component\Form\FormEvents;
  */
 class FilterableFieldSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var null|ExpressionLanguage
-     */
-    protected $expressionLanguage;
+    protected ?ExpressionLanguage $expressionLanguage;
 
     /**
-     * Constructor.
-     *
      * @param null|ExpressionLanguage $expressionLanguage The expression language
      */
-    public function __construct(ExpressionLanguage $expressionLanguage = null)
+    public function __construct(?ExpressionLanguage $expressionLanguage = null)
     {
         $this->expressionLanguage = $expressionLanguage;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -61,7 +53,7 @@ class FilterableFieldSubscriber implements EventSubscriberInterface
         if ($this->expressionLanguage && $this->expressionLanguage->isEvaluable($value)) {
             try {
                 $value = $this->expressionLanguage->evaluate($value);
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $event->getForm()->addError(new FormError($e->getMessage()));
             }
         }

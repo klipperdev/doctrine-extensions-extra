@@ -24,7 +24,7 @@ use Klipper\Component\DoctrineExtensionsExtra\Util\DateTimeZoneUtil;
 class UtcDateTimeType extends DateTimeType
 {
     /**
-     * {@inheritdoc}
+     * @param mixed $value
      *
      * @throws
      */
@@ -39,7 +39,7 @@ class UtcDateTimeType extends DateTimeType
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $value
      *
      * @throws
      */
@@ -68,9 +68,6 @@ class UtcDateTimeType extends DateTimeType
         return $converted;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;

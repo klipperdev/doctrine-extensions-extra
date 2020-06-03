@@ -23,32 +23,17 @@ abstract class AutoNumberConfig implements AutoNumberConfigInterface
      */
     protected $id;
 
-    /**
-     * @var null|string
-     */
-    protected $type;
+    protected ?string $type = null;
 
-    /**
-     * @var null|string
-     */
-    protected $pattern;
+    protected ?string $pattern = null;
 
-    /**
-     * @var int
-     */
-    protected $number = 0;
+    protected int $number = 0;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setType(?string $type): self
     {
         $this->type = $type;
@@ -56,17 +41,11 @@ abstract class AutoNumberConfig implements AutoNumberConfigInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getType(): ?string
     {
         return $this->type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPattern(?string $pattern): self
     {
         $this->pattern = $pattern;
@@ -74,17 +53,11 @@ abstract class AutoNumberConfig implements AutoNumberConfigInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPattern(): ?string
     {
         return $this->pattern;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setNumber(int $number): self
     {
         $this->number = $number;
@@ -92,9 +65,6 @@ abstract class AutoNumberConfig implements AutoNumberConfigInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNumber(): int
     {
         return $this->number;

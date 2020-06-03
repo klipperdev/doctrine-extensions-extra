@@ -23,46 +23,34 @@ class NodeError implements \Serializable
 {
     /**
      * The template for the error message.
-     *
-     * @var string
      */
-    protected $messageTemplate;
+    protected string $messageTemplate;
 
     /**
      * The parameters that should be substituted in the message template.
-     *
-     * @var array
      */
-    protected $messageParameters;
+    protected array $messageParameters;
 
     /**
      * The value for error message pluralization.
-     *
-     * @var null|int
      */
-    protected $messagePluralization;
-    /**
-     * @var string
-     */
-    private $message;
+    protected ?int $messagePluralization;
+
+    private string $message;
 
     /**
      * The cause for this error.
      *
-     * @var mixed
+     * @var null|mixed
      */
     private $cause;
 
     /**
      * The node that spawned this error.
-     *
-     * @var NodeInterface
      */
-    private $origin;
+    private ?NodeInterface $origin = null;
 
     /**
-     * Constructor.
-     *
      * Any array key in $messageParameters will be used as a placeholder in
      * $messageTemplate.
      *
@@ -152,9 +140,9 @@ class NodeError implements \Serializable
     /**
      * Returns the node that caused this error.
      *
-     * @return NodeInterface The node that caused this error
+     * @return null|NodeInterface The node that caused this error
      */
-    public function getOrigin(): NodeInterface
+    public function getOrigin(): ?NodeInterface
     {
         return $this->origin;
     }

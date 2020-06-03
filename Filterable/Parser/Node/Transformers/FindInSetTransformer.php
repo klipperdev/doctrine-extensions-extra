@@ -30,8 +30,6 @@ class FindInSetTransformer implements NodeTransformerInterface
     private $value;
 
     /**
-     * Constructor.
-     *
      * @param mixed $value The value
      */
     public function __construct($value)
@@ -39,9 +37,6 @@ class FindInSetTransformer implements NodeTransformerInterface
         $this->value = $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function compile(CompileArgs $arguments, RuleNode $node): string
     {
         if ($node instanceof ContainsNode) {

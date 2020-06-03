@@ -23,78 +23,36 @@ use Doctrine\Common\Annotations\Annotation;
  */
 final class MetadataAssociation extends Annotation
 {
-    /**
-     * @var null|string
-     */
-    public $association;
+    public ?string $association = null;
 
-    /**
-     * @var null|string
-     */
-    public $name;
+    public ?string $name = null;
 
-    /**
-     * @var null|string
-     */
-    public $type;
+    public ?string $type = null;
 
-    /**
-     * @var null|string
-     */
-    public $target;
+    public ?string $target = null;
 
-    /**
-     * @var null|string
-     */
-    public $label;
+    public ?string $label = null;
 
-    /**
-     * @var null|string
-     */
-    public $description;
+    public ?string $description = null;
 
-    /**
-     * @var null|string
-     */
-    public $translationDomain;
+    public ?string $translationDomain = null;
 
-    /**
-     * @var null|bool
-     */
-    public $public;
+    public ?bool $public = null;
 
-    /**
-     * @var null|bool
-     */
-    public $readOnly;
+    public ?bool $readOnly = null;
 
-    /**
-     * @var null|bool
-     */
-    public $required;
+    public ?bool $required = null;
 
-    /**
-     * @var null|string
-     */
-    public $input;
+    public ?string $input = null;
 
-    /**
-     * @var null|array
-     */
-    public $inputConfig = [];
+    public array $inputConfig = [];
 
-    /**
-     * @var null|string
-     */
-    public $formType;
+    public ?string $formType = null;
 
-    /**
-     * @var array
-     */
-    public $formOptions = [];
+    public array $formOptions = [];
 
     /**
      * @var string[]
      */
-    public $groups = [];
+    public array $groups = [];
 }

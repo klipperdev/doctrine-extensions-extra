@@ -12,6 +12,7 @@
 namespace Klipper\Component\DoctrineExtensionsExtra\Entity\Repository\Traits;
 
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use Klipper\Component\DoctrineExtensionsExtra\Model\Traits\TranslatableInterface;
@@ -27,21 +28,18 @@ use Klipper\Component\DoctrineExtensionsExtra\Util\QueryUtil;
 trait TranslatableRepositoryTrait
 {
     /**
-     * {@inheritdoc}
+     * @param mixed $id
      */
     public function findOneTranslatedById($id, ?string $locale = null): TranslatableInterface
     {
         $qb = $this->createQueryBuilder('t')
             ->where('t.id = :id')
-            ->setParameter('id', $id, \is_string($id) ? Type::GUID : null)
+            ->setParameter('id', $id, \is_string($id) ? Types::GUID : null)
         ;
 
         return $this->getSingleResult($qb, $locale);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findOneTranslatedBy(array $criteria, ?string $locale = null): TranslatableInterface
     {
         $qb = $this->createQueryBuilder('t');
@@ -56,9 +54,6 @@ trait TranslatableRepositoryTrait
         return $this->getSingleResult($qb, $locale);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findTranslatedBy(array $criteria, ?string $locale = null): array
     {
         $qb = $this->createQueryBuilder('t');
@@ -66,7 +61,7 @@ trait TranslatableRepositoryTrait
         foreach ($criteria as $key => $value) {
             $qb
                 ->andWhere('t.'.$key.' = :'.$key)
-                ->setParameter($key, $value, 'id' === $key && \is_string($value) ? Type::GUID : null)
+                ->setParameter($key, $value, 'id' === $key && \is_string($value) ? Types::GUID : null)
             ;
         }
 
@@ -74,7 +69,7 @@ trait TranslatableRepositoryTrait
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $query
      *
      * @throws
      */
@@ -84,7 +79,7 @@ trait TranslatableRepositoryTrait
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $query
      */
     public function getResult($query, ?string $locale = null, int $hydrationMode = AbstractQuery::HYDRATE_OBJECT): array
     {
@@ -92,7 +87,7 @@ trait TranslatableRepositoryTrait
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $query
      */
     public function getArrayResult($query, ?string $locale = null): array
     {
@@ -100,7 +95,7 @@ trait TranslatableRepositoryTrait
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $query
      *
      * @throws
      */
@@ -110,7 +105,7 @@ trait TranslatableRepositoryTrait
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $query
      */
     public function getScalarResult($query, ?string $locale = null): array
     {
@@ -118,7 +113,7 @@ trait TranslatableRepositoryTrait
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $query
      *
      * @throws
      */

@@ -25,19 +25,11 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class DoctrineDisableFilterSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var ManagerRegistry
-     */
-    protected $registry;
+    protected ManagerRegistry $registry;
+
+    protected string $parameter;
 
     /**
-     * @var string
-     */
-    protected $parameter;
-
-    /**
-     * Constructor.
-     *
      * @param ManagerRegistry $registry  The doctrine entity manager
      * @param string          $parameter The parameter name in request
      */
@@ -47,9 +39,6 @@ class DoctrineDisableFilterSubscriber implements EventSubscriberInterface
         $this->parameter = $parameter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [

@@ -29,7 +29,7 @@ class Cast extends AbstractPlatformAwareFunctionNode
     /**
      * @var string[]
      */
-    protected static $supportedTypes = [
+    protected static array $supportedTypes = [
         'char',
         'string',
         'text',
@@ -45,8 +45,6 @@ class Cast extends AbstractPlatformAwareFunctionNode
     ];
 
     /**
-     * {@inheritdoc}
-     *
      * @throws
      */
     public function parse(Parser $parser): void

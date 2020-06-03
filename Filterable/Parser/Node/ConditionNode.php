@@ -24,11 +24,9 @@ abstract class ConditionNode extends Node
     /**
      * @var NodeInterface[]
      */
-    private $rules = [];
+    private array $rules = [];
 
     /**
-     * Constructor.
-     *
      * @param Node[] $rules The rules
      */
     public function __construct(array $rules = [])
@@ -36,9 +34,6 @@ abstract class ConditionNode extends Node
         $this->setRules($rules);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return $this->getCondition();
@@ -91,9 +86,6 @@ abstract class ConditionNode extends Node
         return $this->rules;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function compile(CompileArgs $arguments): string
     {
         $str = '';

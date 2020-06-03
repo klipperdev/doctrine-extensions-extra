@@ -26,8 +26,6 @@ use Klipper\Component\Metadata\Util\MetadataUtil;
 class Yaml extends BaseYaml
 {
     /**
-     * {@inheritdoc}
-     *
      * @param ClassMetadata $meta
      */
     public function readExtendedMetadata($meta, array &$config): void

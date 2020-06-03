@@ -20,19 +20,11 @@ use Klipper\Component\DoctrineExtensionsExtra\Exception\InvalidArgumentException
  */
 class RequireParameterException extends BaseInvalidArgumentException implements ExceptionInterface
 {
-    /**
-     * @var string
-     */
-    protected $parameter;
+    protected string $parameter;
+
+    protected ?string $path;
 
     /**
-     * @var null|string
-     */
-    protected $path;
-
-    /**
-     * Constructor.
-     *
      * @param string      $parameter required parameter
      * @param null|string $path      The path of node
      */

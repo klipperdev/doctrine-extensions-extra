@@ -21,7 +21,7 @@ abstract class DateTimeZoneUtil
     /**
      * @var \DateTimeZone[]
      */
-    private static $timezones = [];
+    private static array $timezones = [];
 
     /**
      * Get the UTC date time zone.

@@ -23,58 +23,31 @@ use Doctrine\Common\Annotations\Annotation;
  */
 final class MetadataAction extends Annotation
 {
-    /**
-     * @var null|string
-     */
-    public $name;
+    public ?string $name = null;
 
     /**
      * @var string[]
      */
-    public $methods = [];
+    public array $methods = [];
 
     /**
      * @var string[]
      */
-    public $schemes = [];
+    public array $schemes = [];
 
-    /**
-     * @var null|string
-     */
-    public $host;
+    public ?string $host = null;
 
-    /**
-     * @var null|string
-     */
-    public $path;
+    public ?string $path = null;
 
-    /**
-     * @var null|string
-     */
-    public $fragment;
+    public ?string $fragment = null;
 
-    /**
-     * @var array
-     */
-    public $defaults = [];
+    public array $defaults = [];
 
-    /**
-     * @var array
-     */
-    public $requirements = [];
+    public array $requirements = [];
 
-    /**
-     * @var array
-     */
-    public $options = [];
+    public array $options = [];
 
-    /**
-     * @var null|string
-     */
-    public $condition;
+    public ?string $condition = null;
 
-    /**
-     * @var array
-     */
-    public $configurations = [];
+    public array $configurations = [];
 }

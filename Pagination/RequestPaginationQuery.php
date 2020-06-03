@@ -21,32 +21,21 @@ class RequestPaginationQuery
 {
     public const HINT_PAGE_NUMBER = 'klipper_doctrine_extensions_extra.pagination.page_number';
 
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
+    protected RequestStack $requestStack;
+
+    protected int $defaultSize;
+
+    protected int $maxSize;
 
     /**
-     * @var int
-     */
-    protected $defaultSize;
-
-    /**
-     * @var int
-     */
-    protected $maxSize;
-
-    /**
-     * Constructor.
-     *
      * @param RequestStack $requestStack The request stack
      * @param int          $defaultSize  The default size of result
      * @param int          $maxSize      The max size of result
      */
     public function __construct(
         RequestStack $requestStack,
-        $defaultSize,
-        $maxSize
+        int $defaultSize,
+        int $maxSize
     ) {
         $this->requestStack = $requestStack;
         $this->defaultSize = $defaultSize;

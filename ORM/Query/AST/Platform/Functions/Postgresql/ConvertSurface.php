@@ -22,9 +22,6 @@ use Klipper\Component\DoctrineExtensionsExtra\ORM\Query\AST\Platform\Functions\P
  */
 class ConvertSurface extends PlatformFunctionNode
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getSql(SqlWalker $sqlWalker): string
     {
         $unit = trim($this->getExpressionValue($this->parameters[Base::UNIT_CONVERSION], $sqlWalker), '"\'');

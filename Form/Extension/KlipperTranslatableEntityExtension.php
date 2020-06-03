@@ -20,9 +20,6 @@ use Klipper\Component\Form\Doctrine\Type\EntityType;
  */
 class KlipperTranslatableEntityExtension extends AbstractTranslatableEntityExtension
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function getExtendedTypes(): iterable
     {
         return [EntityType::class];

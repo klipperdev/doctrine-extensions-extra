@@ -21,17 +21,11 @@ use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\ParserUtil;
  */
 class NotEndsWithNode extends RuleNode
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getOperator(): string
     {
         return 'not_ends_with';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function compile(CompileArgs $arguments): string
     {
         return 'UNACCENT(LOWER('.ParserUtil::getFieldName($arguments, $this).'))'

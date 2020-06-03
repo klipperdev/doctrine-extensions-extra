@@ -29,8 +29,6 @@ class JoinsWalker extends TreeWalkerAdapter
     public const HINT_JOINS = 'klipper_doctrine_extensions_extra.walker.joins';
 
     /**
-     * {@inheritdoc}
-     *
      * @throws
      */
     public function walkSelectStatement(SelectStatement $AST): void

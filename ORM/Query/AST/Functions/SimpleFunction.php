@@ -24,8 +24,6 @@ class SimpleFunction extends AbstractPlatformAwareFunctionNode
     public const PARAMETER_KEY = 'expression';
 
     /**
-     * {@inheritdoc}
-     *
      * @throws
      */
     public function parse(Parser $parser): void

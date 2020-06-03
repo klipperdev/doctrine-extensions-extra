@@ -21,14 +21,9 @@ use Klipper\Component\DoctrineExtensionsExtra\Listener\AbstractUpdateFieldSubscr
  */
 class HtmlableListener extends AbstractUpdateFieldSubscriber
 {
-    /**
-     * @var HtmlCleanerInterface
-     */
-    private $htmlCleaner;
+    private HtmlCleanerInterface $htmlCleaner;
 
     /**
-     * Constructor.
-     *
      * @param HtmlCleanerInterface $htmlCleaner The html cleaner
      */
     public function __construct(HtmlCleanerInterface $htmlCleaner)
@@ -38,24 +33,19 @@ class HtmlableListener extends AbstractUpdateFieldSubscriber
         $this->htmlCleaner = $htmlCleaner;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getConfigKey(): string
     {
         return 'htmlable';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getNamespace(): string
     {
         return __NAMESPACE__;
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $oldValue
+     * @param mixed $newValue
      */
     protected function getUpdatedFieldValue(AdapterInterface $adapter, object $object, string $field, array $options, $oldValue, $newValue)
     {

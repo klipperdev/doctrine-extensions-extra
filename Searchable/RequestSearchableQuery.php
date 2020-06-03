@@ -25,24 +25,13 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class RequestSearchableQuery
 {
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
+    protected RequestStack $requestStack;
+
+    protected MetadataManagerInterface $metadataManager;
+
+    protected ?AuthorizationCheckerInterface $authChecker;
 
     /**
-     * @var MetadataManagerInterface
-     */
-    protected $metadataManager;
-
-    /**
-     * @var null|AuthorizationCheckerInterface
-     */
-    protected $authChecker;
-
-    /**
-     * Constructor.
-     *
      * @param RequestStack                       $requestStack    The request stack
      * @param MetadataManagerInterface           $metadataManager The metadata manager
      * @param null|AuthorizationCheckerInterface $authChecker     The authorization checker

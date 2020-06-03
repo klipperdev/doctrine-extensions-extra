@@ -11,8 +11,8 @@
 
 namespace Klipper\Component\DoctrineExtensionsExtra\Validator\Constraints;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Klipper\Component\DoctrineExtensions\Util\SqlFilterUtil;
 use Klipper\Component\DoctrineExtensionsExtra\Entity\Repository\Traits\TranslatableRepositoryInterface;
 use Klipper\Component\DoctrineExtensionsExtra\Util\IdReader;
@@ -30,30 +30,22 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
  */
 class EntityChoiceValidator extends ConstraintValidator
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
+    private ManagerRegistry $registry;
+
+    private PropertyAccessor $accessor;
 
     /**
-     * @var PropertyAccessor
-     */
-    private $accessor;
-
-    /**
-     * Constructor.
-     *
      * @param ManagerRegistry       $registry The doctrine registry
      * @param null|PropertyAccessor $accessor The property accessor
      */
     public function __construct(ManagerRegistry $registry, ?PropertyAccessor $accessor = null)
     {
         $this->registry = $registry;
-        $this->accessor = $accessor ?: PropertyAccess::createPropertyAccessor();
+        $this->accessor = $accessor ?? PropertyAccess::createPropertyAccessor();
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $value
      */
     public function validate($value, Constraint $constraint): void
     {

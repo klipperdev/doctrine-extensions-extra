@@ -21,24 +21,13 @@ use Klipper\Component\DoctrineExtensionsExtra\Exception\InvalidArgumentException
  */
 class AutoNumberGenerator implements AutoNumberGeneratorInterface
 {
-    /**
-     * @var NumberGeneratorInterface
-     */
-    protected $numberGenerator;
+    protected NumberGeneratorInterface $numberGenerator;
+
+    protected string $defaultPattern;
+
+    protected ?AutoNumberableAdapterInterface $adapter = null;
 
     /**
-     * @var string
-     */
-    protected $defaultPattern;
-
-    /**
-     * @var null|AutoNumberableAdapterInterface
-     */
-    protected $adapter;
-
-    /**
-     * Constructor.
-     *
      * @param NumberGeneratorInterface $numberGenerator The number generator
      * @param string                   $defaultPattern  The default pattern if any pattern is defined for a type
      */
@@ -50,17 +39,11 @@ class AutoNumberGenerator implements AutoNumberGeneratorInterface
         $this->defaultPattern = $defaultPattern;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setEventAdapter(AutoNumberableAdapterInterface $adapter): void
     {
         $this->adapter = $adapter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function generate(string $type, ?string $defaultPattern = null, bool $utc = false): string
     {
         if (null === $this->adapter) {

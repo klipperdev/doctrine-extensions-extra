@@ -23,24 +23,19 @@ use Klipper\Component\Form\Doctrine\ChoiceList\ORMQueryBuilderLoader;
  */
 class FilterableORMQueryBuilderLoader extends ORMQueryBuilderLoader
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
+    private EntityManagerInterface $em;
 
     /**
      * @var string[]
      */
-    private $filters;
+    private array $filters;
 
     /**
      * @var string[]
      */
-    private $usingFilters = [];
+    private array $usingFilters = [];
 
     /**
-     * Constructor.
-     *
      * @param QueryBuilder $queryBuilder The query builder for creating the query builder
      * @param string[]     $filters      The sql filters
      */
@@ -52,18 +47,12 @@ class FilterableORMQueryBuilderLoader extends ORMQueryBuilderLoader
         $this->filters = $filters;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function preLoad(): void
     {
         $this->usingFilters = SqlFilterUtil::findFilters($this->em, $this->filters);
         SqlFilterUtil::disableFilters($this->em, $this->usingFilters);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function postLoad(): void
     {
         SqlFilterUtil::enableFilters($this->em, $this->usingFilters);

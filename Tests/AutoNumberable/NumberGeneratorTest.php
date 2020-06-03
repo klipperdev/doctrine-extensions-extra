@@ -56,13 +56,9 @@ final class NumberGeneratorTest extends TestCase
     /**
      * @dataProvider getPatterns
      *
-     * @param string $pattern
-     * @param string $expected
-     * @param bool   $utc
-     *
      * @throws
      */
-    public function testPattern($pattern, $expected, $utc = false): void
+    public function testPattern(string $pattern, string $expected, bool $utc = false): void
     {
         $datetime = new \DateTime('2069-02-18 05:02:07 CET');
         $generator = new NumberGenerator();

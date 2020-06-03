@@ -18,15 +18,12 @@ namespace Klipper\Component\DoctrineExtensionsExtra\DefaultValue\Metadata;
  */
 class ClassMetadata implements ClassMetadataInterface
 {
-    /**
-     * @var string
-     */
-    protected $class;
+    protected string $class;
 
     /**
      * @var FieldMetadataInterface[]
      */
-    protected $fields = [];
+    protected array $fields = [];
 
     public function __construct(string $class, array $fields)
     {
@@ -39,41 +36,26 @@ class ClassMetadata implements ClassMetadataInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getClass(): string
     {
         return $this->class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFields(): array
     {
         return $this->fields;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasField(string $field): bool
     {
         return isset($this->fields[$field]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getField(string $field): FieldMetadataInterface
+    public function getField(string $field): ?FieldMetadataInterface
     {
         return $this->fields[$field] ?? null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function merge(ClassMetadataInterface $meta): void
     {
         if ($this->class !== $meta->getClass()) {

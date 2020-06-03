@@ -27,14 +27,9 @@ use Klipper\Component\DoctrineExtensionsExtra\DefaultValue\Metadata\FieldMetadat
  */
 class DefaultValueListener extends MappedEventSubscriber implements LoaderInterface
 {
-    /**
-     * @var ManagerRegistry
-     */
-    protected $registry;
+    protected ManagerRegistry $registry;
 
     /**
-     * Constructor.
-     *
      * @param ManagerRegistry $registry The doctrine registry
      */
     public function __construct(ManagerRegistry $registry)
@@ -44,9 +39,6 @@ class DefaultValueListener extends MappedEventSubscriber implements LoaderInterf
         $this->registry = $registry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSubscribedEvents(): array
     {
         return [
@@ -65,9 +57,6 @@ class DefaultValueListener extends MappedEventSubscriber implements LoaderInterf
         $this->loadMetadataForObjectClass($ea->getObjectManager(), $eventArgs->getClassMetadata());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load(): array
     {
         $managers = $this->registry->getManagers();
@@ -95,9 +84,6 @@ class DefaultValueListener extends MappedEventSubscriber implements LoaderInterf
         return $metadatas;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getNamespace(): string
     {
         return __NAMESPACE__;

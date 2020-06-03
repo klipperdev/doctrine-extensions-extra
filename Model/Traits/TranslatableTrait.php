@@ -34,8 +34,6 @@ trait TranslatableTrait
     protected ?array $availableLocales = null;
 
     /**
-     * {@inheritdoc}
-     *
      * @return BaseDocumentPersonalTranslation[]|BaseEntityPersonalTranslation[]|Collection
      */
     public function getTranslations(): Collection
@@ -43,9 +41,6 @@ trait TranslatableTrait
         return $this->translations ?: $this->translations = new ArrayCollection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setTranslatableLocale(string $locale): self
     {
         $this->locale = $locale;
@@ -54,9 +49,6 @@ trait TranslatableTrait
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setAvailableLocales(array $availableLocales): self
     {
         asort($availableLocales);
@@ -66,9 +58,6 @@ trait TranslatableTrait
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAvailableLocales(): array
     {
         if (null === $this->availableLocales) {
@@ -78,9 +67,6 @@ trait TranslatableTrait
         return $this->availableLocales;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeTranslationFields(string $locale): array
     {
         $availables = $this->getAvailableLocales();

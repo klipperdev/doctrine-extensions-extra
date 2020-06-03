@@ -24,9 +24,6 @@ use Ramsey\Uuid\Uuid;
  */
 class GuidType extends BaseGuidType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform): string
     {
         if ('mysql' === $platform->getName()) {
@@ -40,7 +37,7 @@ class GuidType extends BaseGuidType
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $value
      *
      * @throws
      */
@@ -68,7 +65,7 @@ class GuidType extends BaseGuidType
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $value
      *
      * @throws
      */
@@ -97,9 +94,6 @@ class GuidType extends BaseGuidType
         return UuidUtil::validate($value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return 'mysql' === $platform->getName() ? true : parent::requiresSQLCommentHint($platform);

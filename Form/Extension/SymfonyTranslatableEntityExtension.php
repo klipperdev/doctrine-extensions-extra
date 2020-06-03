@@ -20,9 +20,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
  */
 class SymfonyTranslatableEntityExtension extends AbstractTranslatableEntityExtension
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function getExtendedTypes(): iterable
     {
         return [EntityType::class];

@@ -11,6 +11,7 @@
 
 namespace Klipper\Component\DoctrineExtensionsExtra\Htmlable\Mapping\Driver;
 
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use Klipper\Component\DoctrineExtensionsExtra\Exception\InvalidMappingException;
 use Klipper\Component\DoctrineExtensionsExtra\Mapping\Driver\Yaml as BaseYaml;
 
@@ -34,7 +35,7 @@ class Yaml extends BaseYaml
     ];
 
     /**
-     * {@inheritdoc}
+     * @param ClassMetadata $meta
      */
     public function readExtendedMetadata($meta, array &$config): void
     {

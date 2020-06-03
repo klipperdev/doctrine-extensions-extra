@@ -11,6 +11,7 @@
 
 namespace Klipper\Component\DoctrineExtensionsExtra\DefaultValue\Mapping\Driver;
 
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use Klipper\Component\DoctrineExtensionsExtra\Mapping\Driver\Yaml as BaseYaml;
 
 /**
@@ -23,7 +24,7 @@ use Klipper\Component\DoctrineExtensionsExtra\Mapping\Driver\Yaml as BaseYaml;
 class Yaml extends BaseYaml
 {
     /**
-     * {@inheritdoc}
+     * @param ClassMetadata $meta
      */
     public function readExtendedMetadata($meta, array &$config): void
     {

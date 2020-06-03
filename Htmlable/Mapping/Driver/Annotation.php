@@ -11,6 +11,7 @@
 
 namespace Klipper\Component\DoctrineExtensionsExtra\Htmlable\Mapping\Driver;
 
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use Gedmo\Mapping\Driver\AbstractAnnotationDriver;
 use Klipper\Component\DoctrineExtensionsExtra\Exception\InvalidMappingException;
 use Klipper\Component\DoctrineExtensionsExtra\Mapping\Annotation\Htmlable;
@@ -40,7 +41,7 @@ class Annotation extends AbstractAnnotationDriver
     ];
 
     /**
-     * {@inheritdoc}
+     * @param ClassMetadata $meta
      */
     public function readExtendedMetadata($meta, array &$config): void
     {

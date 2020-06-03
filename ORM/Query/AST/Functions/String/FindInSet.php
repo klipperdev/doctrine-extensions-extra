@@ -26,8 +26,6 @@ class FindInSet extends AbstractPlatformAwareFunctionNode
     public const DATA_VALUE = 'dataValue';
 
     /**
-     * @{@inheritdoc}
-     *
      * @throws
      */
     public function parse(Parser $parser): void

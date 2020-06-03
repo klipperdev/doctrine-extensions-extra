@@ -22,9 +22,6 @@ use Klipper\Component\DoctrineExtensionsExtra\ORM\Query\AST\Platform\Functions\P
  */
 class Unaccent extends PlatformFunctionNode
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getSql(SqlWalker $sqlWalker): string
     {
         return sprintf(

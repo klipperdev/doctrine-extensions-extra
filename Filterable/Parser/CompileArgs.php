@@ -23,34 +23,17 @@ use Klipper\Component\Metadata\ObjectMetadataInterface;
  */
 class CompileArgs
 {
-    /**
-     * @var ArrayCollection
-     */
-    private $parameters;
+    private ArrayCollection $parameters;
+
+    private EntityManagerInterface $entityManager;
+
+    private MetadataManagerInterface $metadataManager;
+
+    private ObjectMetadataInterface $metadata;
+
+    private string $alias;
 
     /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
-     * @var MetadataManagerInterface
-     */
-    private $metadataManager;
-
-    /**
-     * @var ObjectMetadataInterface
-     */
-    private $metadata;
-
-    /**
-     * @var string
-     */
-    private $alias;
-
-    /**
-     * Constructor.
-     *
      * @param ArrayCollection          $parameters      The query parameters
      * @param EntityManagerInterface   $entityManager   The entity manager
      * @param MetadataManagerInterface $metadataManager The metadata manager

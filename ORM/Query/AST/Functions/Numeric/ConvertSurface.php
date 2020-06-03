@@ -27,8 +27,6 @@ class ConvertSurface extends AbstractPlatformAwareFunctionNode
     public const UNIT_CONVERSION = 'unit_conversion';
 
     /**
-     * {@inheritdoc}
-     *
      * @throws
      */
     public function parse(Parser $parser): void

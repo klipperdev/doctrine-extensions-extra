@@ -12,7 +12,6 @@
 namespace Klipper\Component\DoctrineExtensionsExtra\Tests;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver;
@@ -37,29 +36,15 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class BaseTestCaseORM extends TestCase
 {
-    /**
-     * @var EntityManager
-     */
-    protected $em;
+    protected ?EntityManager $em = null;
 
-    /**
-     * @var QueryAnalyzer
-     */
-    protected $queryAnalyzer;
+    protected ?QueryAnalyzer $queryAnalyzer = null;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp(): void
     {
         parent::setUp();
-
-        AnnotationRegistry::registerLoader('class_exists');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function tearDown(): void
     {
         if ($this->em) {
@@ -74,8 +59,6 @@ abstract class BaseTestCaseORM extends TestCase
      * EntityManager mock object together with
      * annotation mapping driver and pdo_sqlite
      * database in memory.
-     *
-     * @param EventManager $evm
      *
      * @throws
      */
@@ -104,8 +87,6 @@ abstract class BaseTestCaseORM extends TestCase
      * EntityManager mock object together with
      * annotation mapping driver and custom
      * connection.
-     *
-     * @param EventManager $evm
      *
      * @throws
      */
@@ -141,7 +122,7 @@ abstract class BaseTestCaseORM extends TestCase
 
         /** @var Connection $conn */
         $conn = $this->getMockBuilder(Connection::class)
-            ->setConstructorArgs([], $driver)
+            ->setConstructorArgs([[], $driver])
             ->getMock()
         ;
 
@@ -174,12 +155,9 @@ abstract class BaseTestCaseORM extends TestCase
      * Stops query statistic log and outputs
      * the data to screen or file.
      *
-     * @param bool $dumpOnlySql
-     * @param bool $writeToLog
-     *
      * @throws \RuntimeException
      */
-    protected function stopQueryLog($dumpOnlySql = false, $writeToLog = false): void
+    protected function stopQueryLog(bool $dumpOnlySql = false, bool $writeToLog = false): void
     {
         if ($this->queryAnalyzer) {
             $output = $this->queryAnalyzer->getOutput($dumpOnlySql);

@@ -22,14 +22,9 @@ use Klipper\Component\DoctrineExtensionsExtra\ORM\Query\AST\FunctionFactory;
  */
 abstract class AbstractPlatformAwareFunctionNode extends FunctionNode
 {
-    /**
-     * @var array
-     */
-    public $parameters = [];
+    public array $parameters = [];
 
     /**
-     * {@inheritdoc}
-     *
      * @throws
      */
     public function getSql(SqlWalker $sqlWalker): string

@@ -59,24 +59,13 @@ class FilterManager implements FilterManagerInterface
         'point',
     ];
 
-    /**
-     * @var MetadataManagerInterface
-     */
-    protected $metadataManager;
+    protected MetadataManagerInterface $metadataManager;
+
+    protected AuthorizationCheckerInterface $authChecker;
+
+    protected TranslatorInterface $translator;
 
     /**
-     * @var AuthorizationCheckerInterface
-     */
-    protected $authChecker;
-
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
-     * Constructor.
-     *
      * @param MetadataManagerInterface      $metadataManager The permission metadata manager
      * @param AuthorizationCheckerInterface $authChecker     The authorization checker
      * @param TranslatorInterface           $translator      The translator
@@ -91,9 +80,6 @@ class FilterManager implements FilterManagerInterface
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFilters(string $class): FilterConfig
     {
         return $this->metadataManager->has($class)
@@ -101,9 +87,6 @@ class FilterManager implements FilterManagerInterface
             : new FilterConfig([], []);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFiltersByName(string $name): FilterConfig
     {
         return $this->metadataManager->hasByName($name)

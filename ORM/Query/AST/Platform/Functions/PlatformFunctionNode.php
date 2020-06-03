@@ -21,14 +21,9 @@ use Doctrine\ORM\Query\SqlWalker;
  */
 abstract class PlatformFunctionNode
 {
-    /**
-     * @var array
-     */
-    public $parameters;
+    public array $parameters;
 
     /**
-     * Constructor.
-     *
      * @param array $parameters The parameters
      */
     public function __construct(array $parameters)

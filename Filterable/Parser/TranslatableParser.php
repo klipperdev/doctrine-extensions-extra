@@ -28,10 +28,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class TranslatableParser extends Parser
 {
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
+    protected ?TranslatorInterface $translator = null;
 
     /**
      * Set the translator.
@@ -43,9 +40,6 @@ class TranslatableParser extends Parser
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function parse(string $json, bool $forceFirstCondition = true): NodeInterface
     {
         try {

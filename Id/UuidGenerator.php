@@ -23,7 +23,7 @@ use Ramsey\Uuid\Uuid;
 class UuidGenerator extends AbstractIdGenerator
 {
     /**
-     * {@inheritdoc}
+     * @param mixed $entity
      *
      * @throws
      */

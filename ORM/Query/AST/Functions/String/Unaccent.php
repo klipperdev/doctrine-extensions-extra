@@ -25,8 +25,6 @@ class Unaccent extends AbstractPlatformAwareFunctionNode
     public const UNACCENT_FIELD = 'unaccent_field';
 
     /**
-     * {@inheritdoc}
-     *
      * @throws
      */
     public function parse(Parser $parser): void

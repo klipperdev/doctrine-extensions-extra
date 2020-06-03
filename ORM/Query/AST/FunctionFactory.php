@@ -29,9 +29,9 @@ abstract class FunctionFactory
      * @param string $functionName The function name
      * @param array  $parameters   The parameters
      *
-     * @throws \Doctrine\ORM\Query\QueryException
+     * @throws QueryException
      */
-    public static function create($platformName, $functionName, array $parameters): PlatformFunctionNode
+    public static function create(string $platformName, string $functionName, array $parameters): PlatformFunctionNode
     {
         $className = __NAMESPACE__
             .'\\Platform\\Functions\\'

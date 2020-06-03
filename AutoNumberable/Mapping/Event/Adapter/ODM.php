@@ -25,9 +25,6 @@ use Klipper\Component\DoctrineExtensionsExtra\Exception\RuntimeException;
  */
 final class ODM extends BaseAdapterODM implements AutoNumberableAdapterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function get(string $type, string $pattern): AutoNumberConfigInterface
     {
         $om = $this->getObjectManager();
@@ -52,9 +49,6 @@ final class ODM extends BaseAdapterODM implements AutoNumberableAdapterInterface
         return $config;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function put(AutoNumberConfigInterface $config): void
     {
         /** @var DocumentManager $dm */

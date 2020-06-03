@@ -23,8 +23,6 @@ trait TimestampableTrait
     protected ?\DateTimeInterface $updatedAt = null;
 
     /**
-     * {@inheritdoc}
-     *
      * @see TimestampableInterface::setCreatedAt()
      */
     public function setCreatedAt(?\DateTimeInterface $createdAt)
@@ -35,8 +33,6 @@ trait TimestampableTrait
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @see TimestampableInterface::getCreatedAt()
      */
     public function getCreatedAt(): ?\DateTimeInterface
@@ -45,8 +41,6 @@ trait TimestampableTrait
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @see TimestampableInterface::setUpdatedAt()
      */
     public function setUpdatedAt(?\DateTimeInterface $updatedAt)
@@ -57,8 +51,6 @@ trait TimestampableTrait
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @see TimestampableInterface::getUpdatedAt()
      */
     public function getUpdatedAt(): ?\DateTimeInterface

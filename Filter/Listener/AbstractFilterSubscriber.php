@@ -19,9 +19,6 @@ use Klipper\Component\Security\Event\SetCurrentOrganizationEvent;
  */
 abstract class AbstractFilterSubscriber extends BaseAbstractFilterSubscriber
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return array_merge(parent::getSubscribedEvents(), [

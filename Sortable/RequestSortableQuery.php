@@ -26,20 +26,11 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class RequestSortableQuery
 {
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
+    protected RequestStack $requestStack;
 
-    /**
-     * @var MetadataManagerInterface
-     */
-    protected $metadataManager;
+    protected MetadataManagerInterface $metadataManager;
 
-    /**
-     * @var null|AuthorizationCheckerInterface
-     */
-    protected $authChecker;
+    protected ?AuthorizationCheckerInterface $authChecker;
 
     /**
      * @var array
@@ -47,8 +38,6 @@ class RequestSortableQuery
     protected $joins = [];
 
     /**
-     * Constructor.
-     *
      * @param RequestStack                       $requestStack    The request stack
      * @param MetadataManagerInterface           $metadataManager The metadata manager
      * @param null|AuthorizationCheckerInterface $authChecker     The authorization checker
@@ -195,7 +184,7 @@ class RequestSortableQuery
      * @param ObjectMetadataInterface $metadata      The object metadata
      * @param string                  $querySortable The query sortable
      */
-    protected function getObjectSortable(ObjectMetadataInterface $metadata, $querySortable): array
+    protected function getObjectSortable(ObjectMetadataInterface $metadata, string $querySortable): array
     {
         $sortable = MetadataUtil::getDefaultSortable(trim(trim($querySortable, '\''), '"'));
         $name = $metadata->getName();

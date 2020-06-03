@@ -25,8 +25,6 @@ use Klipper\Component\DoctrineExtensionsExtra\ORM\Query\AST\Platform\Functions\P
 class Cast extends PlatformFunctionNode
 {
     /**
-     * {@inheritdoc}
-     *
      * @throws
      */
     public function getSql(SqlWalker $sqlWalker): string

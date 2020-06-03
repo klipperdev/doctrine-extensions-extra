@@ -20,14 +20,8 @@ use Throwable;
  */
 class InvalidAutoNumberPatternException extends InvalidArgumentException
 {
-    /**
-     * @var string
-     */
-    protected $pattern;
+    protected string $pattern;
 
-    /**
-     * Constructor.
-     */
     public function __construct(string $pattern, int $code = 0, ?Throwable $previous = null)
     {
         $this->pattern = $pattern;

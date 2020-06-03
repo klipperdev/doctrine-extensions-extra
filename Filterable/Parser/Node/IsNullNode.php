@@ -21,25 +21,16 @@ use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\ParserUtil;
  */
 class IsNullNode extends RuleNode
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getOperator(): string
     {
         return 'is_null';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRequiredValue(): bool
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function compile(CompileArgs $arguments): string
     {
         return ParserUtil::getFieldName($arguments, $this)

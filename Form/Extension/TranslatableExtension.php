@@ -20,9 +20,6 @@ use Klipper\Component\DoctrineExtensionsExtra\Form\Type\TranslatableType;
  */
 class TranslatableExtension extends AbstractTranslatableExtension
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function getExtendedTypes(): iterable
     {
         return [TranslatableType::class];

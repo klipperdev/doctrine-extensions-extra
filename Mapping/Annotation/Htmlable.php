@@ -29,12 +29,9 @@ final class Htmlable extends Annotation
     public $field;
 
     /**
-     * @var array<string>
+     * @var string[]
      */
-    public $tags = [];
+    public array $tags = [];
 
-    /**
-     * @var string
-     */
-    public $charset = 'UTF-8';
+    public string $charset = 'UTF-8';
 }

@@ -24,21 +24,17 @@ use Klipper\Component\DoctrineExtensionsExtra\Mapping\Annotation as Klipper;
 class Foo
 {
     /**
-     * @var null|int
-     *
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    protected $id;
+    protected ?int $id = null;
 
     /**
-     * @var null|string
-     *
      * @ORM\Column(name="number", type="string", length=20)
      * @Klipper\AutoNumberable(pattern="I{YYYY}{MM}-{000000}")
      */
-    protected $number;
+    protected ?string $number = null;
 
     public function getId(): ?int
     {

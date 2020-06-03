@@ -23,9 +23,6 @@ use Klipper\Component\Form\Doctrine\ChoiceList\QueryBuilderTransformer;
  */
 class TranslatableQueryBuilderTransformer extends QueryBuilderTransformer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getQuery(QueryBuilder $qb): Query
     {
         return QueryUtil::translateQuery($qb);

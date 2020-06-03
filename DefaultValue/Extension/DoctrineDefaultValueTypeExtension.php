@@ -29,26 +29,18 @@ class DoctrineDefaultValueTypeExtension extends AbstractTypeExtension
     /**
      * @var LoaderInterface[]
      */
-    protected $loaders = [];
+    protected array $loaders = [];
 
-    /**
-     * @var ExpressionLanguage
-     */
-    protected $expressionLanguage;
+    protected ExpressionLanguage $expressionLanguage;
 
-    /**
-     * @var PropertyAccessorInterface
-     */
-    protected $accessor;
+    protected PropertyAccessorInterface $accessor;
 
     /**
      * @var null|ClassMetadataInterface[]
      */
-    protected $metadatas;
+    protected ?array $metadatas;
 
     /**
-     * Constructor.
-     *
      * @param LoaderInterface[]              $loaders            The loaders
      * @param ExpressionLanguage             $expressionLanguage The expression language
      * @param null|PropertyAccessorInterface $accessor           The property accessor
@@ -63,7 +55,7 @@ class DoctrineDefaultValueTypeExtension extends AbstractTypeExtension
         }
 
         $this->expressionLanguage = $expressionLanguage;
-        $this->accessor = $accessor ?: PropertyAccess::createPropertyAccessor();
+        $this->accessor = $accessor ?? PropertyAccess::createPropertyAccessor();
     }
 
     /**
@@ -80,9 +72,6 @@ class DoctrineDefaultValueTypeExtension extends AbstractTypeExtension
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildObject(ObjectBuilderInterface $builder, array $options): void
     {
         $meta = $this->getMetadata($builder->getDataClass());
@@ -101,9 +90,6 @@ class DoctrineDefaultValueTypeExtension extends AbstractTypeExtension
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExtendedType(): string
     {
         return 'default';

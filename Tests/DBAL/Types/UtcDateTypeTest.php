@@ -35,15 +35,9 @@ final class UtcDateTypeTest extends TestCase
      */
     protected $platform;
 
-    /**
-     * @var string
-     */
-    protected $defaultTimezone;
+    protected ?string $defaultTimezone = null;
 
-    /**
-     * @var UtcDateType
-     */
-    protected $type;
+    protected ?UtcDateType $type = null;
 
     /**
      * @throws
@@ -55,7 +49,9 @@ final class UtcDateTypeTest extends TestCase
 
         Type::overrideType('date', UtcDateType::class);
 
-        $this->type = Type::getType('date');
+        /** @var UtcDateType $type */
+        $type = Type::getType('date');
+        $this->type = $type;
         static::assertInstanceOf(UtcDateType::class, $this->type);
     }
 
@@ -82,10 +78,8 @@ final class UtcDateTypeTest extends TestCase
 
     /**
      * @dataProvider getTimezones
-     *
-     * @param string $timezone
      */
-    public function testConvertToDatabaseValue($timezone): void
+    public function testConvertToDatabaseValue(string $timezone): void
     {
         date_default_timezone_set($timezone);
 
@@ -98,10 +92,8 @@ final class UtcDateTypeTest extends TestCase
 
     /**
      * @dataProvider getTimezones
-     *
-     * @param string $timezone
      */
-    public function testConvertToPHPValue($timezone): void
+    public function testConvertToPHPValue(string $timezone): void
     {
         $format = 'Y-m-d H:i:s T Z';
         $dateDb = $this->getDate($timezone);
@@ -114,11 +106,9 @@ final class UtcDateTypeTest extends TestCase
     }
 
     /**
-     * @param string $time
-     *
      * @throws
      */
-    protected function getDate(string $timezone, $time = '00:00:00'): \DateTime
+    protected function getDate(string $timezone, string $time = '00:00:00'): \DateTime
     {
         $now = new \DateTime();
 

@@ -18,9 +18,6 @@ namespace Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Exception;
  */
 class InvalidConditionTypeException extends AbstractInvalidValueException
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function buildMessage(array $expectedValues, string $givenValue, ?string $path = null): string
     {
         return sprintf('The filter condition "%s" can only be "%s". Given "%s"', $path, implode('", "', array_keys($expectedValues)), $givenValue);

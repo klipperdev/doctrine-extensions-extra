@@ -29,9 +29,7 @@ final class DefaultValue extends Annotation
     public $field;
 
     /**
-     * @var null|string
-     *
      * @Annotation\Required
      */
-    public $expression;
+    public ?string $expression = null;
 }

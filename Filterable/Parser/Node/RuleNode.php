@@ -18,10 +18,7 @@ namespace Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node;
  */
 abstract class RuleNode extends Node
 {
-    /**
-     * @var string
-     */
-    private $field;
+    private string $field;
 
     /**
      * @var null|bool|bool[]|float|float[]|int|int[]|string|string[]
@@ -34,8 +31,6 @@ abstract class RuleNode extends Node
     private $queryValue;
 
     /**
-     * Constructor.
-     *
      * @param string $field The field name
      */
     public function __construct(string $field)
@@ -43,9 +38,6 @@ abstract class RuleNode extends Node
         $this->field = $field;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return $this->field;

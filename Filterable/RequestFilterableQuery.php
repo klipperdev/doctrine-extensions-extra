@@ -44,54 +44,25 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class RequestFilterableQuery
 {
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
+    protected RequestStack $requestStack;
+
+    protected MetadataManagerInterface $metadataManager;
+
+    protected Parser $parser;
+
+    protected FormFactoryInterface $formFactory;
+
+    protected TranslatorInterface $translator;
+
+    protected ?ExpressionLanguage $expressionLanguage;
+
+    protected ?AuthorizationCheckerInterface $authChecker;
+
+    protected array $joins = [];
+
+    protected array $queryFields = [];
 
     /**
-     * @var MetadataManagerInterface
-     */
-    protected $metadataManager;
-
-    /**
-     * @var Parser
-     */
-    protected $parser;
-
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
-
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
-     * @var null|ExpressionLanguage
-     */
-    protected $expressionLanguage;
-
-    /**
-     * @var null|AuthorizationCheckerInterface
-     */
-    protected $authChecker;
-
-    /**
-     * @var array
-     */
-    protected $joins = [];
-
-    /**
-     * @var array
-     */
-    protected $queryFields = [];
-
-    /**
-     * Constructor.
-     *
      * @param RequestStack                       $requestStack       The request stack
      * @param MetadataManagerInterface           $metadataManager    The metadata manager
      * @param Parser                             $parser             The parser of filterable
@@ -169,7 +140,7 @@ class RequestFilterableQuery
      * @param string $class The root class name
      * @param string $alias The alias
      */
-    protected function doFilter(Query $query, $class, $alias): void
+    protected function doFilter(Query $query, string $class, string $alias): void
     {
         $queryFilter = $this->getQueryFilter();
 

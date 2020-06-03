@@ -24,8 +24,6 @@ use Klipper\Component\DoctrineExtensionsExtra\Mapping\Driver\Xml as BaseXml;
 class Xml extends BaseXml
 {
     /**
-     * {@inheritdoc}
-     *
      * @param ClassMetadata $meta
      */
     public function readExtendedMetadata($meta, array &$config): void

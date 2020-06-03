@@ -21,8 +21,6 @@ use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
 abstract class BaseTranslation extends AbstractPersonalTranslation
 {
     /**
-     * Constructor.
-     *
      * @param string $locale The locale
      * @param string $field  The field name
      * @param string $value  The value of field

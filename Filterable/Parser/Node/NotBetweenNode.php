@@ -21,33 +21,21 @@ use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\ParserUtil;
  */
 class NotBetweenNode extends RuleNode
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getOperator(): string
     {
         return 'not_between';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCollectible(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSizeCollection(): int
     {
         return 2;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function compile(CompileArgs $arguments): string
     {
         $value = $this->getQueryValue();

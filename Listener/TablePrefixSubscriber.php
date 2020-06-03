@@ -26,22 +26,13 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
  */
 class TablePrefixSubscriber implements EventSubscriber
 {
-    /**
-     * @var string
-     */
-    protected $prefix = '';
+    protected string $prefix = '';
 
-    /**
-     * Constructor.
-     */
     public function __construct(string $prefix = '')
     {
         $this->prefix = $prefix;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSubscribedEvents(): array
     {
         return [

@@ -23,9 +23,6 @@ use Klipper\Component\DoctrineExtensionsExtra\ORM\Query\AST\Platform\Functions\P
  */
 class Timestamp extends PlatformFunctionNode
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getSql(SqlWalker $sqlWalker): string
     {
         /** @var Node $expression */

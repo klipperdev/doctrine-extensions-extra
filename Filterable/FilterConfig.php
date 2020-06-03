@@ -16,19 +16,11 @@ namespace Klipper\Component\DoctrineExtensionsExtra\Filterable;
  */
 class FilterConfig
 {
-    /**
-     * @var array
-     */
-    protected $filters;
+    protected array $filters;
+
+    protected array $groups;
 
     /**
-     * @var array
-     */
-    protected $groups;
-
-    /**
-     * Constructor.
-     *
      * @param array $filters The filters
      * @param array $groups  The groups
      */

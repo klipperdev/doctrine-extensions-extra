@@ -23,11 +23,9 @@ class HtmlCleaner implements HtmlCleanerInterface
     /**
      * @var string[]
      */
-    protected $tags;
+    protected array $tags;
 
     /**
-     * Constructor.
-     *
      * @param string[] $tags The html tags to be deleted
      */
     public function __construct(array $tags = [])
@@ -35,9 +33,6 @@ class HtmlCleaner implements HtmlCleanerInterface
         $this->tags = $tags;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function clean(?string $value, ?array $tags = null, string $charset = 'UTF-8'): ?string
     {
         if (!empty($value)) {

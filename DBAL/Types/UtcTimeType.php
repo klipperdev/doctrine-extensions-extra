@@ -21,9 +21,6 @@ use Doctrine\DBAL\Types\TimeType;
  */
 class UtcTimeType extends TimeType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;

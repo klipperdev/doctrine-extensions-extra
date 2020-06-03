@@ -11,8 +11,8 @@
 
 namespace Klipper\Component\DoctrineExtensionsExtra\Util;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\Mapping\ClassMetadata;
+use Doctrine\Persistence\ObjectManager;
 use Klipper\Component\DoctrineExtensionsExtra\Exception\RuntimeException;
 
 /**
@@ -22,34 +22,17 @@ use Klipper\Component\DoctrineExtensionsExtra\Exception\RuntimeException;
  */
 class IdReader
 {
-    /**
-     * @var ObjectManager
-     */
-    private $om;
+    private ObjectManager $om;
 
-    /**
-     * @var ClassMetadata
-     */
-    private $classMetadata;
-    /**
-     * @var bool
-     */
-    private $singleId;
+    private ClassMetadata $classMetadata;
 
-    /**
-     * @var bool
-     */
-    private $intId;
+    private bool $singleId;
 
-    /**
-     * @var string
-     */
-    private $idField;
+    private bool $intId;
 
-    /**
-     * @var null|IdReader
-     */
-    private $associationIdReader;
+    private string $idField;
+
+    private ?IdReader $associationIdReader = null;
 
     public function __construct(ObjectManager $om, ClassMetadata $classMetadata)
     {
@@ -103,12 +86,12 @@ class IdReader
      *
      * @param null|object $object The object
      *
-     * @return mixed The ID value
+     * @return null|mixed The ID value
      */
-    public function getIdValue($object)
+    public function getIdValue(?object $object)
     {
         if (null === $object) {
-            return $object;
+            return null;
         }
 
         if (!$this->om->contains($object)) {

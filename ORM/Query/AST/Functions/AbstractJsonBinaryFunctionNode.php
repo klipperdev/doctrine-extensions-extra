@@ -25,8 +25,6 @@ abstract class AbstractJsonBinaryFunctionNode extends AbstractPlatformAwareFunct
     public const JSON_PATH_KEY = 'jsonPath';
 
     /**
-     * @{@inheritdoc}
-     *
      * @throws
      */
     public function parse(Parser $parser): void

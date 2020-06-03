@@ -18,9 +18,6 @@ namespace Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node;
  */
 class OrNode extends ConditionNode
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getCondition(): string
     {
         return 'OR';

@@ -42,9 +42,6 @@ class FilterableArrayType extends AbstractType
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return TextType::class;

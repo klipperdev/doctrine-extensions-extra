@@ -29,7 +29,7 @@ abstract class Yaml extends File
     protected $_extension = '.dcm.yml';
 
     /**
-     * {@inheritdoc}
+     * @param mixed $file
      */
     protected function _loadMappingFile($file)
     {

@@ -24,11 +24,8 @@ abstract class Node implements NodeInterface
     /**
      * @var NodeError[]
      */
-    private $errors = [];
+    private array $errors = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function addError(NodeError $error): self
     {
         if (null === $error->getOrigin()) {
@@ -40,9 +37,6 @@ abstract class Node implements NodeInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getErrors(bool $deep = false, bool $flatten = true): NodeErrorIterator
     {
         $errors = $this->errors;
@@ -73,9 +67,6 @@ abstract class Node implements NodeInterface
         return new NodeErrorIterator($this, $errors);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isValid(): bool
     {
         return 0 === \count($this->getErrors(true));

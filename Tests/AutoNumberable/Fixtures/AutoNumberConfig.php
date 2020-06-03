@@ -33,15 +33,15 @@ class AutoNumberConfig extends BaseAutoNumberConfig
     /**
      * @ORM\Column(name="type", type="string", length=255, unique=true)
      */
-    protected $type;
+    protected ?string $type = null;
 
     /**
      * @ORM\Column(name="pattern", type="string", length=20)
      */
-    protected $pattern;
+    protected ?string $pattern = null;
 
     /**
      * @ORM\Column(name="number", type="integer")
      */
-    protected $number;
+    protected int $number = 0;
 }

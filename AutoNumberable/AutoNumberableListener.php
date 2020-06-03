@@ -23,19 +23,11 @@ use Klipper\Component\DoctrineExtra\Util\ClassUtils;
  */
 class AutoNumberableListener extends AbstractUpdateFieldSubscriber
 {
-    /**
-     * @var AutoNumberGeneratorInterface
-     */
-    protected $autoNumberGenerator;
+    protected AutoNumberGeneratorInterface $autoNumberGenerator;
+
+    protected ExpressionLanguage $expressionLanguage;
 
     /**
-     * @var ExpressionLanguage
-     */
-    protected $expressionLanguage;
-
-    /**
-     * Constructor.
-     *
      * @param AutoNumberGeneratorInterface $autoNumberGenerator The auto number generator
      * @param ExpressionLanguage           $expressionLanguage  The expression language
      */
@@ -49,24 +41,19 @@ class AutoNumberableListener extends AbstractUpdateFieldSubscriber
         $this->expressionLanguage = $expressionLanguage;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getConfigKey(): string
     {
         return 'autoNumberable';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getNamespace(): string
     {
         return __NAMESPACE__;
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $oldValue
+     * @param mixed $newValue
      */
     protected function getUpdatedFieldValue(AdapterInterface $adapter, object $object, string $field, array $options, $oldValue, $newValue)
     {

@@ -24,7 +24,7 @@ trait MergeConfigTrait
      * @param array       $config          The mappings of all configs
      * @param array       $extensionConfig The config of the mapping extension
      */
-    protected function mergeExtensionConfig($extensionType, ?string $key, array &$config, array $extensionConfig): void
+    protected function mergeExtensionConfig(string $extensionType, ?string $key, array &$config, array $extensionConfig): void
     {
         $extKeys = array_keys($extensionConfig);
 
