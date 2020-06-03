@@ -11,7 +11,7 @@
 
 namespace Klipper\Component\DoctrineExtensionsExtra\Metadata\Mapping\Driver;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use Klipper\Component\DoctrineExtensionsExtra\Mapping\Driver\Xml as BaseXml;
 use Klipper\Component\Metadata\Util\MetadataUtil;
 

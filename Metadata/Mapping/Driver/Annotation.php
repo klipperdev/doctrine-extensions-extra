@@ -11,7 +11,7 @@
 
 namespace Klipper\Component\DoctrineExtensionsExtra\Metadata\Mapping\Driver;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use Klipper\Component\DoctrineExtensionsExtra\Exception\InvalidMappingException;
 use Klipper\Component\DoctrineExtensionsExtra\Mapping\Annotation\MetadataAction;
 use Klipper\Component\DoctrineExtensionsExtra\Mapping\Annotation\MetadataAssociation;

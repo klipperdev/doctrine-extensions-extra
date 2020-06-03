@@ -11,8 +11,8 @@
 
 namespace Klipper\Component\DoctrineExtensionsExtra\Mapping\Driver;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo as OrmClassMetadata;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use Gedmo\Mapping\Driver\Xml as BaseXml;
 use Klipper\Component\DoctrineExtensionsExtra\Exception\InvalidMappingException;
 
