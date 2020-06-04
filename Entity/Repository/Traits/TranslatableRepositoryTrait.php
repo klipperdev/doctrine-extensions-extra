@@ -11,7 +11,6 @@
 
 namespace Klipper\Component\DoctrineExtensionsExtra\Entity\Repository\Traits;
 
-use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
@@ -34,7 +33,7 @@ trait TranslatableRepositoryTrait
     {
         $qb = $this->createQueryBuilder('t')
             ->where('t.id = :id')
-            ->setParameter('id', $id, \is_string($id) ? Types::GUID : null)
+            ->setParameter('id', $id, \is_string($id) && !is_numeric($id) ? Types::GUID : null)
         ;
 
         return $this->getSingleResult($qb, $locale);
@@ -47,7 +46,7 @@ trait TranslatableRepositoryTrait
         foreach ($criteria as $key => $value) {
             $qb
                 ->andWhere('t.'.$key.' = :'.$key)
-                ->setParameter($key, $value, 'id' === $key && \is_string($value) ? Type::GUID : null)
+                ->setParameter($key, $value, 'id' === $key && \is_string($value) && !is_numeric($value) ? Types::GUID : null)
             ;
         }
 
@@ -61,7 +60,7 @@ trait TranslatableRepositoryTrait
         foreach ($criteria as $key => $value) {
             $qb
                 ->andWhere('t.'.$key.' = :'.$key)
-                ->setParameter($key, $value, 'id' === $key && \is_string($value) ? Types::GUID : null)
+                ->setParameter($key, $value, 'id' === $key && \is_string($value) && !is_numeric($value) ? Types::GUID : null)
             ;
         }
 
