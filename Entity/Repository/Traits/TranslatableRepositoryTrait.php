@@ -29,17 +29,17 @@ trait TranslatableRepositoryTrait
     /**
      * @param mixed $id
      */
-    public function findOneTranslatedById($id, ?string $locale = null): TranslatableInterface
+    public function findOneTranslatedById($id, ?string $locale = null): ?TranslatableInterface
     {
         $qb = $this->createQueryBuilder('t')
             ->where('t.id = :id')
             ->setParameter('id', $id, \is_string($id) && !is_numeric($id) ? Types::GUID : null)
         ;
 
-        return $this->getSingleResult($qb, $locale);
+        return $this->getOneorNullResult($qb, $locale);
     }
 
-    public function findOneTranslatedBy(array $criteria, ?string $locale = null): TranslatableInterface
+    public function findOneTranslatedBy(array $criteria, ?string $locale = null): ?TranslatableInterface
     {
         $qb = $this->createQueryBuilder('t');
 
@@ -50,7 +50,7 @@ trait TranslatableRepositoryTrait
             ;
         }
 
-        return $this->getSingleResult($qb, $locale);
+        return $this->getOneorNullResult($qb, $locale);
     }
 
     public function findTranslatedBy(array $criteria, ?string $locale = null): array

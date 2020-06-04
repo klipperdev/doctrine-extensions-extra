@@ -29,7 +29,7 @@ interface TranslatableRepositoryInterface
      * @param int|string  $id     The id
      * @param null|string $locale The locale
      */
-    public function findOneTranslatedById($id, ?string $locale = null): TranslatableInterface;
+    public function findOneTranslatedById($id, ?string $locale = null): ?TranslatableInterface;
 
     /**
      * Find one translated by criteria.
@@ -37,7 +37,7 @@ interface TranslatableRepositoryInterface
      * @param array       $criteria The criteria
      * @param null|string $locale   The locale
      */
-    public function findOneTranslatedBy(array $criteria, ?string $locale = null): TranslatableInterface;
+    public function findOneTranslatedBy(array $criteria, ?string $locale = null): ?TranslatableInterface;
 
     /**
      * Find translated by criteria.
