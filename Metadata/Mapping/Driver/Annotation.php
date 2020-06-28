@@ -85,6 +85,7 @@ class Annotation extends BaseAnnotation
                     'form_options' => $data->formOptions,
                     'groups' => $data->groups,
                     'build_default_actions' => $data->buildDefaultActions,
+                    'excluded_default_actions' => $data->excludedDefaultActions,
                 ]);
 
                 if ($data->defaultAction instanceof MetadataAction) {

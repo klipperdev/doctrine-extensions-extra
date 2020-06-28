@@ -58,6 +58,11 @@ final class MetadataObject extends Annotation
 
     public ?bool $buildDefaultActions = null;
 
+    /**
+     * @var string[]
+     */
+    public array $excludedDefaultActions = [];
+
     public ?MetadataAction $defaultAction = null;
 
     /**

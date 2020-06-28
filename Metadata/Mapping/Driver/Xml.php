@@ -111,6 +111,7 @@ class Xml extends BaseXml
                     'form_options' => $this->getArrayAttribute($data, 'form-options', []),
                     'groups' => $this->getArrayAttribute($data, 'groups', []),
                     'build_default_actions' => $this->getBooleanAttribute($data, 'build-default-actions'),
+                    'excluded_default_actions' => $this->getArrayAttribute($data, 'excluded-default-actions', []),
                 ]);
 
                 $defaultAction = $this->_isAttributeSet($data, 'default-action') ? $data->attributes()['default-action'] : null;

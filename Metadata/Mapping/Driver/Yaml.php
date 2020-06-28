@@ -69,6 +69,7 @@ class Yaml extends BaseYaml
                 'form_options' => $this->getArrayAttribute($data, 'formOptions', []),
                 'groups' => $this->getArrayAttribute($data, 'groups', []),
                 'build_default_actions' => $this->getBooleanAttribute($data, 'buildDefaultActions'),
+                'excluded_default_actions' => $this->getArrayAttribute($data, 'excludedDefaultActions', []),
             ];
 
             if (null !== $defaultAction = $this->getArrayAttribute($data, 'defaultAction')) {
