@@ -11,7 +11,6 @@
 
 namespace Klipper\Component\DoctrineExtensionsExtra\ORM\Query\AST;
 
-use Doctrine\Common\Inflector\Inflector;
 use Doctrine\ORM\Query\QueryException;
 use Klipper\Component\DoctrineExtensionsExtra\ORM\Query\AST\Platform\Functions\PlatformFunctionNode;
 
@@ -35,9 +34,9 @@ abstract class FunctionFactory
     {
         $className = __NAMESPACE__
             .'\\Platform\\Functions\\'
-            .Inflector::classify(strtolower($platformName))
+            .self::classify(strtolower($platformName))
             .'\\'
-            .Inflector::classify(strtolower($functionName));
+            .self::classify(strtolower($functionName));
 
         if (!class_exists($className)) {
             throw QueryException::syntaxError(
@@ -50,5 +49,10 @@ abstract class FunctionFactory
         }
 
         return new $className($parameters);
+    }
+
+    private static function classify(string $word): string
+    {
+        return str_replace([' ', '_', '-'], '', ucwords($word, ' _-'));
     }
 }
