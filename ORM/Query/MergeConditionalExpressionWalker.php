@@ -240,7 +240,7 @@ class MergeConditionalExpressionWalker extends TreeWalkerAdapter
      *
      * @return null|ConditionalExpression|ConditionalFactor|Node
      */
-    private function getConditionalForEmptyCondition(Node $newConditional)
+    private function getConditionalForEmptyCondition(?Node $newConditional)
     {
         $conditional = null;
 
