@@ -191,7 +191,7 @@ class RequestSortableQuery
         $validSortable = [];
 
         foreach ($sortable as $field => $direction) {
-            if (false !== ($pos = strrpos($field, '#'))) {
+            if (false !== ($pos = strrpos($field, '.'))) {
                 if (0 === strpos($field, $name)) {
                     $validSortable[substr($field, $pos + 1)] = $direction;
                 }
