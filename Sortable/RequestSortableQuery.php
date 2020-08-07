@@ -193,9 +193,32 @@ class RequestSortableQuery
         foreach ($sortable as $field => $direction) {
             if (false !== ($pos = strrpos($field, '.'))) {
                 if (0 === strpos($field, $name)) {
-                    $validSortable[substr($field, $pos + 1)] = $direction;
+                    $finalField = substr($field, $pos + 1);
+
+                    if ($metadata->hasFieldByName($finalField)) {
+                        $validSortable[$finalField] = $direction;
+                    }
+                } else {
+                    $associations = explode('.', $field);
+                    $finalField = array_pop($associations);
+                    $finalAssociationMeta = $metadata;
+
+                    foreach ($associations as $association) {
+                        if ($finalAssociationMeta->hasAssociationByName($association)) {
+                            $assoMeta = $finalAssociationMeta->getAssociationByName($association);
+                            $finalAssociationMeta = $this->metadataManager->get($assoMeta->getTarget());
+                        } else {
+                            $finalAssociationMeta = null;
+
+                            break;
+                        }
+                    }
+
+                    if (null !== $finalAssociationMeta && $finalAssociationMeta->hasFieldByName($finalField)) {
+                        $validSortable[$field] = $direction;
+                    }
                 }
-            } else {
+            } elseif ($metadata->hasFieldByName($field)) {
                 $validSortable[$field] = $direction;
             }
         }
