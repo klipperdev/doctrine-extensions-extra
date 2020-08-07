@@ -109,6 +109,7 @@ class Xml extends BaseXml
                     'available_contexts' => MetadataUtil::getStringList($this->getStringAttribute($data, 'available-contexts')),
                     'form_type' => $this->getStringAttribute($data, 'form-type'),
                     'form_options' => $this->getArrayAttribute($data, 'form-options', []),
+                    'deep_search_paths' => $this->getArrayAttribute($data, 'deep-search-paths', []),
                     'groups' => $this->getArrayAttribute($data, 'groups', []),
                     'build_default_actions' => $this->getBooleanAttribute($data, 'build-default-actions'),
                     'excluded_default_actions' => $this->getArrayAttribute($data, 'excluded-default-actions', []),

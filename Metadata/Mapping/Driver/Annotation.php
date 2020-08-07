@@ -83,6 +83,7 @@ class Annotation extends BaseAnnotation
                     'available_contexts' => MetadataUtil::getStringList($data->availableContexts),
                     'form_type' => $data->formType,
                     'form_options' => $data->formOptions,
+                    'deep_search_paths' => $data->deepSearchPaths,
                     'groups' => $data->groups,
                     'build_default_actions' => $data->buildDefaultActions,
                     'excluded_default_actions' => $data->excludedDefaultActions,

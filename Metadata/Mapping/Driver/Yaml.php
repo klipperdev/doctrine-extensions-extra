@@ -67,6 +67,7 @@ class Yaml extends BaseYaml
                 'available_contexts' => MetadataUtil::getStringList($this->getStringAttribute($data, 'availableContexts')),
                 'form_type' => $this->getStringAttribute($data, 'formType'),
                 'form_options' => $this->getArrayAttribute($data, 'formOptions', []),
+                'deep_search_paths' => $this->getArrayAttribute($data, 'deepSearchPaths', []),
                 'groups' => $this->getArrayAttribute($data, 'groups', []),
                 'build_default_actions' => $this->getBooleanAttribute($data, 'buildDefaultActions'),
                 'excluded_default_actions' => $this->getArrayAttribute($data, 'excludedDefaultActions', []),

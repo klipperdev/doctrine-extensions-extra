@@ -54,6 +54,11 @@ final class MetadataObject extends Annotation
     /**
      * @var string[]
      */
+    public array $deepSearchPaths = [];
+
+    /**
+     * @var string[]
+     */
     public array $groups = [];
 
     public ?bool $buildDefaultActions = null;
