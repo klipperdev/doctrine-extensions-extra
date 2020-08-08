@@ -84,16 +84,16 @@ class RequestSearchableQuery
             return;
         }
 
-        $fields = $this->getSearchableFields($query->getEntityManager(), $class, $alias);
+        $searchableFields = $this->getSearchableFields($query->getEntityManager(), $class, $alias);
 
-        if (empty($fields)) {
+        if (empty($searchableFields->getFields())) {
             return;
         }
 
         QueryUtil::addCustomTreeWalker($query, MergeConditionalExpressionWalker::class);
 
         $qb = $this->getQueryBuilder($query->getEntityManager(), $class, $alias);
-        $queryAst = $this->injectFilter($qb, $fields, $querySearch)
+        $queryAst = $this->injectFilter($qb, $searchableFields, $querySearch)
             ->getQuery()
             ->getAST()
         ;
@@ -130,12 +130,11 @@ class RequestSearchableQuery
      * @param EntityManagerInterface $em    The entity manager
      * @param string                 $class The class name
      * @param string                 $alias The alias
-     *
-     * @return string[]
      */
-    private function getSearchableFields(EntityManagerInterface $em, string $class, string $alias): array
+    private function getSearchableFields(EntityManagerInterface $em, string $class, string $alias): SearchableFields
     {
         $fields = [];
+        $joins = [];
         $meta = $this->metadataManager->get($class);
         $classMeta = $em->getClassMetadata($class);
 
@@ -148,9 +147,29 @@ class RequestSearchableQuery
                     $fields[$fieldName] = $alias.'.'.$fieldName;
                 }
             }
+
+            foreach ($meta->getDeepSearchPaths() as $path) {
+                $deepPaths = explode('.', $path);
+                $deepAlias = '';
+
+                foreach ($deepPaths as $deepPath) {
+                    $deepAlias .= '_'.$deepPath;
+
+                    if ($meta->hasAssociationByName($deepPath)) {
+                        $deepAssoMeta = $meta->getAssociationByName($deepPath);
+                        $deepMeta = $this->metadataManager->getByName($deepAssoMeta->getTarget());
+                        $join = $alias.'.'.$deepPath;
+                        $joins[$join] = $deepAlias;
+
+                        $sf = $this->getSearchableFields($em, $deepMeta->getClass(), $deepAlias);
+                        $fields = array_merge($fields, $sf->getFields());
+                        $joins = array_merge($joins, $sf->getJoins());
+                    }
+                }
+            }
         }
 
-        return $fields;
+        return new SearchableFields($fields, $joins);
     }
 
     /**
@@ -171,16 +190,16 @@ class RequestSearchableQuery
     /**
      * Inject the filter in the query builder.
      *
-     * @param QueryBuilder $qb          The query builder for filter
-     * @param string[]     $fields      The fields
-     * @param string       $queryFilter The request query filter
+     * @param QueryBuilder     $qb               The query builder for filter
+     * @param SearchableFields $searchableFields The searchable fields
+     * @param string           $queryFilter      The request query filter
      */
-    private function injectFilter(QueryBuilder $qb, array $fields, string $queryFilter): QueryBuilder
+    private function injectFilter(QueryBuilder $qb, SearchableFields $searchableFields, string $queryFilter): QueryBuilder
     {
         $values = array_map('trim', explode(' ', $queryFilter));
         $filter = '';
 
-        foreach ($fields as $field) {
+        foreach ($searchableFields->getFields() as $field) {
             $filter .= '' === $filter ? '(' : ' OR (';
 
             foreach ($values as $i => $value) {
@@ -191,6 +210,10 @@ class RequestSearchableQuery
             }
 
             $filter .= ')';
+        }
+
+        foreach ($searchableFields->getJoins() as $join => $alias) {
+            $qb->leftJoin($join, $alias);
         }
 
         return $qb->andWhere($filter);
