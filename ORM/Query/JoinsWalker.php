@@ -11,6 +11,7 @@
 
 namespace Klipper\Component\DoctrineExtensionsExtra\ORM\Query;
 
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\AST\IdentificationVariableDeclaration;
 use Doctrine\ORM\Query\AST\Join;
 use Doctrine\ORM\Query\AST\JoinAssociationDeclaration;
@@ -27,6 +28,25 @@ use Doctrine\ORM\Query\TreeWalkerAdapter;
 class JoinsWalker extends TreeWalkerAdapter
 {
     public const HINT_JOINS = 'klipper_doctrine_extensions_extra.walker.joins';
+
+    /**
+     * Add or merge the hint value for the joins walker.
+     *
+     * @param Query           $query  The query
+     * @param SelectStatement $newAst The doctrine AST of new query
+     */
+    public static function addHint(Query $query, array $value): void
+    {
+        $hintValue = $query->getHint(self::HINT_JOINS);
+
+        if (\is_array($hintValue)) {
+            $hintValue = array_merge($hintValue, $value);
+        } else {
+            $hintValue = $value;
+        }
+
+        $query->setHint(self::HINT_JOINS, $hintValue);
+    }
 
     /**
      * @throws

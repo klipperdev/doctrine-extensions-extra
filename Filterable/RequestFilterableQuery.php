@@ -166,7 +166,7 @@ class RequestFilterableQuery
             MergeConditionalExpressionWalker::addHint($query, $queryAst);
         }
 
-        $query->setHint(JoinsWalker::HINT_JOINS, $this->joins);
+        JoinsWalker::addHint($query, $this->joins);
         $this->joins = [];
         $this->queryFields = [];
     }

@@ -110,7 +110,7 @@ class RequestSearchableQuery
             MergeConditionalExpressionWalker::addHint($query, $queryAst);
         }
 
-        $query->setHint(JoinsWalker::HINT_JOINS, $searchableFields->getJoins());
+        JoinsWalker::addHint($query, $searchableFields->getJoins());
     }
 
     /**

@@ -114,7 +114,7 @@ class RequestSortableQuery
         $query->setHint(OrderByWalker::HINT_SORT_ALIAS, $aliases);
         $query->setHint(OrderByWalker::HINT_SORT_FIELD, $fieldNames);
         $query->setHint(OrderByWalker::HINT_SORT_DIRECTION, $sorts);
-        $query->setHint(JoinsWalker::HINT_JOINS, $this->joins);
+        JoinsWalker::addHint($query, $this->joins);
         $this->joins = [];
     }
 
