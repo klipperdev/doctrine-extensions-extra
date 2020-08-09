@@ -32,10 +32,7 @@ class RequestSortableQuery
 
     protected ?AuthorizationCheckerInterface $authChecker;
 
-    /**
-     * @var array
-     */
-    protected $joins = [];
+    protected array $joins = [];
 
     /**
      * @param RequestStack                       $requestStack    The request stack
