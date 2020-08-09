@@ -64,6 +64,10 @@ abstract class QueryUtil
             $customTreeWalkers = [];
         }
 
+        if (\in_array($treeWalker, $customTreeWalkers, true)) {
+            return;
+        }
+
         $customTreeWalkers[] = $treeWalker;
         $query->setHint(Query::HINT_CUSTOM_TREE_WALKERS, $customTreeWalkers);
     }
