@@ -14,9 +14,11 @@ namespace Klipper\Component\DoctrineExtensionsExtra\Searchable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use Klipper\Component\DoctrineExtensionsExtra\ORM\Query\JoinsWalker;
 use Klipper\Component\DoctrineExtensionsExtra\ORM\Query\MergeConditionalExpressionWalker;
 use Klipper\Component\DoctrineExtensionsExtra\Util\QueryUtil;
 use Klipper\Component\Metadata\MetadataManagerInterface;
+use Klipper\Component\Metadata\ObjectMetadataInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -90,6 +92,7 @@ class RequestSearchableQuery
             return;
         }
 
+        QueryUtil::addCustomTreeWalker($query, JoinsWalker::class);
         QueryUtil::addCustomTreeWalker($query, MergeConditionalExpressionWalker::class);
 
         $qb = $this->getQueryBuilder($query->getEntityManager(), $class, $alias);
@@ -106,6 +109,8 @@ class RequestSearchableQuery
         if (MergeConditionalExpressionWalker::hasMergeableExpression($queryAst)) {
             MergeConditionalExpressionWalker::addHint($query, $queryAst);
         }
+
+        $query->setHint(JoinsWalker::HINT_JOINS, $searchableFields->getJoins());
     }
 
     /**
@@ -133,43 +138,59 @@ class RequestSearchableQuery
      */
     private function getSearchableFields(EntityManagerInterface $em, string $class, string $alias): SearchableFields
     {
-        $fields = [];
-        $joins = [];
         $meta = $this->metadataManager->get($class);
-        $classMeta = $em->getClassMetadata($class);
+        $fields = $this->findSearchableFields($em, $meta, $alias);
+        $joins = [];
+
+        foreach ($meta->getDeepSearchPaths() as $path) {
+            $deepJoins = [];
+            $deepMeta = QueryUtil::getAssociationMeta(
+                $this->metadataManager,
+                $meta,
+                explode('.', $path),
+                $deepJoins,
+                $this->authChecker
+            );
+
+            if (null !== $deepMeta) {
+                $deepFields = $this->findSearchableFields($em, $deepMeta, QueryUtil::getAlias($deepMeta));
+
+                if (!empty($deepFields)) {
+                    $fields = array_merge($fields, $deepFields);
+                    $joins = array_merge($joins, $deepJoins);
+                }
+            }
+        }
+
+        return new SearchableFields(array_unique($fields), $joins);
+    }
+
+    /**
+     * Find the searchable fields for the object metadata.
+     *
+     * @param EntityManagerInterface  $em    The entity manager
+     * @param ObjectMetadataInterface $meta  The object metadata
+     * @param string                  $alias The alias
+     *
+     * @return string[]
+     */
+    private function findSearchableFields(EntityManagerInterface $em, ObjectMetadataInterface $meta, string $alias): array
+    {
+        $fields = [];
+        $classMeta = $em->getClassMetadata($meta->getClass());
 
         if ($meta->isSearchable()) {
             foreach ($meta->getFields() as $fieldMeta) {
                 $fieldName = $fieldMeta->getField();
 
                 if ($fieldMeta->isSearchable() && $classMeta->hasField($fieldName)
-                        && QueryUtil::isFieldVisible($meta, $fieldMeta, $this->authChecker)) {
-                    $fields[$fieldName] = $alias.'.'.$fieldName;
-                }
-            }
-
-            foreach ($meta->getDeepSearchPaths() as $path) {
-                $deepPaths = explode('.', $path);
-                $deepAlias = '';
-
-                foreach ($deepPaths as $deepPath) {
-                    $deepAlias .= '_'.$deepPath;
-
-                    if ($meta->hasAssociationByName($deepPath)) {
-                        $deepAssoMeta = $meta->getAssociationByName($deepPath);
-                        $deepMeta = $this->metadataManager->getByName($deepAssoMeta->getTarget());
-                        $join = $alias.'.'.$deepPath;
-                        $joins[$join] = $deepAlias;
-
-                        $sf = $this->getSearchableFields($em, $deepMeta->getClass(), $deepAlias);
-                        $fields = array_merge($fields, $sf->getFields());
-                        $joins = array_merge($joins, $sf->getJoins());
-                    }
+                    && QueryUtil::isFieldVisible($meta, $fieldMeta, $this->authChecker)) {
+                    $fields[] = $alias.'.'.$fieldName;
                 }
             }
         }
 
-        return new SearchableFields($fields, $joins);
+        return $fields;
     }
 
     /**
@@ -212,8 +233,8 @@ class RequestSearchableQuery
             $filter .= ')';
         }
 
-        foreach ($searchableFields->getJoins() as $join => $alias) {
-            $qb->leftJoin($join, $alias);
+        foreach ($searchableFields->getJoins() as $joinAlias => $joinConfig) {
+            $qb->leftJoin($joinConfig['targetClass'], $joinAlias);
         }
 
         return $qb->andWhere($filter);
