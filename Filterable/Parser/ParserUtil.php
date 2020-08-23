@@ -61,7 +61,7 @@ abstract class ParserUtil
         $metaField = static::getFieldMetadata($args, $node);
         $nodeValue = $node->getQueryValue();
 
-        if ($metaField->getParent() === $args->getObjectMetadata()) {
+        if ($metaField->getParent() === $args->getObjectMetadata() && false === strpos($node->getField(), '.')) {
             $alias = $args->getAlias();
         } else {
             $alias = QueryUtil::getAlias($metaField->getParent());
