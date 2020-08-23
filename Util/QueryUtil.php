@@ -154,6 +154,10 @@ abstract class QueryUtil
 
                     break;
                 }
+            } else {
+                $finalMeta = null;
+
+                break;
             }
         }
 
