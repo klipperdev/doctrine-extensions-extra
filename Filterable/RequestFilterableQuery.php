@@ -414,7 +414,7 @@ class RequestFilterableQuery
     private function buildForm(RuleNode $node, FieldMetadataInterface $fieldMeta): FormInterface
     {
         $maps = $this->parser->getMapForms();
-        $type = $fieldMeta->getType();
+        $type = $this->getFieldType($fieldMeta);
 
         if (isset($maps[$type])) {
             $formType = (array) $maps[$type];
@@ -468,5 +468,24 @@ class RequestFilterableQuery
         }
 
         return $data;
+    }
+
+    /**
+     * Get the type of the field metadata.
+     *
+     * @param FieldMetadataInterface $fieldMeta The field metadata
+     */
+    private function getFieldType(FieldMetadataInterface $fieldMeta): string
+    {
+        $maps = $this->parser->getMapForms();
+        $type = $fieldMeta->getType();
+
+        if ('integer' === $type
+                && $fieldMeta->getParent()->getFieldIdentifier() === $fieldMeta->getField()
+                && isset($maps['string'])) {
+            $type = 'string';
+        }
+
+        return $type;
     }
 }
