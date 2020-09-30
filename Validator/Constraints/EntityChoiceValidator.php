@@ -106,15 +106,10 @@ class EntityChoiceValidator extends ConstraintValidator
     }
 
     /**
-     * @param null|string|string[] $value
+     * @param null|int|int[]|object|object[]|string|string[] $value
      */
     private function doValidate(ObjectManager $om, EntityChoice $constraint, $value): void
     {
-        $repo = $om->getRepository($constraint->entityClass);
-        $repoMethod = $constraint->repositoryMethod;
-        $repoMethod = $repo instanceof TranslatableRepositoryInterface
-            && 'findBy' === $repoMethod ? 'findTranslatedBy' : $repoMethod;
-
         if ($constraint->multiple) {
             $count = \count($value);
 
@@ -142,24 +137,11 @@ class EntityChoiceValidator extends ConstraintValidator
         }
 
         $idReader = new IdReader($om, $om->getClassMetadata($constraint->entityClass));
-        $filters = SqlFilterUtil::findFilters($om, (array) $constraint->filters, $constraint->allFilters);
         $namePath = $constraint->namePath ?? $idReader->getIdField();
+        $value = $this->prepareValues(\is_array($value) ? $value : [$value], $namePath);
 
-        SqlFilterUtil::disableFilters($om, $filters);
-        $result = $repo->{$repoMethod}([
-            $namePath => (array) $value,
-        ]);
-        SqlFilterUtil::enableFilters($om, $filters);
-
-        $result = array_map(function ($value) use ($namePath) {
-            if (!\is_object($value)) {
-                return $value;
-            }
-
-            return $this->accessor->getValue($value, $namePath);
-        }, $result);
-
-        $invalidValues = array_diff((array) $value, $result);
+        $result = $this->getExistingValue($om, $constraint, $namePath, $value);
+        $invalidValues = array_diff($value, $result);
 
         if (($count = \count($invalidValues)) > 0) {
             $this->context->buildViolation($constraint->message)
@@ -169,5 +151,52 @@ class EntityChoiceValidator extends ConstraintValidator
                 ->addViolation()
             ;
         }
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getExistingValue(ObjectManager $om, EntityChoice $constraint, string $namePath, array $values): array
+    {
+        $repo = $om->getRepository($constraint->entityClass);
+        $repoMethod = $constraint->repositoryMethod;
+        $repoMethod = $repo instanceof TranslatableRepositoryInterface
+            && 'findBy' === $repoMethod ? 'findTranslatedBy' : $repoMethod;
+
+        $filters = SqlFilterUtil::findFilters($om, (array) $constraint->filters, $constraint->allFilters);
+
+        SqlFilterUtil::disableFilters($om, $filters);
+        $result = $repo->{$repoMethod}(array_merge($constraint->criteria, [
+            $namePath => $values,
+        ]));
+        SqlFilterUtil::enableFilters($om, $filters);
+
+        return array_map(function ($value) use ($namePath) {
+            if (!\is_object($value)) {
+                return $value;
+            }
+
+            return $this->accessor->getValue($value, $namePath);
+        }, $result);
+    }
+
+    /**
+     * @param int[]|object[]|string[] $values
+     *
+     * @return int[]|string[]
+     */
+    private function prepareValues(array $values, string $namePath): array
+    {
+        $res = [];
+
+        foreach ($values as $value) {
+            if (\is_object($value)) {
+                $value = $this->accessor->getValue($value, $namePath);
+            }
+
+            $res[] = $value;
+        }
+
+        return $res;
     }
 }

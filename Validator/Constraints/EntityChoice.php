@@ -48,6 +48,13 @@ class EntityChoice extends Choice
     public ?string $namePath = null;
 
     /**
+     * The static criteria for the doctrine repository method without the name path.
+     *
+     * @var string[]
+     */
+    public array $criteria = [];
+
+    /**
      * The list of doctrine orm filter must be disabled.
      *
      * @var string[]
