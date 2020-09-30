@@ -86,7 +86,15 @@ class EntityChoiceValidator extends ConstraintValidator
                 throw new ConstraintDefinitionException(sprintf('Object manager "%s" does not exist.', $constraint->em));
             }
         } else {
-            $em = $this->registry->getManagerForClass($constraint->entityClass);
+            $em = null;
+
+            foreach ($this->registry->getManagers() as $objectManager) {
+                if ($objectManager->getMetadataFactory()->hasMetadataFor($constraint->entityClass)) {
+                    $em = $objectManager;
+
+                    break;
+                }
+            }
 
             if (null === $em) {
                 throw new ConstraintDefinitionException(sprintf('Unable to find the object manager associated with an entity of class "%s".', $constraint->entityClass));
