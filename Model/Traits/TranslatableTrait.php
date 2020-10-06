@@ -51,6 +51,7 @@ trait TranslatableTrait
 
     public function setAvailableLocales(array $availableLocales): self
     {
+        $availableLocales = array_values($availableLocales);
         asort($availableLocales);
 
         $this->availableLocales = array_unique($availableLocales);
