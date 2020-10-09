@@ -104,6 +104,5 @@ class TranslatableSubscriber implements EventSubscriber
         }
 
         $object->setAvailableLocales($availables);
-        $uow->propertyChanged($object, 'availableLocales', $oldAvailables, $availables);
     }
 }
