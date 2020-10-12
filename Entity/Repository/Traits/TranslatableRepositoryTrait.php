@@ -58,10 +58,17 @@ trait TranslatableRepositoryTrait
         $qb = $this->createQueryBuilder('t');
 
         foreach ($criteria as $key => $value) {
-            $qb
-                ->andWhere('t.'.$key.' = :'.$key)
-                ->setParameter($key, $value, 'id' === $key && \is_string($value) && !is_numeric($value) ? Types::GUID : null)
-            ;
+            if (\is_array($value)) {
+                $qb
+                    ->andWhere('t.'.$key.' IN (:'.$key.')')
+                    ->setParameter($key, $value)
+                ;
+            } else {
+                $qb
+                    ->andWhere('t.'.$key.' = :'.$key)
+                    ->setParameter($key, $value, 'id' === $key && \is_string($value) && !is_numeric($value) ? Types::GUID : null)
+                ;
+            }
         }
 
         return $this->getResult($qb, $locale);
