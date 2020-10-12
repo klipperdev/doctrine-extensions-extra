@@ -53,11 +53,11 @@ class TranslatableSubscriber implements EventSubscriber
         $uow = $em->getUnitOfWork();
 
         foreach ($uow->getScheduledEntityInsertions() as $object) {
-            $this->buildAvailableLocales($uow, $object);
+            $this->buildAvailableLocales($object);
         }
 
         foreach ($uow->getScheduledEntityUpdates() as $object) {
-            $this->buildAvailableLocales($uow, $object);
+            $this->buildAvailableLocales($object);
         }
     }
 
@@ -67,7 +67,7 @@ class TranslatableSubscriber implements EventSubscriber
      * @param UnitOfWork $uow    The unit of work
      * @param object     $object The object
      */
-    private function buildAvailableLocales(UnitOfWork $uow, object $object): void
+    private function buildAvailableLocales(object $object): void
     {
         if (!$object instanceof TranslatableInterface) {
             return;
