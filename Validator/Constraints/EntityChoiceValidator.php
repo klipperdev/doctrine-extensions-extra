@@ -160,8 +160,10 @@ class EntityChoiceValidator extends ConstraintValidator
     {
         $repo = $om->getRepository($constraint->entityClass);
         $repoMethod = $constraint->repositoryMethod;
-        $repoMethod = $repo instanceof TranslatableRepositoryInterface
-            && 'findBy' === $repoMethod ? 'findTranslatedBy' : $repoMethod;
+
+        if (null === $repoMethod) {
+            $repoMethod = $repo instanceof TranslatableRepositoryInterface ? 'findTranslatedBy' : 'findBy';
+        }
 
         $filters = SqlFilterUtil::findFilters($om, (array) $constraint->filters, $constraint->allFilters);
 

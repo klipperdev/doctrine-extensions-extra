@@ -40,7 +40,7 @@ class EntityChoice extends Choice
      * array (where fieldName is each of the fields configured in the fields option). The
      * method should return a countable PHP variable.
      */
-    public string $repositoryMethod = 'findBy';
+    public ?string $repositoryMethod = null;
 
     /**
      * The property path of the choice name. If it's left blank, the doctrine identifier is used.
