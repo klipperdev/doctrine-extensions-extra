@@ -65,7 +65,7 @@ abstract class AbstractTranslatableExtension extends AbstractTypeExtension
                 if (null !== $locale) {
                     $data->setTranslatableLocale($locale);
                 } elseif ($countAvailables < 1
-                    || (1 === $countAvailables && \in_array($this->fallback, $availables, true))) {
+                        || (1 === $countAvailables && \in_array($this->fallback, $availables, true))) {
                     $data->setTranslatableLocale($this->fallback);
                 }
             }
@@ -93,6 +93,23 @@ abstract class AbstractTranslatableExtension extends AbstractTypeExtension
                     } else {
                         $this->disableForm($child);
                     }
+                }
+            }
+        });
+
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
+            $data = $event->getData();
+
+            if ($data instanceof TranslatableInterface) {
+                $locale = RequestUtil::getRequestLanguage($this->request);
+                $availables = $data->getAvailableLocales();
+                $countAvailables = \count($availables);
+
+                if (null !== $locale) {
+                    $data->setTranslatableLocale($locale);
+                } elseif ($countAvailables < 1
+                        || (1 === $countAvailables && \in_array($this->fallback, $availables, true))) {
+                    $data->setTranslatableLocale($this->fallback);
                 }
             }
         });
