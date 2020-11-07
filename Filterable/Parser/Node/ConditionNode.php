@@ -27,7 +27,7 @@ abstract class ConditionNode extends Node
     private array $rules = [];
 
     /**
-     * @param Node[] $rules The rules
+     * @param NodeInterface[] $rules The rules
      */
     public function __construct(array $rules = [])
     {
