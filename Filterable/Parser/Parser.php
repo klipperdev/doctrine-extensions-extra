@@ -296,10 +296,10 @@ class Parser
     /**
      * Parse the node.
      *
-     * @param array       $node   The node
+     * @param null|array  $node   The node
      * @param null|string $parent The parent path node
      */
-    private function parseNode(array $node, ?string $parent = null): NodeInterface
+    private function parseNode(?array $node, ?string $parent = null): NodeInterface
     {
         if (!\is_array($node)) {
             throw new InvalidNodeTypeException($parent);
