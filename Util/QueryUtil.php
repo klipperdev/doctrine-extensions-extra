@@ -131,7 +131,7 @@ abstract class QueryUtil
         MetadataManagerInterface $metadataManager,
         ObjectMetadataInterface $metadata,
         array $associations,
-        array &$joins,
+        ?array &$joins = null,
         ?AuthorizationCheckerInterface $authChecker = null
     ): ?ObjectMetadataInterface {
         $finalMeta = $metadata;

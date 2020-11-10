@@ -12,7 +12,6 @@
 namespace Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser;
 
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Exception\InvalidConditionTypeException;
-use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Exception\InvalidJsonException;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Exception\InvalidNodeTypeException;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Exception\InvalidRuleTypeException;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Exception\RequireParameterException;
@@ -273,18 +272,14 @@ class Parser
     /**
      * Parse the query filter.
      *
-     * @param string $json                The json
-     * @param bool   $forceFirstCondition Check if the condition node must be added in root
+     * @param array $filter              The array of filter
+     * @param bool  $forceFirstCondition Check if the condition node must be added in root
+     *
+     * @throw \JsonException When the json is invalid
      */
-    public function parse(string $json, bool $forceFirstCondition = true): NodeInterface
+    public function parse(array $filter, bool $forceFirstCondition = true): NodeInterface
     {
-        try {
-            $value = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
-        } catch (\JsonException $e) {
-            throw new InvalidJsonException($e->getMessage());
-        }
-
-        $node = $this->parseNode($value);
+        $node = $this->parseNode($filter);
 
         if ($forceFirstCondition && !$node instanceof ConditionNode) {
             $node = new AndNode([$node]);

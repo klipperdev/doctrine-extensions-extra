@@ -40,10 +40,10 @@ class TranslatableParser extends Parser
         $this->translator = $translator;
     }
 
-    public function parse(string $json, bool $forceFirstCondition = true): NodeInterface
+    public function parse($filter, bool $forceFirstCondition = true): NodeInterface
     {
         try {
-            return parent::parse($json, $forceFirstCondition);
+            return parent::parse($filter, $forceFirstCondition);
         } catch (ExceptionInterface $e) {
             if ($e instanceof InvalidConditionTypeException) {
                 $mess = 'invalid_condition_type';

@@ -17,6 +17,7 @@ use Doctrine\ORM\QueryBuilder;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Form\Listener\CollectibleSubscriber;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Form\Listener\FilterableFieldSubscriber;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\CompileArgs;
+use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Exception\InvalidJsonException;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\ConditionNode;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\NodeInterface;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\RuleNode;
@@ -59,8 +60,6 @@ class RequestFilterableQuery
     protected ?AuthorizationCheckerInterface $authChecker;
 
     protected array $joins = [];
-
-    protected array $queryFields = [];
 
     /**
      * @param RequestStack                       $requestStack       The request stack
@@ -113,27 +112,6 @@ class RequestFilterableQuery
     }
 
     /**
-     * Validate the filter for a specific metadata.
-     *
-     * @param string $metadataName The name of object metadata
-     * @param string $filter       The filter in json
-     *
-     * @return false|NodeInterface
-     */
-    public function validate(string $metadataName, string $filter)
-    {
-        $node = null;
-
-        if ($this->metadataManager->hasByName($metadataName)) {
-            $meta = $this->metadataManager->getByName($metadataName);
-            $alias = $this->getNameAlias($meta);
-            $node = $this->validateNode($this->parser->parse($filter, false), $meta, $alias);
-        }
-
-        return $node instanceof NodeInterface ? $node : false;
-    }
-
-    /**
      * Sort the query.
      *
      * @param Query  $query The query
@@ -168,45 +146,25 @@ class RequestFilterableQuery
 
         JoinsWalker::addHint($query, $this->joins);
         $this->joins = [];
-        $this->queryFields = [];
     }
 
     /**
      * Validate the node. Node is returned if it is valid.
      *
-     * @param ConditionNode|NodeInterface|RuleNode $node  The node
-     * @param ObjectMetadataInterface              $meta  The object metadata
-     * @param string                               $alias The object alias
+     * @param ConditionNode|NodeInterface|RuleNode $node The node
+     * @param ObjectMetadataInterface              $meta The object metadata
      */
-    protected function validateNode(?NodeInterface $node, ObjectMetadataInterface $meta, string $alias): ?NodeInterface
+    protected function validateNode(?NodeInterface $node, ObjectMetadataInterface $meta): ?NodeInterface
     {
         $validNode = null;
 
         if ($node instanceof ConditionNode) {
-            $validNode = $this->validateConditionNode($node, $meta, $alias);
+            $validNode = $this->validateConditionNode($node, $meta);
         } elseif ($node instanceof RuleNode) {
-            $validNode = $this->validateRuleNode($node, $meta, $alias);
+            $validNode = $this->validateRuleNode($node, $meta);
         }
 
         return $validNode;
-    }
-
-    /**
-     * Get the alias of object metadata name.
-     *
-     * @param ObjectMetadataInterface $metadata The object metadata
-     */
-    private function getNameAlias(ObjectMetadataInterface $metadata): string
-    {
-        $name = $metadata->getName();
-        $exp = explode('_', $name);
-        $alias = '';
-
-        foreach ($exp as $part) {
-            $alias .= substr($part, 0, 1);
-        }
-
-        return $alias;
     }
 
     /**
@@ -250,8 +208,14 @@ class RequestFilterableQuery
      */
     private function injectFilter(QueryBuilder $qb, string $class, string $alias, string $queryFilter): QueryBuilder
     {
+        try {
+            $value = json_decode($queryFilter, true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
+            throw new InvalidJsonException($e->getMessage());
+        }
+
         $meta = $this->metadataManager->get($class);
-        $node = $this->validateNode($this->parser->parse($queryFilter), $meta, $alias);
+        $node = $this->validateNode($this->parser->parse($value), $meta);
 
         if (null === $node) {
             return $qb;
@@ -279,17 +243,16 @@ class RequestFilterableQuery
     /**
      * Validate the condition node.
      *
-     * @param ConditionNode           $node  The condition node
-     * @param ObjectMetadataInterface $meta  The object metadata
-     * @param string                  $alias The object alias
+     * @param ConditionNode           $node The condition node
+     * @param ObjectMetadataInterface $meta The object metadata
      */
-    private function validateConditionNode(ConditionNode $node, ObjectMetadataInterface $meta, string $alias): ?ConditionNode
+    private function validateConditionNode(ConditionNode $node, ObjectMetadataInterface $meta): ?ConditionNode
     {
         $validNode = $node;
         $rules = [];
 
         foreach ($validNode->getRules() as $rule) {
-            $rule = $this->validateNode($rule, $meta, $alias);
+            $rule = $this->validateNode($rule, $meta);
 
             if ($rule) {
                 $rules[] = $rule;
@@ -308,11 +271,10 @@ class RequestFilterableQuery
     /**
      * Validate the rule node.
      *
-     * @param RuleNode                $node  The condition node
-     * @param ObjectMetadataInterface $meta  The object metadata
-     * @param string                  $alias The object alias
+     * @param RuleNode                $node The condition node
+     * @param ObjectMetadataInterface $meta The object metadata
      */
-    private function validateRuleNode(RuleNode $node, ObjectMetadataInterface $meta, string $alias): ?RuleNode
+    private function validateRuleNode(RuleNode $node, ObjectMetadataInterface $meta): ?RuleNode
     {
         $validNode = $node;
         $metaForField = $meta;
@@ -342,10 +304,6 @@ class RequestFilterableQuery
             $msg = $this->translator->trans('doctrine_filterable.invalid_field', $msgParams, 'validators');
             $validNode->addError(new NodeError($msg, $msg, $msgParams));
         } elseif ($fieldMeta && $fieldMeta->isFilterable() && QueryUtil::isFieldVisible($metaForField, $fieldMeta, $this->authChecker)) {
-            $field = $metaForField && $meta !== $metaForField
-                ? QueryUtil::getAlias($metaForField).'.'.$fieldMeta->getField()
-                : $alias.'.'.$fieldMeta->getField();
-            $this->queryFields[$validNode->getField()] = $field;
             $this->joins = array_merge($joins, $this->joins);
             $this->validateRuleNodeOperator($validNode, $fieldMeta);
             $this->validateRuleNodeValue($validNode, $fieldMeta);
