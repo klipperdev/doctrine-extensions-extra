@@ -37,6 +37,9 @@ class ExpirableFilter extends AbstractFilter
 
         $addCondSql = $platform->getIsNullExpression($targetTableAlias.'.'.$column);
 
-        return "({$addCondSql} OR {$targetTableAlias}.{$column} > {$platform->getCurrentTimestampSQL()})";
+        $currentTimestamp = $platform->getCurrentTimestampSQL();
+        $this->setParameter('currentTimestamp', $currentTimestamp);
+
+        return "({$addCondSql} OR {$targetTableAlias}.{$column} > {$currentTimestamp})";
     }
 }
