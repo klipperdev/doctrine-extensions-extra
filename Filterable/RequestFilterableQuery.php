@@ -17,7 +17,6 @@ use Doctrine\ORM\QueryBuilder;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Form\Listener\CollectibleSubscriber;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Form\Listener\FilterableFieldSubscriber;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\CompileArgs;
-use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Exception\InvalidJsonException;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\ConditionNode;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\NodeInterface;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\RuleNode;
@@ -35,6 +34,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Valid;
@@ -211,7 +211,7 @@ class RequestFilterableQuery
         try {
             $value = json_decode($queryFilter, true, 512, JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
-            throw new InvalidJsonException($e->getMessage());
+            throw new BadRequestHttpException('The X-Filter HTTP header is not a valid JSON');
         }
 
         $meta = $this->metadataManager->get($class);
