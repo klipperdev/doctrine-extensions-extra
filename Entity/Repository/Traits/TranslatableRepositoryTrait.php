@@ -26,12 +26,17 @@ use Klipper\Component\DoctrineExtensionsExtra\Util\QueryUtil;
  */
 trait TranslatableRepositoryTrait
 {
+    public function createTranslatedQueryBuilder(string $alias, ?string $indexBy = null): QueryBuilder
+    {
+        return $this->createQueryBuilder($alias, $indexBy);
+    }
+
     /**
      * @param mixed $id
      */
     public function findOneTranslatedById($id, ?string $locale = null): ?TranslatableInterface
     {
-        $qb = $this->createQueryBuilder('t')
+        $qb = $this->createTranslatedQueryBuilder('t')
             ->where('t.id = :id')
             ->setParameter('id', $id, \is_string($id) && !is_numeric($id) ? Types::GUID : null)
         ;
@@ -41,7 +46,7 @@ trait TranslatableRepositoryTrait
 
     public function findOneTranslatedBy(array $criteria, ?string $locale = null): ?TranslatableInterface
     {
-        $qb = $this->createQueryBuilder('t');
+        $qb = $this->createTranslatedQueryBuilder('t');
 
         foreach ($criteria as $key => $value) {
             $qb
@@ -55,7 +60,7 @@ trait TranslatableRepositoryTrait
 
     public function findTranslatedBy(array $criteria, ?string $locale = null): array
     {
-        $qb = $this->createQueryBuilder('t');
+        $qb = $this->createTranslatedQueryBuilder('t');
 
         foreach ($criteria as $key => $value) {
             if (\is_array($value)) {
