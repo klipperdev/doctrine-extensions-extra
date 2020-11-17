@@ -192,26 +192,27 @@ class RequestSortableQuery
 
                     if ($metadata->hasFieldByName($finalField)) {
                         $validSortable[$finalField] = $direction;
+                        continue;
                     }
-                } else {
-                    $associations = explode('.', $field);
-                    $finalField = array_pop($associations);
-                    $finalAssociationMeta = $metadata;
+                }
 
-                    foreach ($associations as $association) {
-                        if ($finalAssociationMeta->hasAssociationByName($association)) {
-                            $assoMeta = $finalAssociationMeta->getAssociationByName($association);
-                            $finalAssociationMeta = $this->metadataManager->get($assoMeta->getTarget());
-                        } else {
-                            $finalAssociationMeta = null;
+                $associations = explode('.', $field);
+                $finalField = array_pop($associations);
+                $finalAssociationMeta = $metadata;
 
-                            break;
-                        }
+                foreach ($associations as $association) {
+                    if ($finalAssociationMeta->hasAssociationByName($association)) {
+                        $assoMeta = $finalAssociationMeta->getAssociationByName($association);
+                        $finalAssociationMeta = $this->metadataManager->get($assoMeta->getTarget());
+                    } else {
+                        $finalAssociationMeta = null;
+
+                        break;
                     }
+                }
 
-                    if (null !== $finalAssociationMeta && $finalAssociationMeta->hasFieldByName($finalField)) {
-                        $validSortable[$field] = $direction;
-                    }
+                if (null !== $finalAssociationMeta && $finalAssociationMeta->hasFieldByName($finalField)) {
+                    $validSortable[$field] = $direction;
                 }
             } elseif ($metadata->hasFieldByName($field)) {
                 $validSortable[$field] = $direction;
