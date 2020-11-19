@@ -192,6 +192,7 @@ class RequestSortableQuery
 
                     if ($metadata->hasFieldByName($finalField)) {
                         $validSortable[$finalField] = $direction;
+
                         continue;
                     }
                 }
