@@ -33,9 +33,6 @@ class IsNullNode extends RuleNode
 
     public function compile(CompileArgs $arguments): string
     {
-        return ParserUtil::getFieldName($arguments, $this)
-            .' = '
-            .ParserUtil::setValue($arguments, $this->getField(), null)
-        ;
+        return ParserUtil::getFieldName($arguments, $this).' IS NULL';
     }
 }
