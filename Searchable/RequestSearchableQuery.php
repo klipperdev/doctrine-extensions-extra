@@ -120,7 +120,7 @@ class RequestSearchableQuery
     {
         if ($request = $this->requestStack->getCurrentRequest()) {
             if ($request->headers->has('x-search')) {
-                return (string) $request->headers->get('x-search', '');
+                return $this->utf8Encode((string) $request->headers->get('x-search', ''));
             }
 
             return (string) $request->query->get('search', '');
@@ -238,5 +238,32 @@ class RequestSearchableQuery
         }
 
         return $qb->andWhere($filter);
+    }
+
+    /**
+     * Converts a non-UTF-8 string to UTF-8.
+     *
+     * @return null|string The string converted to UTF-8
+     */
+    private function utf8Encode(?string $s): ?string
+    {
+        if (null === $s || preg_match('//u', $s)) {
+            return $s;
+        }
+
+        if (!\function_exists('iconv')) {
+            throw new \RuntimeException('Unable to convert a non-UTF-8 string to UTF-8: required function iconv() does not exist. You should install ext-iconv or symfony/polyfill-iconv.');
+        }
+
+        $charset = ini_get('php.output_encoding') ?: ini_get('default_charset') ?: 'UTF-8';
+
+        if (false !== $c = @iconv($charset, 'UTF-8', $s)) {
+            return $c;
+        }
+        if ('CP1252' !== $charset && false !== $c = @iconv('CP1252', 'UTF-8', $s)) {
+            return $c;
+        }
+
+        return iconv('CP850', 'UTF-8', $s);
     }
 }
