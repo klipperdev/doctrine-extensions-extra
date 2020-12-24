@@ -132,11 +132,12 @@ class RequestSearchableQuery
     /**
      * Get the searchable field names with they alias.
      *
-     * @param EntityManagerInterface $em    The entity manager
-     * @param string                 $class The class name
-     * @param string                 $alias The alias
+     * @param EntityManagerInterface $em          The entity manager
+     * @param string                 $class       The class name
+     * @param string                 $alias       The alias
+     * @param string                 $fieldPrefix The prefix path of search field
      */
-    private function getSearchableFields(EntityManagerInterface $em, string $class, string $alias): SearchableFields
+    private function getSearchableFields(EntityManagerInterface $em, string $class, string $alias, string $fieldPrefix = ''): SearchableFields
     {
         $meta = $this->metadataManager->get($class);
         $fields = $this->findSearchableFields($em, $meta, $alias);
@@ -153,7 +154,8 @@ class RequestSearchableQuery
             );
 
             if (null !== $deepMeta) {
-                $deepFields = $this->findSearchableFields($em, $deepMeta, QueryUtil::getAlias($deepMeta));
+                $deepFieldPrefix = ($fieldPrefix ? $fieldPrefix.'.' : '').$path;
+                $deepFields = $this->findSearchableFields($em, $deepMeta, QueryUtil::getAlias($deepMeta), $deepFieldPrefix);
 
                 if (!empty($deepFields)) {
                     $fields = array_merge($fields, $deepFields);
@@ -168,13 +170,14 @@ class RequestSearchableQuery
     /**
      * Find the searchable fields for the object metadata.
      *
-     * @param EntityManagerInterface  $em    The entity manager
-     * @param ObjectMetadataInterface $meta  The object metadata
-     * @param string                  $alias The alias
+     * @param EntityManagerInterface  $em          The entity manager
+     * @param ObjectMetadataInterface $meta        The object metadata
+     * @param string                  $alias       The alias
+     * @param string                  $fieldPrefix The prefix path of search field
      *
      * @return string[]
      */
-    private function findSearchableFields(EntityManagerInterface $em, ObjectMetadataInterface $meta, string $alias): array
+    private function findSearchableFields(EntityManagerInterface $em, ObjectMetadataInterface $meta, string $alias, string $fieldPrefix = ''): array
     {
         $fields = [];
         $classMeta = $em->getClassMetadata($meta->getClass());
@@ -182,9 +185,12 @@ class RequestSearchableQuery
         if ($meta->isSearchable()) {
             foreach ($meta->getFields() as $fieldMeta) {
                 $fieldName = $fieldMeta->getField();
+                $fieldPath = ($fieldPrefix ? $fieldPrefix.'.' : '').$fieldMeta->getName();
 
                 if ($fieldMeta->isSearchable() && $classMeta->hasField($fieldName)
-                    && QueryUtil::isFieldVisible($meta, $fieldMeta, $this->authChecker)) {
+                    && QueryUtil::isFieldVisible($meta, $fieldMeta, $this->authChecker)
+                    && $this->hasRequestFields($fieldPath)
+                ) {
                     $fields[] = $alias.'.'.$fieldName;
                 }
             }
@@ -238,6 +244,33 @@ class RequestSearchableQuery
         }
 
         return $qb->andWhere($filter);
+    }
+
+    private function hasRequestFields(string $field): bool
+    {
+        $fields = $this->getRequestFields();
+
+        return empty($fields) || \in_array($field, $fields, true);
+    }
+
+    /**
+     * Get the fields config in request.
+     *
+     * @return string[]
+     */
+    private function getRequestFields(): array
+    {
+        if ($request = $this->requestStack->getCurrentRequest()) {
+            if ($request->headers->has('x-search-fields')) {
+                $fields = (string) $request->headers->get('x-search-fields', '');
+            } else {
+                $fields = (string) $request->query->get('search-fields', '');
+            }
+
+            return array_map('trim', explode(',', $fields));
+        }
+
+        return [];
     }
 
     /**
