@@ -267,7 +267,9 @@ class RequestSearchableQuery
                 $fields = (string) $request->query->get('search-fields', '');
             }
 
-            return array_map('trim', explode(',', $fields));
+            $requestFields = array_map('trim', explode(',', $fields));
+
+            return !empty($requestFields) && '' !== $requestFields[0] ? $requestFields : [];
         }
 
         return [];
