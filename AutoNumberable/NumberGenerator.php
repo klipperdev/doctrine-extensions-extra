@@ -79,46 +79,57 @@ class NumberGenerator implements NumberGeneratorInterface
                 $match = $dateTime->format('Y');
 
                 break;
+
             case 'YY':
                 $match = $dateTime->format('y');
 
                 break;
+
             case 'MM':
                 $match = $dateTime->format('m');
 
                 break;
+
             case 'DD':
                 $match = $dateTime->format('d');
 
                 break;
+
             case 'hh':
                 $match = $dateTime->format('h');
 
                 break;
+
             case 'mm':
                 $match = $dateTime->format('i');
 
                 break;
+
             case 'ss':
                 $match = $dateTime->format('s');
 
                 break;
+
             case 'a':
                 $match = $dateTime->format('a');
 
                 break;
+
             case 'A':
                 $match = $dateTime->format('A');
 
                 break;
+
             case 'o':
                 $match = $dateTime->format('O');
 
                 break;
+
             case 'tz':
                 $match = $dateTime->format('T');
 
                 break;
+
             default:
                 break;
         }

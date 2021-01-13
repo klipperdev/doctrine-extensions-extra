@@ -31,8 +31,7 @@ class RequestQueryFilterValidator extends ConstraintValidator
     public function __construct(
         FilterValidator $filterValidator,
         ?PropertyAccessor $accessor = null
-    )
-    {
+    ) {
         $this->filterValidator = $filterValidator;
         $this->accessor = $accessor ?? PropertyAccess::createPropertyAccessor();
     }
