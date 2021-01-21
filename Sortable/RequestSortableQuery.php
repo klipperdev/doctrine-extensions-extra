@@ -82,7 +82,7 @@ class RequestSortableQuery
     protected function doSort(Query $query, string $class, string $alias): void
     {
         $meta = $this->metadataManager->get($class);
-        $sortable = $this->getSortable($meta);
+        $sortable = $this->getSortable($query, $meta, $alias);
 
         if (empty($sortable)) {
             return;
@@ -116,9 +116,11 @@ class RequestSortableQuery
     /**
      * Get the fields and direction to sort the query.
      *
+     * @param Query                   $query    The query
      * @param ObjectMetadataInterface $metadata The object metadata
+     * @param string                  $alias    The alias of object metadata
      */
-    protected function getSortable(ObjectMetadataInterface $metadata): array
+    protected function getSortable(Query $query, ObjectMetadataInterface $metadata, string $alias): array
     {
         if (!$metadata->isSortable()) {
             return [];
@@ -144,6 +146,7 @@ class RequestSortableQuery
         foreach ($sortable as $field => $direction) {
             $metaForField = $metadata;
             $joins = [];
+            $existingFinalAlias = null;
 
             if (false !== strpos($field, '.')) {
                 $links = explode('.', $field);
@@ -153,7 +156,10 @@ class RequestSortableQuery
                     $metadata,
                     $links,
                     $joins,
-                    $this->authChecker
+                    $this->authChecker,
+                    $alias,
+                    $query,
+                    $existingFinalAlias
                 );
             }
 
@@ -162,9 +168,14 @@ class RequestSortableQuery
                 : null;
 
             if ($fieldMeta && $fieldMeta->isSortable() && QueryUtil::isFieldVisible($metaForField, $fieldMeta, $this->authChecker)) {
-                $field = $metaForField && $metadata !== $metaForField
-                    ? QueryUtil::getAlias($metaForField).'.'.$fieldMeta->getField()
-                    : $fieldMeta->getField();
+                if (null !== $existingFinalAlias) {
+                    $field = $existingFinalAlias.'.'.$fieldMeta->getField();
+                } elseif ($metaForField && $metadata !== $metaForField) {
+                    $field = QueryUtil::getAlias($metaForField).'.'.$fieldMeta->getField();
+                } else {
+                    $field = $fieldMeta->getField();
+                }
+
                 $finalSortable[$field] = $direction;
                 $this->joins = array_merge($joins, $this->joins);
             }

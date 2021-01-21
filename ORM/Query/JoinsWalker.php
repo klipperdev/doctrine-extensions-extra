@@ -82,7 +82,7 @@ class JoinsWalker extends TreeWalkerAdapter
                     'parent' => $class,
                     'relation' => $class->getAssociationMapping($config['relation']),
                     'map' => null,
-                    'nestingLevel' => $rootComponent['nestingLevel'],
+                    'nestingLevel' => $config['nestingLevel'] ?? $rootComponent['nestingLevel'],
                     'token' => $rootComponent['token'],
                 ];
                 $this->setQueryComponent($metaAlias, $joinQueryComponent);
@@ -92,7 +92,7 @@ class JoinsWalker extends TreeWalkerAdapter
                     Join::JOIN_TYPE_LEFT,
                     new JoinAssociationDeclaration(
                         new JoinAssociationPathExpression(
-                            $aliasIdVar,
+                            $config['identificationVariable'] ?: $aliasIdVar,
                             $config['relation']
                         ),
                         $metaAlias,

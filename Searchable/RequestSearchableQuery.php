@@ -86,7 +86,7 @@ class RequestSearchableQuery
             return;
         }
 
-        $searchableFields = $this->getSearchableFields($query->getEntityManager(), $class, $alias);
+        $searchableFields = $this->getSearchableFields($query, $class, $alias);
 
         if (empty($searchableFields->getFields())) {
             return;
@@ -132,13 +132,14 @@ class RequestSearchableQuery
     /**
      * Get the searchable field names with they alias.
      *
-     * @param EntityManagerInterface $em          The entity manager
-     * @param string                 $class       The class name
-     * @param string                 $alias       The alias
-     * @param string                 $fieldPrefix The prefix path of search field
+     * @param Query  $query       The query
+     * @param string $class       The class name
+     * @param string $alias       The alias
+     * @param string $fieldPrefix The prefix path of search field
      */
-    private function getSearchableFields(EntityManagerInterface $em, string $class, string $alias, string $fieldPrefix = ''): SearchableFields
+    private function getSearchableFields(Query $query, string $class, string $alias, string $fieldPrefix = ''): SearchableFields
     {
+        $em = $query->getEntityManager();
         $meta = $this->metadataManager->get($class);
         $fields = $this->findSearchableFields($em, $meta, $alias);
         $joins = [];
@@ -150,7 +151,9 @@ class RequestSearchableQuery
                 $meta,
                 explode('.', $path),
                 $deepJoins,
-                $this->authChecker
+                $this->authChecker,
+                $alias,
+                $query
             );
 
             if (null !== $deepMeta) {
@@ -240,7 +243,7 @@ class RequestSearchableQuery
         }
 
         foreach ($searchableFields->getJoins() as $joinAlias => $joinConfig) {
-            $qb->leftJoin($joinConfig['targetClass'], $joinAlias);
+            $qb->leftJoin($joinConfig['joinAssociation'], $joinAlias);
         }
 
         return $qb->andWhere($filter);

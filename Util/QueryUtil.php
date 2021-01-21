@@ -126,17 +126,23 @@ abstract class QueryUtil
      * @param string[]                           $associations    The recursive association names
      * @param array                              $joins           The joins by reference
      * @param null|AuthorizationCheckerInterface $authChecker     The authorization checker
+     * @param null|string                        $alias           The alias of object metadata
+     * @param null|Query                         $query           The query to check if join already exists
      */
     public static function getAssociationMeta(
         MetadataManagerInterface $metadataManager,
         ObjectMetadataInterface $metadata,
         array $associations,
         ?array &$joins = null,
-        ?AuthorizationCheckerInterface $authChecker = null
+        ?AuthorizationCheckerInterface $authChecker = null,
+        ?string $alias = null,
+        ?Query $query = null,
+        ?string &$existingFinalAlias = null
     ): ?ObjectMetadataInterface {
         $finalMeta = $metadata;
+        $finalAlias = $alias;
 
-        foreach ($associations as $association) {
+        foreach ($associations as $i => $association) {
             if ($finalMeta->hasAssociationByName($association)) {
                 $assoMeta = $finalMeta->getAssociationByName($association);
 
@@ -144,11 +150,20 @@ abstract class QueryUtil
                         && \in_array($assoMeta->getType(), ['one-to-one', 'many-to-one'], true)) {
                     $originClass = $finalMeta->getClass();
                     $finalMeta = $metadataManager->get($assoMeta->getTarget());
-                    $joins[static::getAlias($finalMeta)] = [
-                        'targetClass' => $finalMeta->getClass(),
-                        'parentClass' => $originClass,
-                        'relation' => $assoMeta->getAssociation(),
-                    ];
+                    $existingFinalAlias = static::getExistingAlias($assoMeta, $finalAlias, $query);
+
+                    if (null === $alias || null === $existingFinalAlias) {
+                        $joins[static::getAlias($finalMeta)] = [
+                            'targetClass' => $finalMeta->getClass(),
+                            'parentClass' => $originClass,
+                            'relation' => $assoMeta->getAssociation(),
+                            'joinAssociation' => null !== $alias ? $finalAlias.'.'.$assoMeta->getAssociation() : $finalMeta->getClass(),
+                            'identificationVariable' => $finalAlias,
+                            'nestingLevel' => $i,
+                        ];
+                    }
+
+                    $finalAlias = null !== $existingFinalAlias ? $existingFinalAlias : static::getAlias($finalMeta);
                 } else {
                     $finalMeta = null;
 
@@ -162,6 +177,29 @@ abstract class QueryUtil
         }
 
         return $finalMeta;
+    }
+
+    private static function getExistingAlias(AssociationMetadataInterface $assoMeta, string $finalAlias, ?Query $query = null): ?string
+    {
+        if (null !== $query) {
+            $AST = $query->getAST();
+            /** @var Query\AST\IdentificationVariableDeclaration $idVarDeclaration */
+            $idVarDeclaration = $AST->fromClause->identificationVariableDeclarations[0];
+            $association = $assoMeta->getAssociation();
+
+            /** @var Query\AST\Join $join */
+            foreach ($idVarDeclaration->joins as $join) {
+                /** @var Query\AST\JoinAssociationDeclaration $declaration */
+                $declaration = $join->joinAssociationDeclaration;
+                $joinPath = $declaration->joinAssociationPathExpression;
+
+                if ($finalAlias === $joinPath->identificationVariable && $association === $joinPath->associationField) {
+                    return $declaration->aliasIdentificationVariable;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
