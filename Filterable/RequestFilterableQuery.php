@@ -59,6 +59,11 @@ class RequestFilterableQuery
 
     protected ?AuthorizationCheckerInterface $authChecker;
 
+    /**
+     * @var FilterFormGuesserInterface[]
+     */
+    protected array $formGuessers;
+
     protected array $joins = [];
 
     /**
@@ -69,6 +74,7 @@ class RequestFilterableQuery
      * @param TranslatorInterface                $translator         The translator
      * @param null|ExpressionLanguage            $expressionLanguage The expression language
      * @param null|AuthorizationCheckerInterface $authChecker        The authorization checker
+     * @param FilterFormGuesserInterface[]       $formGuessers       The form guessers
      */
     public function __construct(
         RequestStack $requestStack,
@@ -77,7 +83,8 @@ class RequestFilterableQuery
         FormFactoryInterface $formFactory,
         TranslatorInterface $translator,
         ?ExpressionLanguage $expressionLanguage = null,
-        ?AuthorizationCheckerInterface $authChecker = null
+        ?AuthorizationCheckerInterface $authChecker = null,
+        array $formGuessers = []
     ) {
         $this->requestStack = $requestStack;
         $this->metadataManager = $metadataManager;
@@ -86,6 +93,7 @@ class RequestFilterableQuery
         $this->translator = $translator;
         $this->expressionLanguage = $expressionLanguage;
         $this->authChecker = $authChecker;
+        $this->formGuessers = $formGuessers;
     }
 
     /**
@@ -383,9 +391,18 @@ class RequestFilterableQuery
         $type = $this->getFieldType($fieldMeta);
 
         if (isset($maps[$type])) {
-            $formType = (array) $maps[$type];
-            $options = isset($formType[1]) && \is_array($formType[1]) ? $formType[1] : [];
+            $formTypeConfig = (array) $maps[$type];
+            $formType = $formTypeConfig[0];
+            $options = isset($formTypeConfig[1]) && \is_array($formTypeConfig[1]) ? $formTypeConfig[1] : [];
             $options['csrf_protection'] = false;
+            $formConfig = new FilterFormConfig($formType, $options);
+
+            foreach ($this->formGuessers as $formGuesser) {
+                $formGuesser->guess($formConfig, $node, $fieldMeta);
+            }
+
+            $formType = $formConfig->getType();
+            $options = $formConfig->getOptions();
 
             if ($node->isRequiredValue()) {
                 $options['constraints'][] = new NotNull();
@@ -396,7 +413,7 @@ class RequestFilterableQuery
                 $data = $lockedCollection ? $this->buildLockedCollection($node) : null;
 
                 $formBuilder = $this->formFactory->createBuilder(CollectionType::class, $data, [
-                    'entry_type' => $formType[0],
+                    'entry_type' => $formType,
                     'entry_options' => $options,
                     'allow_add' => $lockedCollection ? false : true,
                     'allow_delete' => $lockedCollection ? false : true,
@@ -409,7 +426,7 @@ class RequestFilterableQuery
                     $formBuilder->addEventSubscriber(new CollectibleSubscriber());
                 }
             } else {
-                $formBuilder = $this->formFactory->createBuilder($formType[0], null, $options);
+                $formBuilder = $this->formFactory->createBuilder($formType, null, $options);
             }
         } else {
             $formBuilder = $this->formFactory->createBuilder(TextType::class, null, ['csrf_protection' => false]);
