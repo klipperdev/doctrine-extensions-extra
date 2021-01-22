@@ -73,6 +73,75 @@ abstract class QueryUtil
     }
 
     /**
+     * Inject joins of the original query into the new query builder.
+     */
+    public static function injectOriginalJoins(QueryBuilder $qb, Query $originalQuery): void
+    {
+        // Add same joins like original query
+        $originalAST = $originalQuery->getAST();
+        /** @var Query\AST\IdentificationVariableDeclaration $originalIdVarDeclaration */
+        $originalIdVarDeclaration = $originalAST->fromClause->identificationVariableDeclarations[0];
+
+        if ($originalIdVarDeclaration instanceof Query\AST\IdentificationVariableDeclaration) {
+            /** @var Query\AST\Join $join */
+            foreach ($originalIdVarDeclaration->joins as $join) {
+                /** @var Query\AST\JoinAssociationDeclaration $declaration */
+                $declaration = $join->joinAssociationDeclaration;
+                $joinPath = $declaration->joinAssociationPathExpression;
+                $qbJoinAssociation = $joinPath->identificationVariable.'.'.$joinPath->associationField;
+
+                if (Query\AST\Join::JOIN_TYPE_LEFT === $join->joinType) {
+                    $qb->leftJoin($qbJoinAssociation, $declaration->aliasIdentificationVariable);
+                } else {
+                    $qb->join($qbJoinAssociation, $declaration->aliasIdentificationVariable);
+                }
+            }
+        }
+    }
+
+    /**
+     * Get the map of join associations and entity aliases.
+     *
+     * @param Query|QueryBuilder $query
+     *
+     * @return string[]
+     */
+    public static function getJoinAliases($query): array
+    {
+        $joinAliases = [];
+
+        if ($query instanceof QueryBuilder) {
+            $parts = $query->getDQLParts();
+
+            if (isset($parts['join']) && \is_array($parts['join']) && \count($parts['join']) > 0) {
+                /** @var Query\Expr\Join[] $joins */
+                foreach ($parts['join'] as $alias => $joins) {
+                    foreach ($joins as $join) {
+                        $joinAliases[$join->getJoin()] = $join->getAlias();
+                    }
+                }
+            }
+        } elseif ($query instanceof Query) {
+            $AST = $query->getAST();
+            /** @var Query\AST\IdentificationVariableDeclaration $idVarDeclaration */
+            $idVarDeclaration = $AST->fromClause->identificationVariableDeclarations[0];
+
+            if ($idVarDeclaration instanceof Query\AST\IdentificationVariableDeclaration) {
+                /** @var Query\AST\Join $join */
+                foreach ($idVarDeclaration->joins as $join) {
+                    /** @var Query\AST\JoinAssociationDeclaration $declaration */
+                    $declaration = $join->joinAssociationDeclaration;
+                    $joinPath = $declaration->joinAssociationPathExpression;
+                    $qbJoinAssociation = $joinPath->identificationVariable.'.'.$joinPath->associationField;
+                    $joinAliases[$qbJoinAssociation] = $declaration->aliasIdentificationVariable;
+                }
+            }
+        }
+
+        return $joinAliases;
+    }
+
+    /**
      * Get the doctrine compatible alias name from metadata name.
      *
      * @param MetadataInterface|string $object The object name or metadata
@@ -121,13 +190,14 @@ abstract class QueryUtil
     /**
      * Get the object metadata of the target association.
      *
-     * @param MetadataManagerInterface           $metadataManager The metadata manager
-     * @param ObjectMetadataInterface            $metadata        The object metadata
-     * @param string[]                           $associations    The recursive association names
-     * @param array                              $joins           The joins by reference
-     * @param null|AuthorizationCheckerInterface $authChecker     The authorization checker
-     * @param null|string                        $alias           The alias of object metadata
-     * @param null|Query                         $query           The query to check if join already exists
+     * @param MetadataManagerInterface           $metadataManager    The metadata manager
+     * @param ObjectMetadataInterface            $metadata           The object metadata
+     * @param string[]                           $associations       The recursive association names
+     * @param array                              $joins              The joins by reference
+     * @param null|AuthorizationCheckerInterface $authChecker        The authorization checker
+     * @param null|string                        $alias              The alias of object metadata
+     * @param null|Query                         $query              The query to check if join already exists
+     * @param null|string                        $existingFinalAlias The existing final alias retrieve with the query
      */
     public static function getAssociationMeta(
         MetadataManagerInterface $metadataManager,

@@ -33,25 +33,30 @@ class CompileArgs
 
     private string $alias;
 
+    private array $joinAliases;
+
     /**
      * @param ArrayCollection          $parameters      The query parameters
      * @param EntityManagerInterface   $entityManager   The entity manager
      * @param MetadataManagerInterface $metadataManager The metadata manager
      * @param ObjectMetadataInterface  $metadata        The metadata of query entity
      * @param string                   $alias           The alias of query entity
+     * @param string[]                 $joinAliases     The map of join associations and entity aliases
      */
     public function __construct(
         ArrayCollection $parameters,
         EntityManagerInterface $entityManager,
         MetadataManagerInterface $metadataManager,
         ObjectMetadataInterface $metadata,
-        string $alias
+        string $alias,
+        array $joinAliases
     ) {
         $this->parameters = $parameters;
         $this->entityManager = $entityManager;
         $this->metadataManager = $metadataManager;
         $this->metadata = $metadata;
         $this->alias = $alias;
+        $this->joinAliases = $joinAliases;
     }
 
     /**
@@ -92,5 +97,13 @@ class CompileArgs
     public function getAlias(): string
     {
         return $this->alias;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getJoinAliases(): array
+    {
+        return $this->joinAliases;
     }
 }

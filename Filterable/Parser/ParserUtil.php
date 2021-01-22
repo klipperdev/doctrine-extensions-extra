@@ -12,6 +12,7 @@
 namespace Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser;
 
 use Doctrine\ORM\Query\Parameter;
+use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Exception\InvalidAssociationException;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\RuleNode;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\Transformers\NodeFieldNameTransformerInterface;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\Transformers\NodeValueTransformerInterface;
@@ -58,16 +59,38 @@ abstract class ParserUtil
      */
     public static function getFieldName(CompileArgs $args, RuleNode $node): string
     {
-        $metaField = static::getFieldMetadata($args, $node);
         $nodeValue = $node->getQueryValue();
+        $field = $node->getField();
+        $alias = $args->getAlias();
 
-        if ($metaField->getParent() === $args->getObjectMetadata() && false === strpos($node->getField(), '.')) {
-            $alias = $args->getAlias();
-        } else {
-            $alias = QueryUtil::getAlias($metaField->getParent());
+        if (false !== strpos($field, '.')) {
+            $links = explode('.', $field);
+            $field = array_pop($links);
+
+            $metadataManager = $args->getMetadataManager();
+            $joinAliases = $args->getJoinAliases();
+            $linkMeta = $args->getObjectMetadata();
+
+            foreach ($links as $link) {
+                if (!$linkMeta->hasAssociationByName($link)) {
+                    throw new InvalidAssociationException($node->getField());
+                }
+
+                $assoMeta = $linkMeta->getAssociationByName($link);
+
+                if (!\in_array($assoMeta->getType(), ['one-to-one', 'many-to-one'], true)) {
+                    throw new InvalidAssociationException($node->getField());
+                }
+
+                $linkMeta = $metadataManager->get($assoMeta->getTarget());
+                $linkAssociation = $alias.'.'.$assoMeta->getAssociation();
+
+                $alias = $joinAliases[$linkAssociation]
+                    ?? QueryUtil::getAlias($linkMeta);
+            }
         }
 
-        $fieldName = $alias.'.'.$metaField->getField();
+        $fieldName = $alias.'.'.$field;
 
         if ($nodeValue instanceof NodeFieldNameTransformerInterface) {
             return $nodeValue->compileFieldName($args, $node, $fieldName);

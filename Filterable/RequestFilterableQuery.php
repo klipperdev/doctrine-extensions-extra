@@ -154,16 +154,15 @@ class RequestFilterableQuery
      * @param ConditionNode|NodeInterface|RuleNode $node  The node
      * @param ObjectMetadataInterface              $meta  The object metadata
      * @param string                               $alias The alias of object metadata
-     * @param Query                                $query The query
      */
-    protected function validateNode(?NodeInterface $node, ObjectMetadataInterface $meta, string $alias, Query $query): ?NodeInterface
+    protected function validateNode(?NodeInterface $node, ObjectMetadataInterface $meta, string $alias): ?NodeInterface
     {
         $validNode = null;
 
         if ($node instanceof ConditionNode) {
-            $validNode = $this->validateConditionNode($node, $meta, $alias, $query);
+            $validNode = $this->validateConditionNode($node, $meta, $alias);
         } elseif ($node instanceof RuleNode) {
-            $validNode = $this->validateRuleNode($node, $meta, $alias, $query);
+            $validNode = $this->validateRuleNode($node, $meta, $alias);
         }
 
         return $validNode;
@@ -218,7 +217,7 @@ class RequestFilterableQuery
         }
 
         $meta = $this->metadataManager->get($class);
-        $node = $this->validateNode($this->parser->parse($value), $meta, $alias, $originalQuery);
+        $node = $this->validateNode($this->parser->parse($value), $meta, $alias);
 
         if (null === $node) {
             return $qb;
@@ -228,26 +227,7 @@ class RequestFilterableQuery
             return $qb->andWhere($alias.'.id IS NULL');
         }
 
-        // Add smae joins like original query
-        $originalAST = $originalQuery->getAST();
-        /** @var Query\AST\IdentificationVariableDeclaration $originalIdVarDeclaration */
-        $originalIdVarDeclaration = $originalAST->fromClause->identificationVariableDeclarations[0];
-
-        if ($originalIdVarDeclaration instanceof Query\AST\IdentificationVariableDeclaration) {
-            /** @var Query\AST\Join $join */
-            foreach ($originalIdVarDeclaration->joins as $join) {
-                /** @var Query\AST\JoinAssociationDeclaration $declaration */
-                $declaration = $join->joinAssociationDeclaration;
-                $joinPath = $declaration->joinAssociationPathExpression;
-                $qbJoinAssociation = $joinPath->identificationVariable.'.'.$joinPath->associationField;
-
-                if (Query\AST\Join::JOIN_TYPE_LEFT === $join->joinType) {
-                    $qb->leftJoin($qbJoinAssociation, $declaration->aliasIdentificationVariable);
-                } else {
-                    $qb->join($qbJoinAssociation, $declaration->aliasIdentificationVariable);
-                }
-            }
-        }
+        QueryUtil::injectOriginalJoins($qb, $originalQuery);
 
         foreach ($this->joins as $joinAlias => $joinConfig) {
             $qb->leftJoin($joinConfig['joinAssociation'], $joinAlias);
@@ -258,7 +238,8 @@ class RequestFilterableQuery
             $qb->getEntityManager(),
             $this->metadataManager,
             $meta,
-            $alias
+            $alias,
+            QueryUtil::getJoinAliases($qb)
         ));
 
         return $qb->where($filter);
@@ -270,15 +251,14 @@ class RequestFilterableQuery
      * @param ConditionNode           $node  The condition node
      * @param ObjectMetadataInterface $meta  The object metadata
      * @param string                  $alias The alias of object metadata
-     * @param Query                   $query The query
      */
-    private function validateConditionNode(ConditionNode $node, ObjectMetadataInterface $meta, string $alias, Query $query): ?ConditionNode
+    private function validateConditionNode(ConditionNode $node, ObjectMetadataInterface $meta, string $alias): ?ConditionNode
     {
         $validNode = $node;
         $rules = [];
 
         foreach ($validNode->getRules() as $rule) {
-            $rule = $this->validateNode($rule, $meta, $alias, $query);
+            $rule = $this->validateNode($rule, $meta, $alias);
 
             if ($rule) {
                 $rules[] = $rule;
@@ -300,9 +280,8 @@ class RequestFilterableQuery
      * @param RuleNode                $node  The condition node
      * @param ObjectMetadataInterface $meta  The object metadata
      * @param string                  $alias The alias of object metadata
-     * @param Query                   $query The query
      */
-    private function validateRuleNode(RuleNode $node, ObjectMetadataInterface $meta, string $alias, Query $query): ?RuleNode
+    private function validateRuleNode(RuleNode $node, ObjectMetadataInterface $meta, string $alias): ?RuleNode
     {
         $validNode = $node;
         $metaForField = $meta;
@@ -318,8 +297,7 @@ class RequestFilterableQuery
                 $links,
                 $joins,
                 $this->authChecker,
-                $alias,
-                $query
+                $alias
             );
         }
 

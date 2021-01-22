@@ -96,7 +96,7 @@ class RequestSearchableQuery
         QueryUtil::addCustomTreeWalker($query, MergeConditionalExpressionWalker::class);
 
         $qb = $this->getQueryBuilder($query->getEntityManager(), $class, $alias);
-        $queryAst = $this->injectFilter($qb, $searchableFields, $querySearch)
+        $queryAst = $this->injectFilter($qb, $searchableFields, $querySearch, $query)
             ->getQuery()
             ->getAST()
         ;
@@ -143,6 +143,7 @@ class RequestSearchableQuery
         $meta = $this->metadataManager->get($class);
         $fields = $this->findSearchableFields($em, $meta, $alias);
         $joins = [];
+        $existingFinalAlias = null;
 
         foreach ($meta->getDeepSearchPaths() as $path) {
             $deepJoins = [];
@@ -153,12 +154,14 @@ class RequestSearchableQuery
                 $deepJoins,
                 $this->authChecker,
                 $alias,
-                $query
+                $query,
+                $existingFinalAlias
             );
 
             if (null !== $deepMeta) {
+                $deepAlias = null !== $existingFinalAlias ? $existingFinalAlias : QueryUtil::getAlias($deepMeta);
                 $deepFieldPrefix = ($fieldPrefix ? $fieldPrefix.'.' : '').$path;
-                $deepFields = $this->findSearchableFields($em, $deepMeta, QueryUtil::getAlias($deepMeta), $deepFieldPrefix);
+                $deepFields = $this->findSearchableFields($em, $deepMeta, $deepAlias, $deepFieldPrefix);
 
                 if (!empty($deepFields)) {
                     $fields = array_merge($fields, $deepFields);
@@ -223,8 +226,9 @@ class RequestSearchableQuery
      * @param QueryBuilder     $qb               The query builder for filter
      * @param SearchableFields $searchableFields The searchable fields
      * @param string           $queryFilter      The request query filter
+     * @param Query            $originalQuery    The original query
      */
-    private function injectFilter(QueryBuilder $qb, SearchableFields $searchableFields, string $queryFilter): QueryBuilder
+    private function injectFilter(QueryBuilder $qb, SearchableFields $searchableFields, string $queryFilter, Query $originalQuery): QueryBuilder
     {
         $values = array_map('trim', explode(' ', $queryFilter));
         $filter = '';
@@ -241,6 +245,8 @@ class RequestSearchableQuery
 
             $filter .= ')';
         }
+
+        QueryUtil::injectOriginalJoins($qb, $originalQuery);
 
         foreach ($searchableFields->getJoins() as $joinAlias => $joinConfig) {
             $qb->leftJoin($joinConfig['joinAssociation'], $joinAlias);
