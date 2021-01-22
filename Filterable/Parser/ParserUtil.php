@@ -60,6 +60,7 @@ abstract class ParserUtil
     public static function getFieldName(CompileArgs $args, RuleNode $node): string
     {
         $nodeValue = $node->getQueryValue();
+        $objMeta = $args->getObjectMetadata();
         $field = $node->getField();
         $alias = $args->getAlias();
 
@@ -69,28 +70,27 @@ abstract class ParserUtil
 
             $metadataManager = $args->getMetadataManager();
             $joinAliases = $args->getJoinAliases();
-            $linkMeta = $args->getObjectMetadata();
 
             foreach ($links as $link) {
-                if (!$linkMeta->hasAssociationByName($link)) {
+                if (!$objMeta->hasAssociationByName($link)) {
                     throw new InvalidAssociationException($node->getField());
                 }
 
-                $assoMeta = $linkMeta->getAssociationByName($link);
+                $assoMeta = $objMeta->getAssociationByName($link);
 
                 if (!\in_array($assoMeta->getType(), ['one-to-one', 'many-to-one'], true)) {
                     throw new InvalidAssociationException($node->getField());
                 }
 
-                $linkMeta = $metadataManager->get($assoMeta->getTarget());
+                $objMeta = $metadataManager->get($assoMeta->getTarget());
                 $linkAssociation = $alias.'.'.$assoMeta->getAssociation();
 
                 $alias = $joinAliases[$linkAssociation]
-                    ?? QueryUtil::getAlias($linkMeta);
+                    ?? QueryUtil::getAlias($objMeta);
             }
         }
 
-        $fieldName = $alias.'.'.$field;
+        $fieldName = $alias.'.'.$objMeta->getFieldByName($field)->getField();
 
         if ($nodeValue instanceof NodeFieldNameTransformerInterface) {
             return $nodeValue->compileFieldName($args, $node, $fieldName);
