@@ -41,16 +41,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 /**
  * @author François Pluchino <francois.pluchino@klipper.dev>
  */
-class FilterableQuery
+class FilterableQuery implements FilterableQueryInterface
 {
-    public const VALIDATE_ALL = 3;
-
-    public const VALIDATE_VALUE = 2;
-
-    public const VALIDATE_NODE = 1;
-
-    public const VALIDATE_NONE = 0;
-
     private MetadataManagerInterface $metadataManager;
 
     private Parser $parser;
