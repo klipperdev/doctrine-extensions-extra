@@ -20,11 +20,9 @@ use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\NodeInterfa
  */
 interface FilterableQueryInterface
 {
-    public const VALIDATE_ALL = 3;
+    public const VALIDATE_ALL = 2;
 
-    public const VALIDATE_VALUE = 2;
-
-    public const VALIDATE_NODE = 1;
+    public const VALIDATE_VALUE = 1;
 
     public const VALIDATE_NONE = 0;
 

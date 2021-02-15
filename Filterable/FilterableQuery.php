@@ -192,10 +192,7 @@ class FilterableQuery implements FilterableQueryInterface
     ): QueryBuilder {
         $node = $filter instanceof NodeInterface ? $filter : $this->parser->parse($filter);
         $meta = $this->metadataManager->get($class);
-
-        if ($validate >= self::VALIDATE_NODE) {
-            $node = $this->validateNode($node, $meta, $alias, $validate, $joins);
-        }
+        $node = $this->validateNode($node, $meta, $alias, $validate, $joins);
 
         if (null === $node) {
             return $qb;
