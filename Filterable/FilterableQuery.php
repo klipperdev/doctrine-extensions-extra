@@ -115,10 +115,10 @@ class FilterableQuery
      * @param null|array|NodeInterface $filter   The filter
      * @param int                      $validate Check if filter must be validate for nodes only or nodes and values
      */
-    public function filter(Query $query, $filter, int $validate = self::VALIDATE_NONE): void
+    public function filter(Query $query, $filter, int $validate = self::VALIDATE_NONE): Query
     {
         if (null === $filter) {
-            return;
+            return $query;
         }
 
         /** @var Query\AST\IdentificationVariableDeclaration[] $varDeclarations */
@@ -135,6 +135,8 @@ class FilterableQuery
                 break;
             }
         }
+
+        return $query;
     }
 
     /**
