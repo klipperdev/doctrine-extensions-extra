@@ -272,13 +272,17 @@ class Parser
     /**
      * Parse the query filter.
      *
-     * @param array $filter              The array of filter
-     * @param bool  $forceFirstCondition Check if the condition node must be added in root
+     * @param array|FilterInterface $filter              The array of filter
+     * @param bool                  $forceFirstCondition Check if the condition node must be added in root
      *
-     * @throw \JsonException When the json is invalid
+     * @throws InvalidConditionTypeException
+     * @throws InvalidRuleTypeException
+     * @throws RequireParameterException
+     * @throws UnexpectedTypeException
      */
-    public function parse(array $filter, bool $forceFirstCondition = true): NodeInterface
+    public function parse($filter, bool $forceFirstCondition = true): NodeInterface
     {
+        $filter = $filter instanceof FilterInterface ? $filter->toArray() : $filter;
         $node = $this->parseNode($filter);
 
         if ($forceFirstCondition && !$node instanceof ConditionNode) {

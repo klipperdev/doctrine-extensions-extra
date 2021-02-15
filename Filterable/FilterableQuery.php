@@ -17,6 +17,7 @@ use Doctrine\ORM\QueryBuilder;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Form\Listener\CollectibleSubscriber;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Form\Listener\FilterableFieldSubscriber;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\CompileArgs;
+use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\FilterInterface;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\ConditionNode;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\NodeInterface;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\RuleNode;
@@ -87,10 +88,7 @@ class FilterableQuery implements FilterableQueryInterface
         $this->formGuessers = $formGuessers;
     }
 
-    /**
-     * @throw ObjectMetadataNotFoundException When the metadata is not found
-     */
-    public function validate(string $metadataName, array $filter, bool $forceFirstCondition = false): NodeInterface
+    public function validate(string $metadataName, $filter, bool $forceFirstCondition = false): NodeInterface
     {
         $meta = $this->metadataManager->getByName($metadataName);
 
@@ -100,13 +98,6 @@ class FilterableQuery implements FilterableQueryInterface
         return $node;
     }
 
-    /**
-     * Filter the query.
-     *
-     * @param Query                    $query    The query
-     * @param null|array|NodeInterface $filter   The filter
-     * @param int                      $validate Check if filter must be validate for nodes only or nodes and values
-     */
     public function filter(Query $query, $filter, int $validate = self::VALIDATE_NONE): Query
     {
         if (null === $filter) {
@@ -134,11 +125,11 @@ class FilterableQuery implements FilterableQueryInterface
     /**
      * Filter the query.
      *
-     * @param Query               $query    The query
-     * @param string              $class    The root class name
-     * @param string              $alias    The alias
-     * @param array|NodeInterface $filter   The filter
-     * @param int                 $validate Check if filter must be validate
+     * @param Query                               $query    The query
+     * @param string                              $class    The root class name
+     * @param string                              $alias    The alias
+     * @param array|FilterInterface|NodeInterface $filter   The filter
+     * @param int                                 $validate Check if filter must be validate
      */
     private function doFilter(Query $query, string $class, string $alias, $filter, int $validate): void
     {

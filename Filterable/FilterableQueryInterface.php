@@ -12,6 +12,7 @@
 namespace Klipper\Component\DoctrineExtensionsExtra\Filterable;
 
 use Doctrine\ORM\Query;
+use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\FilterInterface;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\NodeInterface;
 
 /**
@@ -28,16 +29,19 @@ interface FilterableQueryInterface
     public const VALIDATE_NONE = 0;
 
     /**
+     * @param array|FilterInterface $filter
+     *
      * @throw ObjectMetadataNotFoundException When the metadata is not found
      */
-    public function validate(string $metadataName, array $filter, bool $forceFirstCondition = false): NodeInterface;
+    public function validate(string $metadataName, $filter, bool $forceFirstCondition = false): NodeInterface;
 
     /**
      * Filter the query.
      *
-     * @param Query                    $query    The query
-     * @param null|array|NodeInterface $filter   The filter
-     * @param int                      $validate Check if filter must be validate for nodes only or nodes and values
+     * @param Query                                    $query    The query
+     * @param null|array|FilterInterface|NodeInterface $filter   The filter
+     * @param int                                      $validate Check if filter must be validate for nodes only
+     *                                                           or nodes and values
      */
     public function filter(Query $query, $filter, int $validate = self::VALIDATE_NONE): Query;
 }

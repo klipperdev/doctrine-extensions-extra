@@ -12,6 +12,7 @@
 namespace Klipper\Component\DoctrineExtensionsExtra\Validator\Constraints;
 
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\FilterableQuery;
+use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\FilterInterface;
 use Klipper\Component\Metadata\Exception\ObjectMetadataNotFoundException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -45,7 +46,7 @@ class RequestQueryFilterValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\RequestFilter');
         }
 
-        if (!\is_array($value)) {
+        if (!\is_array($value) && !$value instanceof FilterInterface) {
             return;
         }
 
