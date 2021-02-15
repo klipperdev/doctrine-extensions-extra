@@ -11,7 +11,7 @@
 
 namespace Klipper\Component\DoctrineExtensionsExtra\Validator\Constraints;
 
-use Klipper\Component\DoctrineExtensionsExtra\Filterable\FilterValidator;
+use Klipper\Component\DoctrineExtensionsExtra\Filterable\FilterableQuery;
 use Klipper\Component\Metadata\Exception\ObjectMetadataNotFoundException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -24,15 +24,15 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class RequestQueryFilterValidator extends ConstraintValidator
 {
-    private FilterValidator $filterValidator;
+    private FilterableQuery $filterableQuery;
 
     private PropertyAccessor $accessor;
 
     public function __construct(
-        FilterValidator $filterValidator,
+        FilterableQuery $filterableQuery,
         ?PropertyAccessor $accessor = null
     ) {
-        $this->filterValidator = $filterValidator;
+        $this->filterableQuery = $filterableQuery;
         $this->accessor = $accessor ?? PropertyAccess::createPropertyAccessor();
     }
 
@@ -53,7 +53,7 @@ class RequestQueryFilterValidator extends ConstraintValidator
         $metadataName = $this->accessor->getValue($data, $constraint->metadataNamePath);
 
         try {
-            $node = $this->filterValidator->validate($metadataName, $value, $constraint->forceFirstCondition);
+            $node = $this->filterableQuery->validate($metadataName, $value, $constraint->forceFirstCondition);
 
             if (!$node->isValid()) {
                 foreach ($node->getErrors(true) as $error) {
