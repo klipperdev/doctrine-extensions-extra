@@ -96,6 +96,16 @@ class Pagination implements PaginationInterface
         return $this->results;
     }
 
+    public function hasPreviousPage(): bool
+    {
+        return $this->page > 1;
+    }
+
+    public function hasNextPage(): bool
+    {
+        return $this->page < $this->getPages();
+    }
+
     /**
      * @param object[] $results
      */

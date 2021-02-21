@@ -44,4 +44,14 @@ interface PaginationInterface
      * @return object[]
      */
     public function getResults(): array;
+
+    /**
+     * Check if previous page is available.
+     */
+    public function hasPreviousPage(): bool;
+
+    /**
+     * Check if next page is available.
+     */
+    public function hasNextPage(): bool;
 }
