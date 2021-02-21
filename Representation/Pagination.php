@@ -11,6 +11,10 @@
 
 namespace Klipper\Component\DoctrineExtensionsExtra\Representation;
 
+use Doctrine\ORM\Query;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use Klipper\Component\DoctrineExtensionsExtra\Pagination\RequestPaginationQuery;
+
 /**
  * Representation of the pagination.
  *
@@ -52,6 +56,21 @@ class Pagination implements PaginationInterface
         $this->results = $results;
     }
 
+    public static function fromQuery(Query $query, bool $fetchJoinCollection = false, ?int $page = null): self
+    {
+        $paginator = new Paginator($query, $fetchJoinCollection);
+        $total = $paginator->count();
+        $results = $paginator->getIterator()->getArrayCopy();
+
+        return new self(
+            $results,
+            $page ?? (int) $query->getHint(RequestPaginationQuery::HINT_PAGE_NUMBER),
+            $query->getMaxResults(),
+            (int) ceil($total / $query->getMaxResults()),
+            $total
+        );
+    }
+
     public function getPage(): int
     {
         return $this->page;
@@ -75,5 +94,15 @@ class Pagination implements PaginationInterface
     public function getResults(): array
     {
         return $this->results;
+    }
+
+    /**
+     * @param object[] $results
+     */
+    public function setResults(array $results): self
+    {
+        $this->results = $results;
+
+        return $this;
     }
 }
