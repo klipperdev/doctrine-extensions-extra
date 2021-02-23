@@ -170,6 +170,6 @@ class NodeError implements \Serializable
      */
     public function unserialize($serialized): void
     {
-        list($this->message, $this->messageTemplate, $this->messageParameters, $this->messagePluralization, $this->cause) = unserialize($serialized, ['allowed_classes' => false]);
+        [$this->message, $this->messageTemplate, $this->messageParameters, $this->messagePluralization, $this->cause] = unserialize($serialized, ['allowed_classes' => false]);
     }
 }
