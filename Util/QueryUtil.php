@@ -249,7 +249,7 @@ abstract class QueryUtil
         return $finalMeta;
     }
 
-    private static function getExistingAlias(AssociationMetadataInterface $assoMeta, string $finalAlias, ?Query $query = null): ?string
+    private static function getExistingAlias(AssociationMetadataInterface $assoMeta, ?string $finalAlias, ?Query $query = null): ?string
     {
         if (null !== $query) {
             $AST = $query->getAST();

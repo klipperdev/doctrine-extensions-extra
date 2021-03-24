@@ -91,6 +91,7 @@ class FilterableQuery implements FilterableQueryInterface
     public function validate(string $metadataName, $filter, bool $forceFirstCondition = false): NodeInterface
     {
         $meta = $this->metadataManager->getByName($metadataName);
+        $joins = [];
 
         $node = $this->parser->parse($filter, $forceFirstCondition);
         $this->validateNode($node, $meta, null, self::VALIDATE_VALUE, $joins);
