@@ -46,6 +46,8 @@ class EntityChoiceValidator extends ConstraintValidator
 
     /**
      * @param mixed $value
+     *
+     * @throws
      */
     public function validate($value, Constraint $constraint): void
     {
