@@ -12,13 +12,13 @@
 namespace Klipper\Component\DoctrineExtensionsExtra\Listener;
 
 use Doctrine\Common\EventArgs;
-use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo as OdmClassMetadataInfo;
 use Doctrine\ODM\MongoDB\UnitOfWork as OdmUnitOfWork;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo as OrmClassMetadataInfo;
 use Doctrine\ORM\UnitOfWork as OrmUnitOfWork;
+use Doctrine\Persistence\Event\LoadClassMetadataEventArgs;
 use Gedmo\Mapping\Event\AdapterInterface;
 use Gedmo\Mapping\MappedEventSubscriber;
 
