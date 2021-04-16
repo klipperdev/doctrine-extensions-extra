@@ -72,7 +72,7 @@ class EntityChoiceValidator extends ConstraintValidator
         }
 
         if ($constraint->multiple) {
-            if (!\is_array($value)) {
+            if (!\is_array($value) && !$value instanceof \ArrayAccess) {
                 throw new UnexpectedValueException($value, 'array');
             }
 
@@ -140,7 +140,7 @@ class EntityChoiceValidator extends ConstraintValidator
 
         $idReader = new IdReader($om, $om->getClassMetadata($constraint->entityClass));
         $namePath = $constraint->namePath ?? $idReader->getIdField();
-        $value = $this->prepareValues(\is_array($value) ? $value : [$value], $namePath);
+        $value = $this->prepareValues(\is_array($value) || $value instanceof \ArrayAccess ? $value : [$value], $namePath);
 
         $result = $this->getExistingValue($om, $constraint, $namePath, $value);
         $invalidValues = array_diff($value, $result);
@@ -185,11 +185,11 @@ class EntityChoiceValidator extends ConstraintValidator
     }
 
     /**
-     * @param int[]|object[]|string[] $values
+     * @param \ArrayAccess|int[]|object[]|string[] $values
      *
      * @return int[]|string[]
      */
-    private function prepareValues(array $values, string $namePath): array
+    private function prepareValues($values, string $namePath): array
     {
         $res = [];
 
