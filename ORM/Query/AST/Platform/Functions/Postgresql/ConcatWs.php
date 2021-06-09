@@ -9,32 +9,35 @@
  * file that was distributed with this source code.
  */
 
-namespace Klipper\Component\DoctrineExtensionsExtra\ORM\Query\AST\Platform\Functions\Mysql;
+namespace Klipper\Component\DoctrineExtensionsExtra\ORM\Query\AST\Platform\Functions\Postgresql;
 
 use Doctrine\ORM\Query\AST\Node;
 use Doctrine\ORM\Query\SqlWalker;
-use Klipper\Component\DoctrineExtensionsExtra\ORM\Query\AST\Functions\String\Concat as StringConcat;
+use Klipper\Component\DoctrineExtensionsExtra\ORM\Query\AST\Functions\String\ConcatWs as StringConcatWs;
 use Klipper\Component\DoctrineExtensionsExtra\ORM\Query\AST\Platform\Functions\PlatformFunctionNode;
 
 /**
- * Concat function for Mysql.
+ * Concat WS function for Postgresql.
  *
  * @author François Pluchino <francois.pluchino@klipper.dev>
  */
-class Concat extends PlatformFunctionNode
+class ConcatWs extends PlatformFunctionNode
 {
     public function getSql(SqlWalker $sqlWalker): string
     {
         /** @var Node[] $values */
-        $values = $this->parameters[StringConcat::VALUES_KEY];
+        $values = $this->parameters[StringConcatWs::VALUES_KEY];
         /** @var bool $notEmpty */
-        $notEmpty = $this->parameters[StringConcat::NOT_EMPTY_KEY];
+        $notEmpty = $this->parameters[StringConcatWs::NOT_EMPTY_KEY];
+        $firstValue = array_shift($values);
 
-        $queryBuilder = ['CONCAT_WS('];
+        $queryBuilder = [];
 
         for ($i = 0; $i < \count($values); ++$i) {
             if ($i > 0) {
-                $queryBuilder[] = ', ';
+                $queryBuilder[] = ' || ';
+                $queryBuilder[] = $sqlWalker->walkArithmeticPrimary($firstValue);
+                $queryBuilder[] = ' || ';
             }
 
             $nodeSql = $sqlWalker->walkArithmeticPrimary($values[$i]);
@@ -45,8 +48,6 @@ class Concat extends PlatformFunctionNode
 
             $queryBuilder[] = $nodeSql;
         }
-
-        $queryBuilder[] = ')';
 
         return implode('', $queryBuilder);
     }

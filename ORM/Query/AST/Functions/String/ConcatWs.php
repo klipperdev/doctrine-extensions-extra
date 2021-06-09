@@ -16,11 +16,11 @@ use Doctrine\ORM\Query\Parser;
 use Klipper\Component\DoctrineExtensionsExtra\ORM\Query\AST\Functions\AbstractPlatformAwareFunctionNode;
 
 /**
- * Concat function.
+ * Concat WS function.
  *
  * @author François Pluchino <francois.pluchino@klipper.dev>
  */
-class Concat extends AbstractPlatformAwareFunctionNode
+class ConcatWs extends AbstractPlatformAwareFunctionNode
 {
     public const VALUES_KEY = 'values';
     public const NOT_EMPTY_KEY = 'not_empty';
