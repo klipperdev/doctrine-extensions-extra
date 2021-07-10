@@ -24,6 +24,7 @@ use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\GreaterOrEq
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\InNode;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\IsEmptyNode;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\IsNullNode;
+use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\IsTrueNode;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\LessNode;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\LessOrEqualNode;
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Node\NotBeginsWithNode;
@@ -87,6 +88,7 @@ abstract class ParserConfig
             'is_not_empty' => NotIsEmptyNode::class,
             'is_null' => IsNullNode::class,
             'is_not_null' => NotIsNullNode::class,
+            'is_true' => IsTrueNode::class,
         ];
     }
 
@@ -151,6 +153,7 @@ abstract class ParserConfig
                 'not_equal',
                 'is_null',
                 'is_not_null',
+                'is_true',
             ],
             'datetime' => [
                 'equal',
