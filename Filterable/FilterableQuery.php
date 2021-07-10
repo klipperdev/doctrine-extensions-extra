@@ -107,7 +107,6 @@ class FilterableQuery implements FilterableQueryInterface
 
         /** @var Query\AST\IdentificationVariableDeclaration[] $varDeclarations */
         $varDeclarations = $query->getAST()->fromClause->identificationVariableDeclarations;
-        $class = null;
 
         foreach ($varDeclarations as $varDeclaration) {
             $rangeDeclaration = $varDeclaration->rangeVariableDeclaration;
@@ -426,8 +425,8 @@ class FilterableQuery implements FilterableQueryInterface
                 $formBuilder = $this->formFactory->createBuilder(CollectionType::class, $data, [
                     'entry_type' => $formType,
                     'entry_options' => $options,
-                    'allow_add' => $lockedCollection ? false : true,
-                    'allow_delete' => $lockedCollection ? false : true,
+                    'allow_add' => !$lockedCollection,
+                    'allow_delete' => !$lockedCollection,
                     'prototype' => false,
                     'csrf_protection' => false,
                     'constraints' => [new Valid()],
