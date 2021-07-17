@@ -13,6 +13,7 @@ namespace Klipper\Component\DoctrineExtensionsExtra\Representation;
 
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Gedmo\Translatable\Query\TreeWalker\TranslationWalker;
 use Klipper\Component\DoctrineExtensionsExtra\Pagination\RequestPaginationQuery;
 
 /**
@@ -58,8 +59,21 @@ class Pagination implements PaginationInterface
 
     public static function fromQuery(Query $query, bool $fetchJoinCollection = false, ?int $page = null, ?int $total = null): self
     {
+        if (null === $total) {
+            $countQuery = clone $query;
+
+            foreach ($query->getHints() as $hint => $value) {
+                if (Query::HINT_CUSTOM_OUTPUT_WALKER !== $hint && TranslationWalker::class !== $value) {
+                    $countQuery->setHint($hint, $value);
+                }
+            }
+            $countQuery->setParameters($query->getParameters());
+
+            $paginator = new Paginator($countQuery, $fetchJoinCollection);
+            $total = $total ?? $paginator->count();
+        }
+
         $paginator = new Paginator($query, $fetchJoinCollection);
-        $total = $total ?? $paginator->count();
         $results = $paginator->getIterator()->getArrayCopy();
 
         return new self(
