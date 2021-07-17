@@ -58,7 +58,6 @@ class RequestSortableQuery
     {
         /** @var Query\AST\IdentificationVariableDeclaration[] $varDeclarations */
         $varDeclarations = $query->getAST()->fromClause->identificationVariableDeclarations;
-        $class = null;
 
         foreach ($varDeclarations as $varDeclaration) {
             $rangeDeclaration = $varDeclaration->rangeVariableDeclaration;
