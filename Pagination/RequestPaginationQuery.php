@@ -53,13 +53,16 @@ class RequestPaginationQuery
         $request = $this->requestStack->getCurrentRequest();
 
         if (null !== $request) {
-            $page = !$lockPage && null !== $request
+            $page = !$lockPage
                 ? max(1, $request->query->getInt('page', 1))
                 : 1;
-            $limit = null !== $request
-                ? max(1, $request->query->getInt('limit', $this->defaultSize))
-                : $this->defaultSize;
+            $limit = max(1, $request->query->getInt('limit', $this->defaultSize));
             $maxResult = max(1, min($limit, $this->maxSize));
+
+            if (null !== $query->getMaxResults() && $maxResult === $this->defaultSize) {
+                $maxResult = $query->getMaxResults();
+            }
+
             $firstResult = (($page - 1) * $maxResult + 1) - 1;
 
             $query->setFirstResult($firstResult)->setMaxResults($maxResult);
