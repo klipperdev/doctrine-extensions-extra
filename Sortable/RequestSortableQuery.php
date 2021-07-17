@@ -126,7 +126,7 @@ class RequestSortableQuery
         }
 
         $finalSortable = [];
-        $sortable = $metadata->getDefaultSortable();
+        $sortable = null === $query->getAST()->orderByClause ? $metadata->getDefaultSortable() : [];
 
         if ($request = $this->requestStack->getCurrentRequest()) {
             $querySortable = $request->headers->has('x-sort')
