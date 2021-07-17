@@ -56,10 +56,10 @@ class Pagination implements PaginationInterface
         $this->results = $results;
     }
 
-    public static function fromQuery(Query $query, bool $fetchJoinCollection = false, ?int $page = null): self
+    public static function fromQuery(Query $query, bool $fetchJoinCollection = false, ?int $page = null, ?int $total = null): self
     {
         $paginator = new Paginator($query, $fetchJoinCollection);
-        $total = $paginator->count();
+        $total = $total ?? $paginator->count();
         $results = $paginator->getIterator()->getArrayCopy();
 
         return new self(
