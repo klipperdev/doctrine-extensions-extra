@@ -80,7 +80,7 @@ class Pagination implements PaginationInterface
             $results,
             $page ?? (int) $query->getHint(RequestPaginationQuery::HINT_PAGE_NUMBER),
             $query->getMaxResults(),
-            max(1, (int) ceil($total / $query->getMaxResults())),
+            max(1, (int) ceil($total / max(1, $query->getMaxResults()))),
             $total
         );
     }
