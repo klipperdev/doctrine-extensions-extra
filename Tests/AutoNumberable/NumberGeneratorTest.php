@@ -65,7 +65,7 @@ final class NumberGeneratorTest extends TestCase
         $result = $generator->generate($pattern, 42, $datetime, $utc);
 
         if (0 === strpos($expected, '/')) {
-            static::assertRegExp($expected, $result);
+            static::assertMatchesRegularExpression($expected, $result);
         } else {
             static::assertSame($expected, $result);
         }
