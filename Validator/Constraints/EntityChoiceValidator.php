@@ -91,7 +91,11 @@ class EntityChoiceValidator extends ConstraintValidator
             $em = null;
 
             foreach ($this->registry->getManagers() as $objectManager) {
-                if ($objectManager->getMetadataFactory()->hasMetadataFor($constraint->entityClass)) {
+                $metaFactory = $objectManager->getMetadataFactory();
+
+                if ($metaFactory->hasMetadataFor($constraint->entityClass)
+                    || $metaFactory->isTransient($constraint->entityClass)
+                ) {
                     $em = $objectManager;
 
                     break;
