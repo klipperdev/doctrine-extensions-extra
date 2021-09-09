@@ -29,6 +29,7 @@
         "gedmo/doctrine-extensions": "^3.0.0",
         "ramsey/uuid": "^4.0.0",
         "klipper/default-value": "^2.0.0",
+        "klipper/doctrine-choice": "^2.0.0",
         "klipper/form": "^2.0.0",
         "klipper/security": "^2.0.0",
         "klipper/expression-language": "^2.0.0",
