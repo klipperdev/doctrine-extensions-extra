@@ -217,7 +217,7 @@ abstract class QueryUtil
                 $assoMeta = $finalMeta->getAssociationByName($association);
 
                 if (static::isAssociationVisible($finalMeta, $assoMeta, $authChecker)
-                        && \in_array($assoMeta->getType(), ['one-to-one', 'many-to-one'], true)) {
+                        && \in_array($assoMeta->getType(), ['one-to-one', 'many-to-one', 'one-to-many'], true)) {
                     $originClass = $finalMeta->getClass();
                     $finalMeta = $metadataManager->get($assoMeta->getTarget());
                     $existingFinalAlias = static::getExistingAlias($assoMeta, $finalAlias, $query);
