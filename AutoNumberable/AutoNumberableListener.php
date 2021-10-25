@@ -64,9 +64,9 @@ class AutoNumberableListener extends AbstractUpdateFieldSubscriber
         }
 
         if ((empty($options['condition']) && null === $newValue)
-                || $this->expressionLanguage->evaluate($options['condition'], $expValues)) {
+                || $this->expressionLanguage->evaluate($options['condition'] ?? 'null', $expValues)) {
             $newValue = $this->autoNumberGenerator->generate(
-                $type = ClassUtils::getClass($object).'::'.$field,
+                ClassUtils::getClass($object).'::'.$field,
                 $options['pattern'],
                 $options['utc']
             );
