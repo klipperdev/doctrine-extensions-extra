@@ -9,30 +9,50 @@
  * file that was distributed with this source code.
  */
 
-namespace Klipper\Component\DoctrineExtensionsExtra\AutoNumberable\Model;
+namespace Klipper\Component\DoctrineExtensionsExtra\AutoNumberable\Model\Traits;
+
+use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Auto number config model.
+ * Trait for Auto number config model.
  *
  * @author François Pluchino <francois.pluchino@klipper.dev>
  */
-abstract class AutoNumberConfig implements AutoNumberConfigInterface
+trait AutoNumberConfigTrait
 {
     /**
-     * @var null|int|string
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @Assert\Type(type="string")
+     * @Assert\Length(max=255)
+     * @Assert\NotBlank
+     *
+     * @Serializer\Expose
      */
-    protected $id;
-
     protected ?string $type = null;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @Assert\Type(type="string")
+     * @Assert\Length(max=255)
+     * @Assert\NotBlank
+     *
+     * @Serializer\Expose
+     */
     protected ?string $pattern = null;
 
+    /**
+     * @ORM\Column(type="integer")
+     *
+     * @Assert\Type(type="integer")
+     *
+     * @Serializer\Expose
+     * @Serializer\ReadOnlyProperty
+     */
     protected int $number = 0;
-
-    public function getId()
-    {
-        return $this->id;
-    }
 
     public function setType(?string $type): self
     {

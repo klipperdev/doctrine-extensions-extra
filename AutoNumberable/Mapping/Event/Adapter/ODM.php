@@ -11,12 +11,11 @@
 
 namespace Klipper\Component\DoctrineExtensionsExtra\AutoNumberable\Mapping\Event\Adapter;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Gedmo\Mapping\Event\Adapter\ODM as BaseAdapterODM;
 use Klipper\Component\DoctrineExtensionsExtra\AutoNumberable\Mapping\Event\AutoNumberableAdapterInterface;
 use Klipper\Component\DoctrineExtensionsExtra\AutoNumberable\Model\AutoNumberConfigInterface;
 use Klipper\Component\DoctrineExtensionsExtra\Exception\RuntimeException;
+use Klipper\Component\DoctrineExtra\Util\ClassUtils;
 
 /**
  * The auto numberable adapter for ODM.
@@ -35,51 +34,26 @@ final class ODM extends BaseAdapterODM implements AutoNumberableAdapterInterface
         ]);
 
         if (null === $config) {
-            /** @var ClassMetadata $meta */
-            $meta = $om->getClassMetadata(AutoNumberConfigInterface::class);
-            $config = $meta->newInstance();
+            $config = $om->getClassMetadata(AutoNumberConfigInterface::class)->newInstance();
             $config->setType($type);
             $config->setPattern($pattern);
             $config->setNumber(0);
         }
 
-        $config->setNumber($config->getNumber() + 1);
-        $om->persist($om);
-
-        return $config;
+        return $config->setNumber($config->getNumber() + 1);
     }
 
     public function put(AutoNumberConfigInterface $config): void
     {
-        /** @var DocumentManager $dm */
-        $dm = $this->getObjectManager();
-        /** @var ClassMetadata $meta */
-        $meta = $dm->getClassMetadata(\get_class($config));
-        $collection = $dm->getDocumentCollection($meta->name);
-        $data = [];
-        $identifier = [];
+        $em = $this->getObjectManager();
+        $uow = $em->getUnitOfWork();
 
-        /** @var \ReflectionProperty $reflProp */
-        foreach ($meta->getReflectionProperties() as $fieldName => $reflProp) {
-            $colName = $meta->fieldMappings[$fieldName]['name'];
-
-            if ($meta->isIdentifier($fieldName)) {
-                if (null !== ($idValue = $reflProp->getValue($config))) {
-                    $identifier[$colName] = $idValue;
-                }
-            } else {
-                $data[$colName] = $reflProp->getValue($config);
-            }
-        }
-
-        if (!empty($identifier)) {
-            $res = $collection->update($identifier, $data);
-        } else {
-            $res = $collection->insert($data);
-        }
-
-        if (!$res) {
-            throw new RuntimeException('Failed to insert new auto number config record');
+        try {
+            $meta = $em->getMetadataFactory()->getMetadataFor(ClassUtils::getClass($config));
+            $uow->persist($config);
+            $uow->computeChangeSet($meta, $config);
+        } catch (\Throwable $e) {
+            throw new RuntimeException('Failed to insert new auto number config record', 0, $e);
         }
     }
 }

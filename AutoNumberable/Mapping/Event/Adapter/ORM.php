@@ -49,34 +49,14 @@ final class ORM extends BaseAdapterORM implements AutoNumberableAdapterInterface
     public function put(AutoNumberConfigInterface $config): void
     {
         $em = $this->getObjectManager();
-        $meta = $em->getClassMetadata(ClassUtils::getClass($config));
-        $table = $meta->getTableName();
-        $types = [];
-        $data = [];
-        $identifier = [];
+        $uow = $em->getUnitOfWork();
 
-        /** @var \ReflectionProperty $reflProp */
-        foreach ($meta->getReflectionProperties() as $fieldName => $reflProp) {
-            $colName = $meta->getColumnName($fieldName);
-            $types[$colName] = $meta->getTypeOfField($fieldName);
-
-            if ($meta->isIdentifier($fieldName)) {
-                if (null !== ($idValue = $reflProp->getValue($config))) {
-                    $identifier[$colName] = $idValue;
-                }
-            } else {
-                $data[$colName] = $reflProp->getValue($config);
-            }
-        }
-
-        if (!empty($identifier)) {
-            $res = $em->getConnection()->update($table, $data, $identifier, $types);
-        } else {
-            $res = $em->getConnection()->insert($table, $data, $types);
-        }
-
-        if (!$res) {
-            throw new RuntimeException('Failed to insert new auto number config record');
+        try {
+            $meta = $em->getMetadataFactory()->getMetadataFor(ClassUtils::getClass($config));
+            $uow->persist($config);
+            $uow->computeChangeSet($meta, $config);
+        } catch (\Throwable $e) {
+            throw new RuntimeException('Failed to insert new auto number config record', 0, $e);
         }
     }
 }

@@ -12,7 +12,8 @@
 namespace Klipper\Component\DoctrineExtensionsExtra\Tests\AutoNumberable\Fixtures;
 
 use Doctrine\ORM\Mapping as ORM;
-use Klipper\Component\DoctrineExtensionsExtra\AutoNumberable\Model\AutoNumberConfig as BaseAutoNumberConfig;
+use Klipper\Component\DoctrineExtensionsExtra\AutoNumberable\Model\AutoNumberConfigInterface;
+use Klipper\Component\DoctrineExtensionsExtra\AutoNumberable\Model\Traits\AutoNumberConfigTrait;
 
 /**
  * Auto number config model fixture.
@@ -21,8 +22,10 @@ use Klipper\Component\DoctrineExtensionsExtra\AutoNumberable\Model\AutoNumberCon
  *
  * @ORM\Entity
  */
-class AutoNumberConfig extends BaseAutoNumberConfig
+class AutoNumberConfig implements AutoNumberConfigInterface
 {
+    use AutoNumberConfigTrait;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -44,4 +47,9 @@ class AutoNumberConfig extends BaseAutoNumberConfig
      * @ORM\Column(name="number", type="integer")
      */
     protected int $number = 0;
+
+    public function getId()
+    {
+        return $this->id;
+    }
 }
