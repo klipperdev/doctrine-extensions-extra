@@ -32,6 +32,7 @@ class EntityChoiceType extends AbstractType
                 return $options['em']->getRepository($options['class'])->createQueryBuilder('c')
                     ->andWhere('c.type = :type')
                     ->setParameter('type', $options['type'])
+                    ->addOrderBy('c.position', 'ASC')
                 ;
             },
         ]);
