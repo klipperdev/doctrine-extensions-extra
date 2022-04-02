@@ -53,8 +53,10 @@ abstract class AbstractUpdateFieldSubscriber extends MappedEventSubscriber
     {
         $configKey = $this->getConfigKey();
         $ea = $this->getEventAdapter($args);
+
         /** @var DocumentManager|EntityManagerInterface $om */
         $om = $ea->getObjectManager();
+
         /** @var mixed|OdmUnitOfWork|OrmUnitOfWork $uow */
         $uow = $om->getUnitOfWork();
         $objects = array_merge($ea->getScheduledObjectInsertions($uow), $ea->getScheduledObjectUpdates($uow));

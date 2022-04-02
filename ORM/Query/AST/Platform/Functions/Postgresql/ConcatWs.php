@@ -27,6 +27,7 @@ class ConcatWs extends PlatformFunctionNode
     {
         /** @var Node[] $values */
         $values = $this->parameters[StringConcatWs::VALUES_KEY];
+
         /** @var bool $notEmpty */
         $notEmpty = $this->parameters[StringConcatWs::NOT_EMPTY_KEY];
         $firstValue = array_shift($values);

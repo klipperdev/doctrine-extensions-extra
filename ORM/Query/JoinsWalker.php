@@ -62,6 +62,7 @@ class JoinsWalker extends TreeWalkerAdapter
 
         $requiredKeys = ['targetClass', 'parentClass', 'relation'];
         $components = $this->_getQueryComponents();
+
         /** @var IdentificationVariableDeclaration $idVarDeclaration */
         $idVarDeclaration = $AST->fromClause->identificationVariableDeclarations[0];
         $aliasIdVar = $idVarDeclaration->rangeVariableDeclaration->aliasIdentificationVariable;

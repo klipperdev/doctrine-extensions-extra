@@ -79,6 +79,7 @@ abstract class QueryUtil
     {
         // Add same joins like original query
         $originalAST = $originalQuery->getAST();
+
         /** @var Query\AST\IdentificationVariableDeclaration $originalIdVarDeclaration */
         $originalIdVarDeclaration = $originalAST->fromClause->identificationVariableDeclarations[0];
 
@@ -123,6 +124,7 @@ abstract class QueryUtil
             }
         } elseif ($query instanceof Query) {
             $AST = $query->getAST();
+
             /** @var Query\AST\IdentificationVariableDeclaration $idVarDeclaration */
             $idVarDeclaration = $AST->fromClause->identificationVariableDeclarations[0];
 
@@ -253,6 +255,7 @@ abstract class QueryUtil
     {
         if (null !== $query) {
             $AST = $query->getAST();
+
             /** @var Query\AST\IdentificationVariableDeclaration $idVarDeclaration */
             $idVarDeclaration = $AST->fromClause->identificationVariableDeclarations[0];
             $association = $assoMeta->getAssociation();

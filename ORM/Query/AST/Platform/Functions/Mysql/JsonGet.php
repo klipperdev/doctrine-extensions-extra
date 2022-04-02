@@ -31,6 +31,7 @@ class JsonGet extends PlatformFunctionNode
         /** @var Node $leftNode */
         $leftNode = $this->parameters[AbstractJsonBinaryFunctionNode::JSON_DATA_KEY];
         $leftValue = $sqlWalker->walkStringPrimary($leftNode);
+
         /** @var Node $rightNode */
         $rightNode = $this->parameters[AbstractJsonBinaryFunctionNode::JSON_PATH_KEY];
         $rightValue = str_replace(['"', "'"], '"', $rightNode->dispatch($sqlWalker));

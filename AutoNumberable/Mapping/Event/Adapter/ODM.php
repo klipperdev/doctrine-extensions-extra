@@ -28,6 +28,7 @@ final class ODM extends BaseAdapterODM implements AutoNumberableAdapterInterface
     {
         $om = $this->getObjectManager();
         $repo = $om->getRepository(AutoNumberConfigInterface::class);
+
         /** @var null|AutoNumberConfigInterface $config */
         $config = $repo->findOneBy([
             'type' => $type,

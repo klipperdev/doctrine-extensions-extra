@@ -346,6 +346,7 @@ class Parser
     {
         $path = $this->getPath($node['condition'], $parent, true);
         $class = $this->getNodeCondition($node['condition']);
+
         /** @var ConditionNode $condition */
         $condition = new $class();
 
@@ -364,6 +365,7 @@ class Parser
     private function buildRule(array $node): RuleNode
     {
         $class = $this->getNodeRule($node['operator']);
+
         /** @var RuleNode $rule */
         $rule = new $class($node['field']);
         $rule->setValue($node['value']);

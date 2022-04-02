@@ -28,6 +28,7 @@ final class ORM extends BaseAdapterORM implements AutoNumberableAdapterInterface
     {
         $em = $this->getObjectManager();
         $repo = $em->getRepository(AutoNumberConfigInterface::class);
+
         /** @var null|AutoNumberConfigInterface $config */
         $config = $repo->findOneBy([
             'type' => $type,

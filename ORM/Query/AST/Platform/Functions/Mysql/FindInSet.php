@@ -31,6 +31,7 @@ class FindInSet extends PlatformFunctionNode
         /** @var Node $leftNode */
         $leftNode = $this->parameters[FindInSetFunction::DATA_KEY];
         $leftValue = $sqlWalker->walkStringPrimary($leftNode);
+
         /** @var Node $rightNode */
         $rightNode = $this->parameters[FindInSetFunction::DATA_VALUE];
         $rightValue = $rightNode->dispatch($sqlWalker);
