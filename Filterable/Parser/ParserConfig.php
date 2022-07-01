@@ -105,6 +105,14 @@ abstract class ParserConfig
                 'not_equal',
                 'in',
                 'not_in',
+                'is_null',
+            ],
+            'uuid' => [
+                'equal',
+                'not_equal',
+                'in',
+                'not_in',
+                'is_null',
             ],
             'string' => [
                 'equal',
