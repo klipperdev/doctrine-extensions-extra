@@ -26,6 +26,7 @@ use Klipper\Component\DoctrineExtensionsExtra\Filterable\Parser\Parser;
 use Klipper\Component\DoctrineExtensionsExtra\ORM\Query\JoinsWalker;
 use Klipper\Component\DoctrineExtensionsExtra\ORM\Query\MergeConditionalExpressionWalker;
 use Klipper\Component\DoctrineExtensionsExtra\Util\QueryUtil;
+use Klipper\Component\Metadata\AssociationMetadataInterface;
 use Klipper\Component\Metadata\FieldMetadataInterface;
 use Klipper\Component\Metadata\MetadataManagerInterface;
 use Klipper\Component\Metadata\ObjectMetadataInterface;
@@ -318,13 +319,17 @@ class FilterableQuery implements FilterableQueryInterface
             ? $metaForField->getFieldByName($field)
             : null;
 
+        if (null === $fieldMeta && $metaForField->hasAssociationByName($field)) {
+            $fieldMeta = $metaForField->getAssociationByName($field);
+        }
+
         if (null === $fieldMeta) {
             $msgParams = [
                 '{{ field }}' => $validNode->getField(),
             ];
             $msg = $this->translator->trans('doctrine_filterable.invalid_field', $msgParams, 'validators');
             $validNode->addError(new NodeError($msg, $msg, $msgParams));
-        } elseif ($fieldMeta && $fieldMeta->isFilterable()
+        } elseif ($fieldMeta instanceof FieldMetadataInterface && $fieldMeta->isFilterable()
             && ($validate < self::VALIDATE_ALL || QueryUtil::isFieldVisible($metaForField, $fieldMeta, $this->authChecker))
         ) {
             $joins = array_merge($nodeJoins, $joins);
@@ -333,7 +338,7 @@ class FilterableQuery implements FilterableQueryInterface
             if ($validate >= self::VALIDATE_VALUE) {
                 $this->validateRuleNodeValue($validNode, $fieldMeta);
             }
-        } else {
+        } elseif (!$fieldMeta instanceof AssociationMetadataInterface) {
             $validNode = null;
         }
 

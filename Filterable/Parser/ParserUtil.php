@@ -63,6 +63,7 @@ abstract class ParserUtil
         $objMeta = $args->getObjectMetadata();
         $field = $node->getField();
         $alias = $args->getAlias();
+        $fieldName = null;
 
         if (false !== strpos($field, '.')) {
             $links = explode('.', $field);
@@ -88,9 +89,13 @@ abstract class ParserUtil
                 $alias = $joinAliases[$linkAssociation]
                     ?? QueryUtil::getAlias($objMeta);
             }
+        } elseif ($objMeta->hasAssociationByName($field)) {
+            $fieldName = $alias.'.'.$objMeta->getAssociationByName($field)->getAssociation();
         }
 
-        $fieldName = $alias.'.'.$objMeta->getFieldByName($field)->getField();
+        if (null === $fieldName) {
+            $fieldName = $alias.'.'.$objMeta->getFieldByName($field)->getField();
+        }
 
         if ($nodeValue instanceof NodeFieldNameTransformerInterface) {
             return $nodeValue->compileFieldName($args, $node, $fieldName);
