@@ -45,6 +45,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class FilterableQuery implements FilterableQueryInterface
 {
+    private EntityManagerInterface $em;
+
     private MetadataManagerInterface $metadataManager;
 
     private Parser $parser;
@@ -63,6 +65,7 @@ class FilterableQuery implements FilterableQueryInterface
     private array $formGuessers;
 
     /**
+     * @param EntityManagerInterface             $em                 The entity manager
      * @param MetadataManagerInterface           $metadataManager    The metadata manager
      * @param Parser                             $parser             The parser of filterable
      * @param FormFactoryInterface               $formFactory        The form factory
@@ -72,6 +75,7 @@ class FilterableQuery implements FilterableQueryInterface
      * @param FilterFormGuesserInterface[]       $formGuessers       The form guessers
      */
     public function __construct(
+        EntityManagerInterface $em,
         MetadataManagerInterface $metadataManager,
         Parser $parser,
         FormFactoryInterface $formFactory,
@@ -80,6 +84,7 @@ class FilterableQuery implements FilterableQueryInterface
         ?AuthorizationCheckerInterface $authChecker = null,
         array $formGuessers = []
     ) {
+        $this->em = $em;
         $this->metadataManager = $metadataManager;
         $this->parser = $parser;
         $this->formFactory = $formFactory;
@@ -390,7 +395,11 @@ class FilterableQuery implements FilterableQueryInterface
                 ));
             }
         } else {
-            $node->setQueryValue($form->getData());
+            $classMeta = $this->em->getClassMetadata($fieldMeta->getParent()->getClass());
+            $type = $classMeta->getFieldMapping($fieldMeta->getField())['type'];
+            $value = $this->em->getConnection()->convertToDatabaseValue($form->getData(), $type);
+
+            $node->setQueryValue($value);
         }
     }
 
