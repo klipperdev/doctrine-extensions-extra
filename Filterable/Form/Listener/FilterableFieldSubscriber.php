@@ -12,6 +12,7 @@
 namespace Klipper\Component\DoctrineExtensionsExtra\Filterable\Form\Listener;
 
 use Klipper\Component\DoctrineExtensionsExtra\Filterable\ExpressionLanguage;
+use Klipper\Component\ExpressionLanguage\Functions\DateFunctionUtil;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -51,11 +52,16 @@ class FilterableFieldSubscriber implements EventSubscriberInterface
         $value = $event->getData();
 
         if ($this->expressionLanguage && $this->expressionLanguage->isEvaluable($value)) {
+            $dateFormat = DateFunctionUtil::$DEFAULT_PATTERN;
+            DateFunctionUtil::$DEFAULT_PATTERN = $event->getForm()->getConfig()->getOption('format');
+
             try {
                 $value = $this->expressionLanguage->evaluate($value);
             } catch (\Throwable $e) {
                 $event->getForm()->addError(new FormError($e->getMessage()));
             }
+
+            DateFunctionUtil::$DEFAULT_PATTERN = $dateFormat;
         }
 
         $event->setData($value);

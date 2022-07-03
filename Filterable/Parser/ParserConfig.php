@@ -238,9 +238,17 @@ abstract class ParserConfig
             'integer' => IntegerType::class,
             'float' => NumberType::class,
             'boolean' => CheckboxType::class,
-            'datetime' => DateTimeType::class,
-            'date' => DateType::class,
-            'time' => TimeType::class,
+            'datetime' => [DateTimeType::class, [
+                'widget' => 'single_text',
+                'format' => DateTimeType::HTML5_FORMAT,
+            ]],
+            'date' => [DateType::class, [
+                'widget' => 'single_text',
+                'format' => DateType::HTML5_FORMAT,
+            ]],
+            'time' => [TimeType::class, [
+                'widget' => 'single_text',
+            ]],
             'object' => FilterableObjectType::class,
             'array' => FilterableArrayType::class,
         ];
