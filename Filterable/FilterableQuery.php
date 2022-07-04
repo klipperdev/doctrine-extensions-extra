@@ -324,7 +324,7 @@ class FilterableQuery implements FilterableQueryInterface
             ? $metaForField->getFieldByName($field)
             : null;
 
-        if (null === $fieldMeta && $metaForField->hasAssociationByName($field)) {
+        if (null === $fieldMeta && null !== $metaForField && $metaForField->hasAssociationByName($field)) {
             $fieldMeta = $metaForField->getAssociationByName($field);
         }
 
