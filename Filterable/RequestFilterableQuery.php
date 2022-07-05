@@ -43,7 +43,7 @@ class RequestFilterableQuery
      */
     public function filter(Query $query): void
     {
-        $queryFilter = $this->getQueryFilter();
+        $queryFilter = utf8_decode($this->getQueryFilter());
 
         if (empty($queryFilter)) {
             return;
