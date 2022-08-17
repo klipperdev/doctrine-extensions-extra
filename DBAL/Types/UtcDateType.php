@@ -26,7 +26,7 @@ class UtcDateType extends DateType
      *
      * @throws
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
         if ($value instanceof \DateTime) {
             $value->setTime(0, 0);
@@ -40,7 +40,7 @@ class UtcDateType extends DateType
      *
      * @throws
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?\DateTimeInterface
     {
         $converted = parent::convertToPHPValue($value, $platform);
 

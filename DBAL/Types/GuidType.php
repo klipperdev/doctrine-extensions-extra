@@ -41,7 +41,7 @@ class GuidType extends BaseGuidType
      *
      * @throws
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?string
     {
         if ('mysql' === $platform->getName()) {
             if ('' === $value) {

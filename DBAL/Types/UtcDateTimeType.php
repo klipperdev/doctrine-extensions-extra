@@ -28,7 +28,7 @@ class UtcDateTimeType extends DateTimeType
      *
      * @throws
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
         if ($value instanceof \DateTime) {
             $value = clone $value;
@@ -43,7 +43,7 @@ class UtcDateTimeType extends DateTimeType
      *
      * @throws
      */
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?\DateTimeInterface
     {
         if (null === $value || $value instanceof \DateTime) {
             return $value;
