@@ -23,9 +23,6 @@ use PHPUnit\Framework\TestCase;
  *
  * @author François Pluchino <francois.pluchino@klipper.dev>
  *
- * @group klipper
- * @group klipper-doctrine-extensions-extra
- *
  * @internal
  */
 final class UtcDateTypeTest extends TestCase

@@ -29,9 +29,6 @@ use Klipper\Component\DoctrineExtensionsExtra\Tests\BaseTestCaseORM;
  *
  * @author François Pluchino <francois.pluchino@klipper.dev>
  *
- * @group klipper
- * @group klipper-doctrine-extensions-extra
- *
  * @internal
  */
 final class AutoNumberableTest extends BaseTestCaseORM
