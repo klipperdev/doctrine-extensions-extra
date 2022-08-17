@@ -56,7 +56,7 @@ abstract class Xml extends BaseXml
      * @param bool              $association Check if the field is an association
      * @param string            $type        The type
      */
-    protected function getFieldName(ClassMetadata $meta, \SimpleXmlElement $mapping, \SimpleXmlElement $element, bool $association, string $type): string
+    protected function getFieldName(ClassMetadata $meta, \SimpleXMLElement $mapping, \SimpleXMLElement $element, bool $association, string $type): string
     {
         if ($association) {
             $nameTypes = ['one-to-one', 'one-to-many', 'many-to-one', 'many-to-many'];
@@ -82,7 +82,7 @@ abstract class Xml extends BaseXml
      * @param string            $type      The type
      * @param string            $attribute The attribute name
      */
-    protected function getName(ClassMetadata $meta, \SimpleXmlElement $element, string $type, string $attribute): string
+    protected function getName(ClassMetadata $meta, \SimpleXMLElement $element, string $type, string $attribute): string
     {
         $name = $this->_getAttribute($element, $attribute);
 
@@ -134,7 +134,7 @@ abstract class Xml extends BaseXml
      * @param string            $attribute The attribute name
      * @param null|bool         $default   The default value
      */
-    protected function getBooleanAttribute(\SimpleXmlElement $data, string $attribute, ?bool $default = null): ?bool
+    protected function getBooleanAttribute(\SimpleXMLElement $data, string $attribute, ?bool $default = null): ?bool
     {
         return $this->_isAttributeSet($data, $attribute)
             ? 'true' === strtolower((string) $this->_getAttribute($data, $attribute))
@@ -148,7 +148,7 @@ abstract class Xml extends BaseXml
      * @param string            $attribute The attribute name
      * @param null|string       $default   The default value
      */
-    protected function getStringAttribute(\SimpleXmlElement $data, string $attribute, ?string $default = null): ?string
+    protected function getStringAttribute(\SimpleXMLElement $data, string $attribute, ?string $default = null): ?string
     {
         return $this->_isAttributeSet($data, $attribute)
             ? (string) $this->_getAttribute($data, $attribute)
@@ -162,7 +162,7 @@ abstract class Xml extends BaseXml
      * @param string            $attribute The attribute name
      * @param null|string[]     $default   The default value
      */
-    protected function getStringsAttribute(\SimpleXmlElement $data, string $attribute, ?array $default = []): ?array
+    protected function getStringsAttribute(\SimpleXMLElement $data, string $attribute, ?array $default = []): ?array
     {
         return $this->_isAttributeSet($data, $attribute)
             ? array_map('trim', explode(',', (string) $this->_getAttribute($data, $attribute)))
@@ -176,7 +176,7 @@ abstract class Xml extends BaseXml
      * @param string            $attribute The attribute name
      * @param null|array        $default   The default value
      */
-    protected function getArrayAttribute(\SimpleXmlElement $data, string $attribute, ?array $default = null): ?array
+    protected function getArrayAttribute(\SimpleXMLElement $data, string $attribute, ?array $default = null): ?array
     {
         return $this->_isAttributeSet($data, $attribute)
             ? (array) $this->_getAttribute($data, $attribute)

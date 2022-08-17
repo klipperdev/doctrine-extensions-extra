@@ -86,7 +86,7 @@ class Xml extends BaseXml
      * @param array             $config  The config of Metadata
      * @param \SimpleXmlElement $mapping The mapping
      */
-    protected function readMetadataMapping(ClassMetadata $meta, array &$config, \SimpleXmlElement $mapping): void
+    protected function readMetadataMapping(ClassMetadata $meta, array &$config, \SimpleXMLElement $mapping): void
     {
         $ciMappings = $mapping->children(self::KLIPPER_NAMESPACE_URI);
 
@@ -131,7 +131,7 @@ class Xml extends BaseXml
      * @param array             $config  The config of Metadata
      * @param \SimpleXmlElement $mapping The mapping
      */
-    protected function readActionMetadataMapping(ClassMetadata $meta, array &$config, \SimpleXmlElement $mapping): void
+    protected function readActionMetadataMapping(ClassMetadata $meta, array &$config, \SimpleXMLElement $mapping): void
     {
         $ciMappings = $mapping->children(self::KLIPPER_NAMESPACE_URI);
 
@@ -178,7 +178,7 @@ class Xml extends BaseXml
      * @param array             $config  The config of Metadata
      * @param \SimpleXmlElement $mapping The mapping
      */
-    protected function readFieldMetadataMapping(ClassMetadata $meta, array &$config, \SimpleXmlElement $mapping): void
+    protected function readFieldMetadataMapping(ClassMetadata $meta, array &$config, \SimpleXMLElement $mapping): void
     {
         $ciMappings = $mapping->children(self::KLIPPER_NAMESPACE_URI);
 
@@ -229,7 +229,7 @@ class Xml extends BaseXml
      * @param array             $config  The config of Metadata
      * @param \SimpleXmlElement $mapping The mapping
      */
-    protected function readAssociationMetadataMapping(ClassMetadata $meta, array &$config, \SimpleXmlElement $mapping): void
+    protected function readAssociationMetadataMapping(ClassMetadata $meta, array &$config, \SimpleXMLElement $mapping): void
     {
         $ciMappings = $mapping->children(self::KLIPPER_NAMESPACE_URI);
 

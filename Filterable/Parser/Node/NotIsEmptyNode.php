@@ -36,6 +36,6 @@ class NotIsEmptyNode extends RuleNode
         return ParserUtil::getFieldName($arguments, $this)
             .' != '
             .ParserUtil::setValue($arguments, $this->getField(), '')
-            ;
+        ;
     }
 }

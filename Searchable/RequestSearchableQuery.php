@@ -299,7 +299,7 @@ class RequestSearchableQuery
             throw new \RuntimeException('Unable to convert a non-UTF-8 string to UTF-8: required function iconv() does not exist. You should install ext-iconv or symfony/polyfill-iconv.');
         }
 
-        $charset = ini_get('php.output_encoding') ?: ini_get('default_charset') ?: 'UTF-8';
+        $charset = \ini_get('php.output_encoding') ?: \ini_get('default_charset') ?: 'UTF-8';
 
         if (false !== $c = @iconv($charset, 'UTF-8', $s)) {
             return $c;
