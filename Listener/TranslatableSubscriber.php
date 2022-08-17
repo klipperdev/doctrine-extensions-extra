@@ -49,7 +49,7 @@ class TranslatableSubscriber implements EventSubscriber
      */
     public function onFlush(OnFlushEventArgs $event): void
     {
-        $em = $event->getEntityManager();
+        $em = $event->getObjectManager();
         $uow = $em->getUnitOfWork();
 
         foreach ($uow->getScheduledEntityInsertions() as $object) {
