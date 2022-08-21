@@ -130,7 +130,7 @@ class TablePrefixSubscriber implements EventSubscriber
         $prop->setAccessible(true);
         $name = $prop->getValue($generator);
 
-        if (0 !== strpos($name, $this->prefix)) {
+        if (0 !== strpos($name ?? '', $this->prefix)) {
             $prop->setValue($generator, $this->prefix.$name);
         }
     }
