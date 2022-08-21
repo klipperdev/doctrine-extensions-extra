@@ -76,7 +76,7 @@ class EntityChoice extends Choice
         return $this->service;
     }
 
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::PROPERTY_CONSTRAINT;
     }
