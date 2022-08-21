@@ -109,6 +109,7 @@ class NodeErrorIterator implements \RecursiveIterator, \SeekableIterator, \Array
      * @return NodeError|NodeErrorIterator an error or an iterator containing
      *                                     nested errors
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return current($this->errors);
@@ -174,6 +175,7 @@ class NodeErrorIterator implements \RecursiveIterator, \SeekableIterator, \Array
      *
      * @return NodeError|NodeErrorIterator The element at the given position
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($position)
     {
         if (!isset($this->errors[$position])) {
@@ -222,7 +224,7 @@ class NodeErrorIterator implements \RecursiveIterator, \SeekableIterator, \Array
     /**
      * Alias of {@link current()}.
      */
-    public function getChildren()
+    public function getChildren(): ?\RecursiveIterator
     {
         return current($this->errors);
     }
