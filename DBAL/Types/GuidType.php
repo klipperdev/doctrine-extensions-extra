@@ -81,14 +81,18 @@ class GuidType extends BaseGuidType
 
         if ('mysql' === $platform->getName()) {
             try {
-                if (\is_string($value) || method_exists($value, '__toString')) {
+                if (\is_string($value) || (\is_object($value) && method_exists($value, '__toString'))) {
                     return Uuid::fromString((string) $value)->getBytes();
                 }
             } catch (\InvalidArgumentException $e) {
                 // Ignore the exception
             }
 
-            throw ConversionException::conversionFailed($value, $this->getName());
+            if (\is_string($value) || (\is_object($value) && method_exists($value, '__toString'))) {
+                throw ConversionException::conversionFailed($value, $this->getName());
+            }
+
+            throw ConversionException::conversionFailedInvalidType($value, 'string', ['string']);
         }
 
         return UuidUtil::validate($value);
