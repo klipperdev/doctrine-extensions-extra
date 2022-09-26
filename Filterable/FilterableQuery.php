@@ -397,7 +397,18 @@ class FilterableQuery implements FilterableQueryInterface
         } else {
             $classMeta = $this->em->getClassMetadata($fieldMeta->getParent()->getClass());
             $type = $classMeta->getFieldMapping($fieldMeta->getField())['type'];
-            $value = $this->em->getConnection()->convertToDatabaseValue($form->getData(), $type);
+
+            $formData = $form->getData();
+
+            if (\is_array($formData)) {
+                $value = [];
+
+                foreach ($formData as $itemData) {
+                    $value[] = $this->em->getConnection()->convertToDatabaseValue($itemData, $type);
+                }
+            } else {
+                $value = $this->em->getConnection()->convertToDatabaseValue($form->getData(), $type);
+            }
 
             $node->setQueryValue($value);
         }
