@@ -234,6 +234,7 @@ abstract class ParserConfig
     {
         return [
             'guid' => TextType::class,
+            'uuid' => TextType::class,
             'string' => TextType::class,
             'integer' => IntegerType::class,
             'float' => NumberType::class,
