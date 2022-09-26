@@ -79,7 +79,7 @@ abstract class ParserUtil
 
                 $assoMeta = $objMeta->getAssociationByName($link);
 
-                if (!\in_array($assoMeta->getType(), ['one-to-one', 'many-to-one', 'one-to-many'], true)) {
+                if (!\in_array($assoMeta->getType(), ['one-to-one', 'many-to-one', 'one-to-many', 'many-to-many'], true)) {
                     throw new InvalidAssociationException($node->getField());
                 }
 
