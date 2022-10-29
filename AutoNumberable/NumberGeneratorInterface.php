@@ -41,9 +41,9 @@ interface NumberGeneratorInterface
      *
      * @param string $pattern The pattern of number
      *
-     * @throws InvalidAutoNumberPatternException When the pattern is invalid
-     *
      * @return static
+     *
+     * @throws InvalidAutoNumberPatternException When the pattern is invalid
      */
     public function validate(string $pattern);
 }

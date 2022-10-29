@@ -175,9 +175,9 @@ class MetadataListener extends MappedEventSubscriber implements MetadataDynamicL
      * @param ClassMetadata $metadata  The class metadata
      * @param string[]      $resources The resource files
      *
-     * @throws
-     *
      * @return string[]
+     *
+     * @throws
      */
     private function findResources(ClassMetadata $metadata, ?array $resources = null): array
     {

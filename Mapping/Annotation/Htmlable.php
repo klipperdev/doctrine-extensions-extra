@@ -17,6 +17,7 @@ use Doctrine\Common\Annotations\Annotation;
  * Htmlable annotation for Htmlable behavioral extension.
  *
  * @Annotation
+ *
  * @Target("PROPERTY")
  *
  * @author François Pluchino <francois.pluchino@klipper.dev>

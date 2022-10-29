@@ -171,9 +171,9 @@ class NodeErrorIterator implements \RecursiveIterator, \SeekableIterator, \Array
      *
      * @param int $position The position
      *
-     * @throws OutOfBoundsException If the given position does not exist
-     *
      * @return NodeError|NodeErrorIterator The element at the given position
+     *
+     * @throws OutOfBoundsException If the given position does not exist
      */
     #[\ReturnTypeWillChange]
     public function offsetGet($position)

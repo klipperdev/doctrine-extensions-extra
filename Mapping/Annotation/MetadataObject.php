@@ -17,6 +17,7 @@ use Doctrine\Common\Annotations\Annotation;
  * Metadata object annotation for Metadata behavioral extension.
  *
  * @Annotation
+ *
  * @Target("CLASS")
  *
  * @author François Pluchino <francois.pluchino@klipper.dev>

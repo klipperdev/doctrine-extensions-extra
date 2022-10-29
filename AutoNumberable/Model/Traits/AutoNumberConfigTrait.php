@@ -24,31 +24,25 @@ trait AutoNumberConfigTrait
 {
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     *
      * @Assert\Type(type="string")
      * @Assert\Length(max=255)
      * @Assert\NotBlank
-     *
      * @Serializer\Expose
      */
     protected ?string $type = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     *
      * @Assert\Type(type="string")
      * @Assert\Length(max=255)
      * @Assert\NotBlank
-     *
      * @Serializer\Expose
      */
     protected ?string $pattern = null;
 
     /**
      * @ORM\Column(type="integer")
-     *
      * @Assert\Type(type="integer")
-     *
      * @Serializer\Expose
      * @Serializer\ReadOnlyProperty
      */

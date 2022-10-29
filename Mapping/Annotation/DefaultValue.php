@@ -17,6 +17,7 @@ use Doctrine\Common\Annotations\Annotation;
  * Default value annotation for DefaultValue behavioral extension.
  *
  * @Annotation
+ *
  * @Target("PROPERTY")
  *
  * @author François Pluchino <francois.pluchino@klipper.dev>

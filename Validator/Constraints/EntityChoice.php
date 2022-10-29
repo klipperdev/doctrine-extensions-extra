@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints\Choice;
  * @author François Pluchino <francois.pluchino@klipper.dev>
  *
  * @Annotation
+ *
  * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
  */
 class EntityChoice extends Choice
