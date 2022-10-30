@@ -15,6 +15,7 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Translatable\Query\TreeWalker\TranslationWalker;
 use Gedmo\Translatable\TranslatableListener;
+use Klipper\Component\DoctrineExtensionsExtra\ORM\Query\JoinsWalker;
 use Klipper\Component\Metadata\AssociationMetadataInterface;
 use Klipper\Component\Metadata\FieldMetadataInterface;
 use Klipper\Component\Metadata\MetadataInterface;
@@ -145,16 +146,10 @@ abstract class QueryUtil
 
     /**
      * Get the doctrine compatible alias name from metadata name.
-     *
-     * @param MetadataInterface|string $object The object name or metadata
      */
-    public static function getAlias($object): string
+    public static function getAlias(string $alias, MetadataInterface $assoMeta): string
     {
-        if ($object instanceof MetadataInterface) {
-            $object = $object->getName();
-        }
-
-        return '_'.$object;
+        return $alias.'__'.$assoMeta->getName();
     }
 
     /**
@@ -224,8 +219,8 @@ abstract class QueryUtil
                     $finalMeta = $metadataManager->get($assoMeta->getTarget());
                     $existingFinalAlias = static::getExistingAlias($assoMeta, $finalAlias, $query);
 
-                    if (null === $alias || null === $existingFinalAlias) {
-                        $joins[static::getAlias($finalMeta)] = [
+                    if (null === $alias || null === $existingFinalAlias || (!isset($joins[$existingFinalAlias]))) {
+                        $joins[static::getAlias($finalAlias, $assoMeta)] = [
                             'targetClass' => $finalMeta->getClass(),
                             'parentClass' => $originClass,
                             'relation' => $assoMeta->getAssociation(),
@@ -235,7 +230,7 @@ abstract class QueryUtil
                         ];
                     }
 
-                    $finalAlias = null !== $existingFinalAlias ? $existingFinalAlias : static::getAlias($finalMeta);
+                    $finalAlias = null !== $existingFinalAlias ? $existingFinalAlias : static::getAlias($finalAlias, $assoMeta);
                 } else {
                     $finalMeta = null;
 
@@ -269,6 +264,13 @@ abstract class QueryUtil
                 if ($finalAlias === $joinPath->identificationVariable && $association === $joinPath->associationField) {
                     return $declaration->aliasIdentificationVariable;
                 }
+            }
+
+            $existingJoins = $query->getHint(JoinsWalker::HINT_JOINS);
+            $existingAlias = QueryUtil::getAlias($finalAlias, $assoMeta);
+
+            if (false !== $existingJoins && isset($existingJoins[$existingAlias])) {
+                return $existingAlias;
             }
         }
 

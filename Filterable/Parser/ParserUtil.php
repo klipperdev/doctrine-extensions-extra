@@ -87,7 +87,7 @@ abstract class ParserUtil
                 $linkAssociation = $alias.'.'.$assoMeta->getAssociation();
 
                 $alias = $joinAliases[$linkAssociation]
-                    ?? QueryUtil::getAlias($objMeta);
+                    ?? QueryUtil::getAlias($alias, $assoMeta);
             }
         } elseif ($objMeta->hasAssociationByName($field)) {
             $fieldName = $alias.'.'.$objMeta->getAssociationByName($field)->getAssociation();

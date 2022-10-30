@@ -169,8 +169,10 @@ class RequestSortableQuery
             if ($fieldMeta && $fieldMeta->isSortable() && QueryUtil::isFieldVisible($metaForField, $fieldMeta, $this->authChecker)) {
                 if (null !== $existingFinalAlias) {
                     $field = $existingFinalAlias.'.'.$fieldMeta->getField();
+                } elseif ($metaForField && $metadata !== $metaForField && !empty($links)) {
+                    $field = implode('__', [$alias, ...$links]).'.'.$fieldMeta->getField();
                 } elseif ($metaForField && $metadata !== $metaForField) {
-                    $field = QueryUtil::getAlias($metaForField).'.'.$fieldMeta->getField();
+                    $field = QueryUtil::getAlias($alias, $metaForField).'.'.$fieldMeta->getField();
                 } else {
                     $field = $fieldMeta->getField();
                 }

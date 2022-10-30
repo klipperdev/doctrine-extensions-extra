@@ -159,7 +159,7 @@ class RequestSearchableQuery
             );
 
             if (null !== $deepMeta) {
-                $deepAlias = null !== $existingFinalAlias ? $existingFinalAlias : QueryUtil::getAlias($deepMeta);
+                $deepAlias = null !== $existingFinalAlias ? $existingFinalAlias : QueryUtil::getAlias($alias, $deepMeta);
                 $deepFieldPrefix = ($fieldPrefix ? $fieldPrefix.'.' : '').$path;
                 $deepFields = $this->findSearchableFields($em, $deepMeta, $deepAlias, $deepFieldPrefix);
 
