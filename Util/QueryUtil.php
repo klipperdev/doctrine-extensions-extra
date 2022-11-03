@@ -147,7 +147,7 @@ abstract class QueryUtil
     /**
      * Get the doctrine compatible alias name from metadata name.
      */
-    public static function getAlias(string $alias, MetadataInterface $assoMeta): string
+    public static function getAlias(?string $alias, MetadataInterface $assoMeta): string
     {
         return $alias.'__'.$assoMeta->getName();
     }
