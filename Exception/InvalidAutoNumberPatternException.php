@@ -11,8 +11,6 @@
 
 namespace Klipper\Component\DoctrineExtensionsExtra\Exception;
 
-use Throwable;
-
 /**
  * Exception for invalid auto number pattern.
  *
@@ -22,7 +20,7 @@ class InvalidAutoNumberPatternException extends InvalidArgumentException
 {
     protected string $pattern;
 
-    public function __construct(string $pattern, int $code = 0, ?Throwable $previous = null)
+    public function __construct(string $pattern, int $code = 0, ?\Throwable $previous = null)
     {
         $this->pattern = $pattern;
         $message = sprintf('The auto number pattern "%s" is not valid', $pattern);
