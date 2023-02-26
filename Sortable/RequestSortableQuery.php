@@ -199,7 +199,7 @@ class RequestSortableQuery
 
         foreach ($sortable as $field => $direction) {
             if (false !== ($pos = strrpos($field, '.'))) {
-                if (0 === strpos($field, $name)) {
+                if (0 === strpos($field, $name.'.')) {
                     $finalField = substr($field, $pos + 1);
 
                     if ($metadata->hasFieldByName($finalField)) {
